@@ -120,6 +120,14 @@ title: selfdriven You
   <symbol id="ic-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 19.1c-.856 1.5.63 3.3 2.3 2.6L17 21c1.7.7 3.16-1.1 2.3-2.6l-5.069-8.677A2 2 0 0 1 14 8.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>
   </symbol>
+  <!-- headphones -->
+  <symbol id="ic-headphones" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>
+  </symbol>
+  <!-- play-circle -->
+  <symbol id="ic-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/>
+  </symbol>
 </svg>
 
 <style>
@@ -584,6 +592,62 @@ strong { color: var(--text); font-weight: 600; }
 .btn-cta-g { border:1.5px solid var(--border);color:var(--muted);padding:14px 30px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;cursor:none; }
 .btn-cta-g:hover { border-color:rgba(255,255,255,.3);color:var(--text); }
 
+/* ── PODCASTS ── */
+.podcasts { padding:100px 0; background:var(--surface); border-top:1px solid var(--border); }
+.podcasts-hd { text-align:center; margin-bottom:60px; }
+.podcasts-hd p { font-size:17px; color:var(--muted); margin-top:14px; line-height:1.65; }
+
+.podcast-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+
+.podcast-card {
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:32px;
+  display:flex; flex-direction:column; gap:20px;
+  transition:border-color .2s, box-shadow .2s;
+  cursor:none;
+}
+.podcast-card:hover {
+  border-color:rgba(123,108,255,.35);
+  box-shadow:0 20px 60px rgba(123,108,255,.08);
+}
+
+.podcast-meta {
+  display:flex; align-items:center; gap:14px;
+}
+.podcast-icon-wrap {
+  width:52px; height:52px; border-radius:14px; flex-shrink:0;
+  background:var(--chill-dim); color:var(--chill);
+  display:flex; align-items:center; justify-content:center;
+}
+.podcast-label {
+  font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:4px;
+  font-family:'Bricolage Grotesque',sans-serif;
+}
+.podcast-title {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:17px; font-weight:800; letter-spacing:-.02em; line-height:1.25;
+  color:var(--text);
+}
+
+.podcast-player {
+  width:100%;
+  border-radius:12px;
+  overflow:hidden;
+  height:44px;
+}
+.podcast-player audio {
+  width:100%;
+  height:44px;
+  display:block;
+  accent-color:var(--chill);
+}
+
+/* style the native audio element for dark theme */
+audio::-webkit-media-controls-panel { background:var(--surface2); }
+
 /* ── FOOTER ── */
 footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;background:var(--bg); }
 .foot-logo { font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.04em;color:var(--text);text-decoration:none; }
@@ -592,6 +656,24 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
 .foot-links { display:flex;gap:22px;list-style:none; }
 .foot-links a { font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;cursor:none; }
 .foot-links a:hover { color:var(--text); }
+.foot-divider { width:32px; height:1px; background:var(--border); margin:6px auto 0; }
+.foot-initiative {
+  font-size:12px; color:var(--muted2);
+  margin-top:2px;
+}
+.foot-initiative a {
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid var(--muted2);
+  padding-bottom:1px;
+  transition:color .2s, border-color .2s;
+  cursor:none;
+}
+.foot-initiative a:hover { color:var(--curious); border-color:var(--curious); }
+
+@media(max-width:680px) {
+  .podcast-grid { grid-template-columns:1fr; }
+}
 
 /* ── SCROLL REVEAL ── */
 .rev { opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease; }
@@ -628,6 +710,7 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
     <li><a href="#cycle">Cycle</a></li>
     <li><a href="#age">The Shift</a></li>
     <li><a href="#practices">Practices</a></li>
+    <li><a href="#podcasts">Listen</a></li>
   </ul>
 
 </nav>
@@ -964,6 +1047,56 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
   </div>
 </div>
 
+<!-- ── PODCASTS ── -->
+<section class="podcasts" id="podcasts">
+  <div class="inner">
+    <div class="podcasts-hd">
+      <div class="s-eye rev"><span class="ey-dot" style="background:var(--chill)"></span>Listen</div>
+      <h2 class="s-title rev">Hear the ideas<br>come alive.</h2>
+      <p class="rev">Two conversations exploring what it means to live and lead a self-directed human life in the age of intelligence.</p>
+    </div>
+    <div class="podcast-grid">
+
+      <div class="podcast-card rev">
+        <div class="podcast-meta">
+          <div class="podcast-icon-wrap">
+            <svg width="24" height="24"><use href="#ic-headphones"/></svg>
+          </div>
+          <div>
+            <div class="podcast-label">Episode 01</div>
+            <div class="podcast-title">A Human Operating Model in the Age of AI</div>
+          </div>
+        </div>
+        <div class="podcast-player">
+          <audio controls preload="none">
+            <source src="/assets/audio/selfdriven-you-a-human-operating-model-in-the-age-of-ai.m4a" type="audio/mp4">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+
+      <div class="podcast-card rev">
+        <div class="podcast-meta">
+          <div class="podcast-icon-wrap">
+            <svg width="24" height="24"><use href="#ic-headphones"/></svg>
+          </div>
+          <div>
+            <div class="podcast-label">Episode 02</div>
+            <div class="podcast-title">Stubbornly Human in the Intelligence Age</div>
+          </div>
+        </div>
+        <div class="podcast-player">
+          <audio controls preload="none">
+            <source src="/assets/audio/selfdriven-you-stubbornly-human-in-the-intelligence-age.m4a" type="audio/mp4">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 
 
 <!-- ── FOOTER ── -->
@@ -971,6 +1104,8 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
   <a href="#" class="foot-logo">selfdriven<em>.you</em></a>
   <div class="foot-tag">Curious · Caring · Constructive · Chill</div>
   <div class="foot-tag">A human rhythm for the age of intelligence.</div>
+  <div class="foot-divider"></div>
+  <div class="foot-initiative">An initiative of the <a href="https://selfdriven.foundation" target="_blank" rel="noopener">selfdriven Foundation</a></div>
 </footer>
 
 <script>
