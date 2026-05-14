@@ -701,6 +701,19 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
   cursor:none;
 }
 .foot-initiative a:hover { color:var(--curious); border-color:var(--curious); }
+.foot-cc {
+  margin-top: 4px;
+}
+.foot-cc-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted2);
+  text-decoration: none;
+  transition: color .2s;
+  cursor: none;
+}
+.foot-cc-link svg { opacity: .5; flex-shrink: 0; transition: opacity .2s; }
+.foot-cc-link:hover { color: var(--muted); }
+.foot-cc-link:hover svg { opacity: .8; }
 
 @media(max-width:680px) {
   .podcast-grid { grid-template-columns:1fr; }
@@ -1139,7 +1152,7 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
           </div>
           <div>
             <div class="podcast-label">Episode 02 </div>
-            <div class="podcast-title">"Post-Corporation" Reality</div>
+            <div class="podcast-title">Post-Corporation Reality - Human Rhythm In The Intelligence-Age</div>
           </div>
         </div>
         <div class="podcast-player">
@@ -1163,6 +1176,20 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
   <div class="foot-tag">A human rhythm for the age of intelligence.</div>
   <div class="foot-divider"></div>
   <div class="foot-initiative">An initiative of the <a href="https://selfdriven.foundation" target="_blank" rel="noopener">selfdriven Foundation</a></div>
+  <div class="foot-cc">
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" class="foot-cc-link">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 1.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17z"/>
+        <path d="M12 6.5a5.5 5.5 0 0 0-4.98 7.847l.67-1.114A4 4 0 1 1 12 16a3.998 3.998 0 0 1-2.865-1.21l-.944.944A5.5 5.5 0 1 0 12 6.5z"/>
+        <path d="M10.5 12a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0z"/>
+      </svg>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 1.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17z"/>
+        <path d="M10 8h4v2.5h-1.5V16H11v-5.5H10V8z"/>
+      </svg>
+      <span>CC BY 4.0 — selfdriven Foundation. Share freely with attribution.</span>
+    </a>
+  </div>
 </footer>
 
 <script>
