@@ -686,7 +686,68 @@ strong { color: var(--text); font-weight: 600; }
 /* style the native audio element for dark theme */
 audio::-webkit-media-controls-panel { background:var(--surface2); }
 
-/* ── FOOTER ── */
+/* ── WHERE YOU AT ── */
+.where {
+  padding: 100px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.where-inner { max-width: 720px; margin: 0 auto; padding: 0 48px; }
+.where-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 64px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.where-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--curious), var(--caring), var(--constructive), var(--chill));
+}
+.where-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245,200,66,.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.where-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 20px; position: relative;
+}
+.where-eyebrow .ey-dot { background: var(--curious); }
+.where-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800; letter-spacing: -.04em; line-height: 1.05;
+  margin-bottom: 16px; position: relative;
+}
+.where-title em { font-style: normal; color: var(--curious); }
+.where-desc {
+  font-size: 17px; color: var(--muted); line-height: 1.65;
+  margin-bottom: 40px; position: relative;
+}
+.where-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--curious); color: #09090f;
+  padding: 16px 40px; border-radius: var(--pill);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 800;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  cursor: none; position: relative;
+}
+.where-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(245,200,66,.35);
+}
+.where-btn svg { width: 18px; height: 18px; }
+@media(max-width:600px) {
+  .where-card { padding: 48px 28px; }
+}
 footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;background:var(--bg); }
 .foot-logo {
   font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;
@@ -775,6 +836,7 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
     <li><a href="#age">The Shift</a></li>
     <li><a href="#practices">Practices</a></li>
     <li><a href="#podcasts">Listen</a></li>
+    <li><a href="https://selfdriven.you/where-you-at" target="_blank" rel="noopener" style="color:var(--curious);font-weight:700">Where You At? →</a></li>
   </ul>
 
 </nav>
@@ -1115,6 +1177,23 @@ footer { padding:48px 48px 34px;border-top:1px solid var(--border);display:flex;
         <div class="pcard"><div class="ptag ptag-l"><svg width="10" height="10"><use href="#ic-zap"/></svg> Micro</div><h4>Slow one conversation</h4><p>Let there be a pause. Don't rush to fill silence. A slower conversation, with actual space to think, produces something qualitatively different from a rapid exchange.</p></div>
         <div class="pcard"><div class="ptag ptag-l"><svg width="10" height="10"><use href="#ic-moon"/></svg> Night</div><h4>Protect your sleep</h4><p>Sleep is the single highest-ROI chill practice. Protect the last hour before bed like it's the most important meeting of your day — because neurologically, it is.</p></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHERE YOU AT ── -->
+<section class="where">
+  <div class="where-inner">
+    <div class="where-card rev">
+      <div class="where-eyebrow"><span class="ey-dot" style="width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block"></span>Take the next step</div>
+      <h2 class="where-title">Where<br><em>You At?</em></h2>
+      <p class="where-desc">Curious about where you actually stand across the four modes? Find out what's flowing, what needs attention, and what your next move might be.</p>
+      <a href="https://selfdriven.you/where-you-at" target="_blank" rel="noopener" class="where-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+        Find out now
+      </a>
     </div>
   </div>
 </section>
