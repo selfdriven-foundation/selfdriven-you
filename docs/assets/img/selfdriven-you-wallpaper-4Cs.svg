@@ -171,20 +171,20 @@
   <text x="2492" y="378" font-size="220" font-weight="800" fill="#ff5f7e" fill-opacity="0.96"
         letter-spacing="-0.05em" filter="url(#glow-k)" text-anchor="end">Caring</text>
 
-  <text x="2480" y="432" font-size="21" font-weight="300" fill="#ff5f7e" fill-opacity="0.52"
+  <text x="2480" y="454" font-size="21" font-weight="300" fill="#ff5f7e" fill-opacity="0.52"
         letter-spacing="0.03em" text-anchor="end">What keeps intelligence human.</text>
 
   <!-- Pills right-aligned: widths 148 / 208 / 188, gap 12.
        Total = 148+12+208+12+188 = 568. Start x = 2480-568 = 1912 -->
-  <g transform="translate(1912,464)">
+  <g transform="translate(1912,486)">
     <rect width="148" height="34" rx="17" fill="#ff5f7e" fill-opacity="0.11" stroke="#ff5f7e" stroke-width="1" stroke-opacity="0.28"/>
     <text x="16" y="22" font-size="13" font-weight="600" fill="#ff5f7e" fill-opacity="0.8">Listen deeply</text>
   </g>
-  <g transform="translate(2072,464)">
+  <g transform="translate(2072,486)">
     <rect width="208" height="34" rx="17" fill="#ff5f7e" fill-opacity="0.11" stroke="#ff5f7e" stroke-width="1" stroke-opacity="0.28"/>
     <text x="16" y="22" font-size="13" font-weight="600" fill="#ff5f7e" fill-opacity="0.8">Contribute freely</text>
   </g>
-  <g transform="translate(2292,464)">
+  <g transform="translate(2292,486)">
     <rect width="188" height="34" rx="17" fill="#ff5f7e" fill-opacity="0.11" stroke="#ff5f7e" stroke-width="1" stroke-opacity="0.28"/>
     <text x="16" y="22" font-size="13" font-weight="600" fill="#ff5f7e" fill-opacity="0.8">Create safety</text>
   </g>
