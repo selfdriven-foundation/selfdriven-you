@@ -1,0 +1,12 @@
+{
+  "images": [
+    {
+      "fileName": "selfdriven-you-wallpaper-4cs-light.png",
+      "isForLight": true
+    },
+    {
+      "fileName": "selfdriven-you-wallpaper-4cs-dark.png",
+      "isForDark": true
+    }
+  ]
+}
