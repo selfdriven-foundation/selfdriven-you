@@ -1,0 +1,15 @@
+{
+    "version": "2.0",
+    "routeKey": "$default",
+    "rawPath": "/",
+    "requestContext": {
+        "http": {
+            "method": "POST",
+            "path": "/",
+            "sourceIp": "203.0.113.10",
+            "userAgent": "lambda-local-test"
+        }
+    },
+    "isBase64Encoded": false,
+    "body": "{\"name\":\"Jordan Lee\",\"email\":\"jordan@example.com\",\"location\":\"Sydney, NSW\",\"settings\":[\"School / uni\",\"Sports / club\"],\"mode\":\"Constructive\",\"why\":\"I want to help my classmates name where they're at.\",\"hours\":\"A few hours a month\"}"
+}

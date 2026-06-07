@@ -1,0 +1,28 @@
+{
+    "infrastructure": {
+        "aws": {
+            "access": { "id": "prompt", "secret": "prompt" }
+        }
+    },
+    "deploy": {
+        "region":             "ap-southeast-2",
+        "deployBucket":       "ambassador-apply-deploy",
+        "applicationsBucket": "selfdriven-ambassador-applications",
+        "applicationsPrefix": "applications/",
+        "allowedOrigin":      "https://selfdriven.you",
+        "lambdaFolder":       "../lambda",
+        "lambdaZipName":      "ambassador-apply-lambda.zip",
+        "functionName":       "ambassador-apply",
+        "roleName":           "ambassador-apply-lambda-role",
+        "handler":            "index.handler",
+        "runtime":            "nodejs20.x",
+        "timeout":            15,
+        "memory":             256,
+        "topicName":          "ambassador-apply-alerts",
+        "notifyEmail":        "",
+        "apiName":            "ambassador-apply-api",
+        "apiStage":           "live",
+        "webAclName":         "ambassador-apply-waf",
+        "wafRateLimit":       300
+    }
+}

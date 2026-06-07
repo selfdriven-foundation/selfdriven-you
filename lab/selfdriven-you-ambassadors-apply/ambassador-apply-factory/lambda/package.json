@@ -1,0 +1,19 @@
+{
+    "name": "ambassador-apply-lambda",
+    "version": "1.0.0",
+    "main": "index.js",
+    "engines": { "node": ">=20.x" },
+    "dependencies": {
+        "@aws-sdk/client-s3":  "^3.600.0",
+        "@aws-sdk/client-sns": "^3.600.0",
+        "entityos":            "^4.0.0",
+        "lodash":              "^4.17.21"
+    },
+    "devDependencies": {
+        "lambda-local": "^2.2.0"
+    },
+    "scripts": {
+        "invoke:post":    "lambda-local -l index.js -h handler -e events/post-apply.json",
+        "invoke:options": "lambda-local -l index.js -h handler -e events/options.json"
+    }
+}

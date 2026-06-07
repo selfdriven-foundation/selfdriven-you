@@ -1,0 +1,19 @@
+{
+    "name": "ambassador-apply-deploy",
+    "version": "1.1.0",
+    "scripts": {
+        "deploy": "node deploy.js"
+    },
+    "dependencies": {
+        "@aws-sdk/client-api-gateway": "^3.600.0",
+        "@aws-sdk/client-iam":         "^3.600.0",
+        "@aws-sdk/client-lambda":      "^3.600.0",
+        "@aws-sdk/client-s3":          "^3.600.0",
+        "@aws-sdk/client-sns":         "^3.600.0",
+        "@aws-sdk/client-wafv2":       "^3.600.0",
+        "archiver":                    "^7.0.1",
+        "entityos":                    "^4.0.0",
+        "lodash":                      "^4.17.21",
+        "prompt-sync":                 "^4.2.0"
+    }
+}
