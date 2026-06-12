@@ -1,0 +1,663 @@
+---
+layout: null
+title: Cyberdeck Build Guide - selfdriven You
+permalink: /cyberdeck-build-guide
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build a Cyberdeck · selfdriven.you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090f; --surface:#111118; --surface2:#18181f;
+  --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.14);
+  --text:#f0eeff; --muted:#7e7a9a; --muted2:#3d3a55;
+
+  --curious:#f5c842; --caring:#ff5f7e; --constructive:#00e5a0; --chill:#7b6cff;
+  --chill-bright:#9b8fff;
+  --curious-dim:rgba(245,200,66,.13); --caring-dim:rgba(255,95,126,.13);
+  --constructive-dim:rgba(0,229,160,.13); --chill-dim:rgba(123,108,255,.13);
+  --pill:999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'DM Sans',sans-serif; line-height:1.65;
+  overflow-x:hidden; cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+a{cursor:none}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif; line-height:1.05}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── ambient glow blobs ── */
+.glow-wrap{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden}
+.gblob{position:absolute; border-radius:50%; filter:blur(95px); opacity:.42}
+.gb1{width:520px;height:520px;background:var(--curious);top:-160px;left:-160px;animation:gb 15s ease-in-out infinite}
+.gb2{width:440px;height:440px;background:var(--caring);top:30%;right:-150px;animation:gb 19s ease-in-out infinite reverse}
+.gb3{width:380px;height:380px;background:var(--constructive);bottom:8%;left:14%;animation:gb 23s ease-in-out infinite 3s}
+.gb4{width:340px;height:340px;background:var(--chill);bottom:-80px;right:16%;animation:gb 17s ease-in-out infinite 8s}
+@keyframes gb{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(34px,-26px) scale(1.08)}70%{transform:translate(-22px,30px) scale(.93)}}
+
+/* ── custom cursor ── */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--curious);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .12s ease,background .2s}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(240,238,255,.3);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s}
+@media (hover:none){body{cursor:auto}a{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* ── nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:background .3s,border-color .3s,padding .3s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(9,9,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:11px 0}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.03em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:11px}
+.brand em{font-style:normal;color:var(--constructive)}
+.markdots{display:inline-flex;gap:3px}
+.markdots i{width:7px;height:7px;border-radius:50%;display:block}
+.markdots i:nth-child(1){background:var(--curious)}
+.markdots i:nth-child(2){background:var(--caring)}
+.markdots i:nth-child(3){background:var(--constructive)}
+.markdots i:nth-child(4){background:var(--chill)}
+.nav-pills{display:flex;gap:9px;align-items:center}
+@media (max-width:860px){.nav-pills .mode-pill span{display:none}.nav-pills .mode-pill{padding:10px}}
+@media (max-width:620px){.nav-pills{display:none}}
+
+/* ── mode pills ── */
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s}
+.mode-pill svg{width:16px;height:16px}
+.mode-pill:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.mp-c{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.mp-k{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.mp-b{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+.mp-l{background:var(--chill-dim);color:var(--chill-bright);border-color:rgba(123,108,255,.28)}
+
+/* ── layout ── */
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+section{position:relative;z-index:2}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* ── hero ── */
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding:130px 0 80px}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.72);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);width:fit-content}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--constructive);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero h1{font-size:clamp(44px,8.5vw,92px);font-weight:800;letter-spacing:-.045em;margin:26px 0 0;max-width:14ch}
+.hero h1 .build{background:linear-gradient(120deg,var(--curious),var(--constructive));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 .own{background:linear-gradient(120deg,var(--caring),var(--chill-bright));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.lead{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:56ch;margin:30px 0 0;line-height:1.6}
+.hero .jump-row{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px;position:relative}
+.spec-strip{display:flex;flex-wrap:wrap;gap:0;margin-top:54px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.spec-strip .s{flex:1 1 160px;padding:22px 24px;border-right:1px solid var(--border)}
+.spec-strip .s:last-child{border-right:none}
+.spec-strip .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.spec-strip .v{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:23px;margin-top:6px;letter-spacing:-.02em}
+
+@media (max-width:640px){
+  .wrap{padding:0 20px}
+  .nav-inner{padding:0 20px}
+  .hero{min-height:auto;padding:118px 0 52px;justify-content:flex-start}
+  .hero h1{font-size:clamp(40px,12.5vw,62px)}
+  .hero p.lead{margin-top:20px;font-size:16.5px}
+  .hero .jump-row{margin-top:26px;gap:10px}
+  .spec-strip{display:grid;grid-template-columns:1fr 1fr;margin-top:38px}
+  .spec-strip .s{flex:none;padding:16px 18px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .spec-strip .s:nth-child(2n){border-right:none}
+  .spec-strip .s:nth-child(n+3){border-bottom:none}
+  .spec-strip .v{font-size:19px}
+  .section-pad{padding:62px 0}
+}
+
+/* ── generic section ── */
+.section-pad{padding:90px 0}
+.sec-head{max-width:62ch}
+.sec-head h2{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-.04em;margin:14px 0 0}
+.sec-head p{color:var(--muted);font-size:18px;margin-top:18px;line-height:1.6}
+.accent-c{color:var(--curious)} .accent-k{color:var(--caring)} .accent-b{color:var(--constructive)} .accent-l{color:var(--chill-bright)}
+
+/* ── thesis cards ── */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+@media (max-width:780px){.why-grid{grid-template-columns:1fr}}
+.why-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:30px;position:relative;overflow:hidden}
+.why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:.85}
+.why-card.c1::before{background:var(--curious)} .why-card.c2::before{background:var(--constructive)} .why-card.c3::before{background:var(--chill)}
+.why-card .n{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.why-card h3{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:14px 0 10px}
+.why-card p{color:var(--muted);font-size:15px;line-height:1.6}
+
+/* ── phase rail ── */
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+@media (max-width:880px){.phases{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.phases{grid-template-columns:1fr}}
+.phase{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px;transition:transform .25s,border-color .25s,box-shadow .25s}
+.phase:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,.45)}
+.phase .ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.phase .ico svg{width:22px;height:22px}
+.phase .step{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.phase h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin:7px 0 9px}
+.phase p{color:var(--muted);font-size:14px;line-height:1.55}
+.ph-c .ico{background:var(--curious-dim);color:var(--curious)} .ph-c:hover{border-color:rgba(245,200,66,.4)} .ph-c h3{color:var(--curious)}
+.ph-k .ico{background:var(--caring-dim);color:var(--caring)} .ph-k:hover{border-color:rgba(255,95,126,.4)} .ph-k h3{color:var(--caring)}
+.ph-b .ico{background:var(--constructive-dim);color:var(--constructive)} .ph-b:hover{border-color:rgba(0,229,160,.4)} .ph-b h3{color:var(--constructive)}
+.ph-l .ico{background:var(--chill-dim);color:var(--chill-bright)} .ph-l:hover{border-color:rgba(123,108,255,.4)} .ph-l h3{color:var(--chill-bright)}
+
+/* ── mode section header ── */
+.mode-banner{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.mode-banner .badge{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mode-banner .badge svg{width:25px;height:25px}
+.mode-banner .step{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.b-c{background:var(--curious-dim);color:var(--curious)} .b-k{background:var(--caring-dim);color:var(--caring)}
+.b-b{background:var(--constructive-dim);color:var(--constructive)} .b-l{background:var(--chill-dim);color:var(--chill-bright)}
+.rule{height:1px;background:var(--border);margin:0 0 0;border:none}
+
+/* ── archetype grid ── */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+@media (max-width:780px){.arch-grid{grid-template-columns:1fr}}
+.arch{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:26px;transition:transform .25s,border-color .25s}
+.arch:hover{transform:translateY(-5px);border-color:var(--border2)}
+.arch .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--curious)}
+.arch h4{font-size:20px;font-weight:700;margin:9px 0 8px;letter-spacing:-.02em}
+.arch p{color:var(--muted);font-size:14.5px;line-height:1.55}
+.arch ul{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.arch li{font-size:13.5px;color:var(--muted);padding-left:18px;position:relative}
+.arch li::before{content:'›';position:absolute;left:0;color:var(--curious);font-family:'JetBrains Mono',monospace}
+
+/* ── pi compare table ── */
+.tbl-wrap{margin-top:30px;border:1px solid var(--border);border-radius:18px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{text-align:left;padding:15px 18px;font-size:14.5px;border-bottom:1px solid var(--border)}
+thead th{background:var(--surface2);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;color:var(--text)}
+tbody tr:last-child td{border-bottom:none}
+tbody td:first-child{font-weight:600;color:var(--text)}
+td .pick{display:inline-block;margin-left:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--constructive);border:1px solid rgba(0,229,160,.4);border-radius:999px;padding:2px 8px;vertical-align:middle}
+td small{color:var(--muted)}
+.tbl-b thead th{color:var(--constructive)}
+.tbl-cost td:nth-child(3){font-family:'JetBrains Mono',monospace;color:var(--constructive);white-space:nowrap}
+
+/* ── steps ── */
+.steps{margin-top:40px;display:flex;flex-direction:column;gap:0}
+.step-card{display:grid;grid-template-columns:64px 1fr;gap:22px;padding:0 0 34px;position:relative}
+.step-card:last-child{padding-bottom:0}
+.step-card .num{width:52px;height:52px;border-radius:14px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;color:var(--constructive);position:relative;z-index:2}
+.step-card:not(:last-child)::before{content:'';position:absolute;left:26px;top:52px;bottom:0;width:2px;background:linear-gradient(var(--border),transparent);z-index:1}
+.step-card .body h4{font-size:19px;font-weight:700;letter-spacing:-.02em;margin-bottom:7px}
+.step-card .body p{color:var(--muted);font-size:15px;line-height:1.6}
+
+/* ── code block ── */
+.code{margin-top:18px;background:#0c0c14;border:1px solid var(--border);border-left:3px solid var(--constructive);border-radius:12px;padding:18px 20px;overflow-x:auto}
+.code pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.75;color:#cfcbe8;white-space:pre}
+.code .cm{color:var(--muted)}
+.code .cmd{color:var(--constructive)}
+.code.lc{border-left-color:var(--chill-bright)} .code.lc pre{color:#d6d1f0}
+.code.lc .cmd{color:var(--chill-bright)}
+
+/* ── callout ── */
+.callout{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;display:flex;gap:16px;align-items:flex-start}
+.callout .mk{width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.callout .mk svg{width:18px;height:18px}
+.callout p{font-size:14.5px;color:var(--muted);line-height:1.6}
+.callout strong{color:var(--text);font-weight:600}
+.co-k .mk{background:var(--caring-dim);color:var(--caring)}
+.co-b .mk{background:var(--constructive-dim);color:var(--constructive)}
+.co-l .mk{background:var(--chill-dim);color:var(--chill-bright)}
+
+/* ── two-col share ── */
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px}
+@media (max-width:780px){.cols2{grid-template-columns:1fr}}
+.col-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px}
+.col-card h4{font-size:18px;font-weight:700;margin-bottom:14px;letter-spacing:-.02em}
+.col-card ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.col-card li{font-size:14.5px;color:var(--muted);line-height:1.5;padding-left:22px;position:relative}
+.col-card li::before{content:'◆';position:absolute;left:0;font-size:9px;top:5px}
+.col-card.k li::before{color:var(--caring)} .col-card.l li::before{color:var(--chill-bright)}
+
+/* ── chill list ── */
+.chill-list{margin-top:34px;display:flex;flex-direction:column;gap:14px}
+.chill-item{display:flex;gap:18px;align-items:flex-start;padding:22px 24px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.chill-item .q{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;color:var(--chill-bright);line-height:1;flex-shrink:0;width:40px}
+.chill-item h4{font-size:17px;font-weight:700;margin-bottom:5px}
+.chill-item p{color:var(--muted);font-size:14.5px;line-height:1.6}
+
+/* ── cta ── */
+.cta{margin-top:0;padding:70px 0 90px}
+.cta-card{background:linear-gradient(150deg,var(--surface2),var(--surface));border:1px solid var(--border2);border-radius:26px;padding:54px 44px;text-align:center;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--curious),var(--caring),var(--constructive),var(--chill))}
+.cta-card h2{font-size:clamp(28px,4.5vw,42px);font-weight:800;letter-spacing:-.035em}
+.cta-card p{color:var(--muted);font-size:17px;margin:16px auto 0;max-width:48ch}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 28px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:15px;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn-primary{background:var(--constructive);color:#06241a}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,229,160,.3)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.btn-ghost:hover{transform:translateY(-3px);border-color:var(--text)}
+
+/* ── footer ── */
+footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;z-index:2}
+.foot-inner{max-width:1080px;margin:0 auto;padding:0 28px;display:flex;flex-direction:column;gap:22px}
+.foot-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px}
+.foot-tag{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em;max-width:18ch}
+.foot-tag .c{color:var(--curious)} .foot-tag .k{color:var(--caring)}
+.foot-links{display:flex;flex-direction:column;gap:8px;text-align:right}
+.foot-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+.foot-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted2)}
+.foot-bottom .mono{font-size:11.5px}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- icon symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-telescope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="17" cy="13" r="3"/><path d="M3 7l5.5 2.5"/><path d="M3 7l2-4 14.5 6.5-2 4"/><path d="M8.5 9.5L6 20h5l1.5-4"/><path d="M17 16v4"/>
+  </symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </symbol>
+  <symbol id="ic-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>
+  </symbol>
+  <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+  </symbol>
+  <symbol id="ic-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2"/>
+  </symbol>
+  <symbol id="ic-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+  </symbol>
+</svg>
+
+<div class="glow-wrap" aria-hidden="true">
+  <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
+</div>
+
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span class="wm">selfdriven<em>.you</em></span></a>
+    <div class="nav-pills">
+      <a href="#plan" class="mode-pill mp-c"><svg><use href="#ic-telescope"/></svg><span>Plan</span></a>
+      <a href="#build" class="mode-pill mp-b"><svg><use href="#ic-hammer"/></svg><span>Build</span></a>
+      <a href="#tend" class="mode-pill mp-k"><svg><use href="#ic-heart"/></svg><span>Tend</span></a>
+      <a href="#live" class="mode-pill mp-l"><svg><use href="#ic-waves"/></svg><span>Live</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero wrap" id="top">
+  <span class="hero-pill"><span class="dot"></span>selfdriven.you · build log · raspberry pi</span>
+  <h1>Build a <span class="build">cyberdeck.</span><br>Own your <span class="own">computer.</span></h1>
+  <p class="lead">A field guide to building a portable, hand-made Raspberry&nbsp;Pi machine — a self-driven device for the age of intelligence. Tools you understand. Hardware you can open. Attention that stays yours.</p>
+  <div class="jump-row">
+    <a href="#plan" class="mode-pill mp-c"><svg><use href="#ic-telescope"/></svg><span>01 · Plan it</span></a>
+    <a href="#build" class="mode-pill mp-b"><svg><use href="#ic-hammer"/></svg><span>02 · Build it</span></a>
+    <a href="#tend" class="mode-pill mp-k"><svg><use href="#ic-heart"/></svg><span>03 · Tend it</span></a>
+    <a href="#live" class="mode-pill mp-l"><svg><use href="#ic-waves"/></svg><span>04 · Live with it</span></a>
+  </div>
+  <div class="spec-strip">
+    <div class="s"><div class="k">Build time</div><div class="v">A weekend</div></div>
+    <div class="s"><div class="k">Skill floor</div><div class="v">Curious + patient</div></div>
+    <div class="s"><div class="k">Ballpark</div><div class="v">$250–450</div></div>
+    <div class="s"><div class="k">Soldering</div><div class="v">Optional</div></div>
+  </div>
+</header>
+
+<!-- WHY -->
+<section class="section-pad wrap">
+  <div class="sec-head reveal">
+    <span class="eyebrow">// why hand-build a machine</span>
+    <h2>The most self-driven thing you can own is a computer you assembled yourself.</h2>
+    <p>As intelligence gets cheaper and computing gets rented, metered, and tuned to harvest your attention, a deck you built by hand is a small act of sovereignty. Not nostalgia — agency. You know what's inside it, you can fix it, and it does exactly what you told it to.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card c1 reveal">
+      <div class="n">01</div>
+      <h3>Understand your tools</h3>
+      <p>A laptop is a sealed box of someone else's decisions. A deck is an open question you answered yourself — every wire, every choice, legible to you.</p>
+    </div>
+    <div class="why-card c2 reveal">
+      <div class="n">02</div>
+      <h3>Built to be repaired</h3>
+      <p>Standard parts, exposed connectors, a community of plans. When something breaks you open it, not bin it. Longevity is a design value, not an accident.</p>
+    </div>
+    <div class="why-card c3 reveal">
+      <div class="n">03</div>
+      <h3>Attention stays yours</h3>
+      <p>No feed by default. No notification engineered to pull you back. A deck is calm computing — it waits for you instead of competing for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section class="wrap" style="padding-bottom:40px">
+  <div class="sec-head reveal">
+    <span class="eyebrow">// the build, in four modes</span>
+    <h2>One project. Four modes.</h2>
+    <p>The selfdriven rhythm maps cleanly onto a build. Get <span class="accent-c">Curious</span> to plan it, go <span class="accent-b">Constructive</span> to build it, get <span class="accent-k">Caring</span> to tend and share it, then <span class="accent-l">Chill</span> and actually live with the thing.</p>
+  </div>
+  <div class="phases">
+    <a href="#plan" class="phase ph-c reveal">
+      <div class="ico"><svg><use href="#ic-telescope"/></svg></div>
+      <div class="step">Mode 01 · Curious</div><h3>Plan it</h3>
+      <p>Decide what it's for, pick a shape, and choose the right Pi.</p>
+    </a>
+    <a href="#build" class="phase ph-b reveal">
+      <div class="ico"><svg><use href="#ic-hammer"/></svg></div>
+      <div class="step">Mode 02 · Constructive</div><h3>Build it</h3>
+      <p>Parts list, assembly, flashing, NVMe boot, software loadout.</p>
+    </a>
+    <a href="#tend" class="phase ph-k reveal">
+      <div class="ico"><svg><use href="#ic-heart"/></svg></div>
+      <div class="step">Mode 03 · Caring</div><h3>Tend it</h3>
+      <p>Back it up, keep it safe, document it, give back to the community.</p>
+    </a>
+    <a href="#live" class="phase ph-l reveal">
+      <div class="ico"><svg><use href="#ic-waves"/></svg></div>
+      <div class="step">Mode 04 · Chill</div><h3>Live with it</h3>
+      <p>Make it a calm, offline-first machine that respects your day.</p>
+    </a>
+  </div>
+</section>
+
+<!-- ───────── CURIOUS / PLAN ───────── -->
+<section class="section-pad wrap" id="plan">
+  <div class="mode-banner reveal">
+    <div class="badge b-c"><svg><use href="#ic-telescope"/></svg></div>
+    <div><div class="step accent-c">Mode 01 · Curious</div></div>
+  </div>
+  <div class="sec-head reveal">
+    <h2>Plan it.</h2>
+    <p>Don't start with parts — start with a question: <em>what is this deck <strong>for</strong>?</em> The honest answer shapes everything. A pocket terminal for SSH on the train is a different machine than a field laptop for a week off-grid. Pick a shape, then pick the Pi that fits it.</p>
+  </div>
+
+  <h3 style="margin-top:46px;font-size:22px;font-weight:700;letter-spacing:-.02em" class="reveal">Pick a shape</h3>
+  <div class="arch-grid">
+    <div class="arch reveal">
+      <div class="tag">archetype A</div>
+      <h4>The Pocket Deck</h4>
+      <p>Slips in a jacket. A tiny terminal for writing, SSH, notes, radio. Headless-ish, distraction-free.</p>
+      <ul><li>Pi Zero 2 W or Pi 5 (small)</li><li>4–5" display or e-ink</li><li>40% / ortholinear keyboard</li><li>~1–2 W, runs for hours</li></ul>
+    </div>
+    <div class="arch reveal">
+      <div class="tag">archetype B</div>
+      <h4>The Field Deck</h4>
+      <p>The classic. Rugged case, real screen, big battery. Off-grid capable, antenna up, does real work.</p>
+      <ul><li>Pi 5 (4–8 GB)</li><li>7" touch display</li><li>60% mechanical keyboard</li><li>UPS HAT + 18650 pack</li></ul>
+    </div>
+    <div class="arch reveal">
+      <div class="tag">archetype C</div>
+      <h4>The Desk Deck</h4>
+      <p>Stays home. A self-hosted brain: NVMe storage, a local model, your own services. Power from the wall.</p>
+      <ul><li>Pi 5 (8–16 GB)</li><li>NVMe SSD via PCIe HAT</li><li>Any HDMI display</li><li>Always-on, fan-cooled</li></ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:54px;font-size:22px;font-weight:700;letter-spacing:-.02em" class="reveal">Choose your Pi</h3>
+  <p class="reveal" style="color:var(--muted);margin-top:12px;max-width:62ch;font-size:15.5px">The Pi 5 is the current flagship — quad-core Cortex-A76, PCIe for NVMe, a real-time clock, and the in-house RP1 I/O chip. The 4&nbsp;GB model is the sweet spot for most decks. Heads up: RAM-driven price rises through early 2026 made the 8/16&nbsp;GB models noticeably pricier, so size your RAM to the job.</p>
+  <div class="tbl-wrap reveal tbl-b tbl-cost">
+    <table>
+      <thead><tr><th>Board</th><th>Best for</th><th>Power</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Pi 5 · 4 GB <span class="pick">RECOMMENDED</span></td><td>Field &amp; everyday decks</td><td>~5–8 W idle, 12–15 W load</td><td>PCIe/NVMe, RTC, fast enough for a full desktop. The default.</td></tr>
+        <tr><td>Pi 5 · 8–16 GB</td><td>Desk decks, local models</td><td>~5–15 W</td><td>Headroom for containers, browsers, a small local LLM.</td></tr>
+        <tr><td>Pi Zero 2 W</td><td>Pocket / minimal decks</td><td>~1–2 W</td><td>Tiny, sips power, runs for hours. No PCIe, modest CPU.</td></tr>
+        <tr><td>Pi 4 · 2–4 GB</td><td>Budget builds</td><td>~6–8 W</td><td>Cheaper, lower power, huge HAT compatibility. Still capable.</td></tr>
+        <tr><td>Compute Module 5</td><td>Custom carrier boards</td><td>varies</td><td>For builders designing their own PCB. Advanced path.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout co-b reveal">
+    <div class="mk"><svg><use href="#ic-telescope"/></svg></div>
+    <p><strong>Curious task — before you buy anything:</strong> sketch your deck on paper at 1:1 scale. Trace the keyboard, the screen, the Pi, the battery. You'll discover the real constraint (almost always: where does the battery go?) before it costs you money.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ───────── CONSTRUCTIVE / BUILD ───────── -->
+<section class="section-pad wrap" id="build">
+  <div class="mode-banner reveal">
+    <div class="badge b-b"><svg><use href="#ic-hammer"/></svg></div>
+    <div><div class="step accent-b">Mode 02 · Constructive</div></div>
+  </div>
+  <div class="sec-head reveal">
+    <h2>Build it.</h2>
+    <p>This is the Field Deck recipe — a Pi 5, a 7" screen, a mechanical keyboard, and a battery in a case you can take anywhere. Adapt the parts to the shape you chose. Momentum beats perfection: get it booting on the bench first, then worry about the enclosure.</p>
+  </div>
+
+  <h3 style="margin-top:46px;font-size:22px;font-weight:700;letter-spacing:-.02em" class="reveal">Bill of materials</h3>
+  <div class="tbl-wrap reveal tbl-cost">
+    <table>
+      <thead><tr><th>Part</th><th>Pick</th><th>~Cost</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Compute</td><td>Raspberry Pi 5 · 4 GB</td><td>$60–80</td><td>The brain. 8 GB if you want a local model.</td></tr>
+        <tr><td>Cooling</td><td>Official Active Cooler</td><td>$5</td><td><strong>Not optional</strong> on a Pi 5 — it throttles hot without it.</td></tr>
+        <tr><td>Storage</td><td>NVMe SSD 256 GB + M.2 HAT+</td><td>$40–55</td><td>Boots faster and lasts longer than an SD card.</td></tr>
+        <tr><td>Backup media</td><td>A2 microSD 32 GB</td><td>$8–12</td><td>For imaging and a rescue boot.</td></tr>
+        <tr><td>Display</td><td>7" touchscreen (DSI or HDMI)</td><td>$45–70</td><td>DSI keeps a USB port free; HDMI is more universal.</td></tr>
+        <tr><td>Keyboard</td><td>60% USB mechanical</td><td>$30–60</td><td>Or a salvaged/folding keyboard — peak cyberdeck.</td></tr>
+        <tr><td>Power</td><td>UPS HAT + 2× 18650 cells</td><td>$30–50</td><td>Use <strong>protected</strong> cells. Gives clean shutdown + runtime.</td></tr>
+        <tr><td>Enclosure</td><td>3D print (PETG) or rugged case</td><td>$10–40</td><td>A Pelican-style case is the classic rugged route.</td></tr>
+        <tr><td>Glue parts</td><td>Cables, hub, standoffs, inserts</td><td>$15–25</td><td>Short right-angle micro-HDMI→HDMI, M2.5 screws, USB-C.</td></tr>
+        <tr><td>Optional HUD</td><td>SDR / OLED / antenna / encoder</td><td>$10–40</td><td>RTL-SDR for radio, OLED for a status display.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:54px;font-size:22px;font-weight:700;letter-spacing:-.02em" class="reveal">Assemble it</h3>
+  <div class="steps">
+    <div class="step-card reveal">
+      <div class="num">1</div>
+      <div class="body"><h4>Flash the OS first</h4>
+      <p>Before any screws — flash Raspberry&nbsp;Pi OS (64-bit, the current Debian 13 "Trixie" base) onto your NVMe or SD with <span class="mono">Raspberry Pi Imager</span>. Open <em>Edit settings</em> and pre-configure hostname, your user, Wi-Fi, locale, and enable SSH. A headless first boot saves a lot of pain.</p>
+      <div class="code"><pre><span class="cm"># In Raspberry Pi Imager → ⚙ Edit settings, set:</span>
+hostname:  <span class="cmd">deck</span>
+username:  your-name        <span class="cm"># no default pi user</span>
+wifi ssid: your-network     enable SSH: <span class="cmd">on</span>
+locale:    your timezone + keyboard layout</pre></div>
+      </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">2</div>
+      <div class="body"><h4>Mount the Pi + cooler</h4>
+      <p>Press the Active Cooler onto the Pi (the spring pins click into the mounting holes; the fan plugs into the 4-pin JST header). Fix the Pi to your base plate or case floor with M2.5 standoffs. Leave clearance for airflow — the cooler pulls air across the board.</p></div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">3</div>
+      <div class="body"><h4>Add the NVMe HAT</h4>
+      <p>Seat the M.2 HAT+ on the PCIe FPC connector and GPIO standoffs, slot in the SSD, and screw it down. Don't power on with a half-seated ribbon — reseat if the SSD doesn't appear later.</p></div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">4</div>
+      <div class="body"><h4>Wire the screen, keyboard, power</h4>
+      <p>Connect the display (DSI ribbon to the <span class="mono">DISP</span> port, or a short right-angle micro-HDMI cable), plug in the keyboard via USB, and connect the UPS HAT to the Pi's power input per its instructions. Keep cable runs short and dressed — slack is what cracks connectors in a portable build.</p></div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">5</div>
+      <div class="body"><h4>Bench boot &amp; update</h4>
+      <p>Power on <em>before</em> you close the case. Confirm the screen lights, the SSD is detected, and you can log in. Then bring it current.</p>
+      <div class="code"><pre><span class="cmd">sudo</span> apt update <span class="cm">&&</span> <span class="cmd">sudo</span> apt full-upgrade -y
+<span class="cmd">sudo</span> rpi-eeprom-update -a   <span class="cm"># latest bootloader firmware</span>
+<span class="cmd">sudo</span> raspi-config            <span class="cm"># display, fan curve, overclock if wanted</span></pre></div>
+      </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">6</div>
+      <div class="body"><h4>Boot from NVMe</h4>
+      <p>Tell the bootloader to prefer the SSD over the SD card. Edit the EEPROM boot order so NVMe comes first, then reboot.</p>
+      <div class="code"><pre><span class="cmd">sudo</span> rpi-eeprom-config --edit
+<span class="cm"># set this line, save, reboot:</span>
+BOOT_ORDER=0xf416    <span class="cm"># try NVMe → USB → SD → repeat</span></pre></div>
+      </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">7</div>
+      <div class="body"><h4>Close it up</h4>
+      <p>Now do the enclosure. Route cables, fit the battery so its weight sits low and central, add heat-set inserts for screws that you'll open again. Leave the ports you actually use accessible — USB-C power, at least one USB-A, the network jack if you have one.</p></div>
+    </div>
+    <div class="step-card reveal">
+      <div class="num">8</div>
+      <div class="body"><h4>Power &amp; thermal check</h4>
+      <p>Run it on battery and watch for under-voltage. The Pi 5 is happiest on a 5&nbsp;V / 5&nbsp;A (27&nbsp;W) supply; on a smaller pack it still runs but may limit peripheral current. Stress it for ten minutes and confirm it doesn't throttle.</p>
+      <div class="code"><pre>vcgencmd measure_temp        <span class="cm"># keep under ~80°C</span>
+vcgencmd get_throttled       <span class="cm"># 0x0 = all good</span>
+dmesg <span class="cm">|</span> grep -i voltage      <span class="cm"># watch for under-voltage warnings</span></pre></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:56px;font-size:22px;font-weight:700;letter-spacing:-.02em" class="reveal">A software loadout</h3>
+  <p class="reveal" style="color:var(--muted);margin-top:12px;max-width:62ch;font-size:15.5px">Keep it lean and self-driven — tools that work offline and don't phone home. A starting kit for a deck that's good for thinking, not just scrolling:</p>
+  <div class="code reveal"><pre><span class="cmd">sudo</span> apt install -y tmux neovim git ripgrep fzf       <span class="cm"># terminal workshop</span>
+<span class="cmd">sudo</span> apt install -y syncthing                          <span class="cm"># own your sync, no cloud</span>
+<span class="cmd">curl</span> -fsSL https://ollama.com/install.sh <span class="cm">|</span> sh        <span class="cm"># local models (8GB+ Pi)</span>
+ollama run llama3.2:3b                                  <span class="cm"># a small model that runs on-device</span></pre></div>
+  <div class="callout co-b reveal">
+    <div class="mk"><svg><use href="#ic-bolt"/></svg></div>
+    <p><strong>Constructive task — ship the rough version:</strong> get it booting and SSH-able on the bench tonight, before the enclosure is perfect. A deck that works in a cardboard box beats a beautiful case with no guts. You can't refine a thing that doesn't exist yet.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ───────── CARING / TEND ───────── -->
+<section class="section-pad wrap" id="tend">
+  <div class="mode-banner reveal">
+    <div class="badge b-k"><svg><use href="#ic-heart"/></svg></div>
+    <div><div class="step accent-k">Mode 03 · Caring</div></div>
+  </div>
+  <div class="sec-head reveal">
+    <h2>Tend it.</h2>
+    <p>A hand-built machine asks for a little ongoing care — and gives a lot back. Caring here means two things: looking after the deck so it lasts, and looking after the community that made your build possible by giving something back to it.</p>
+  </div>
+
+  <div class="cols2">
+    <div class="col-card k reveal">
+      <h4>Keep it healthy</h4>
+      <ul>
+        <li>Image the SSD to a spare drive once it's set up the way you like — a 20-minute job that saves a weekend later.</li>
+        <li>Use <strong>protected</strong> 18650 cells and a UPS HAT with a proper management chip. Never charge loose lithium cells unattended, and fuse the battery line.</li>
+        <li>Run updates on a rhythm, not a panic: <span class="mono">apt full-upgrade</span> monthly, firmware when prompted.</li>
+        <li>Blow the dust out of the cooler. A clogged fan is the quiet killer of small computers.</li>
+      </ul>
+    </div>
+    <div class="col-card k reveal">
+      <h4>Give back</h4>
+      <ul>
+        <li>Photograph your build and write down what went wrong — your mistakes are the most useful thing you can share.</li>
+        <li>Open-source your enclosure: publish the STL or the cut files so the next person starts where you finished.</li>
+        <li>Post it where decks live — the <span class="mono">cyberdeck.cafe</span> community and r/cyberDeck are generous and old-school.</li>
+        <li>Help one person in the threads. The whole scene runs on people who answer questions they once had to ask.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout co-k reveal">
+    <div class="mk"><svg><use href="#ic-heart"/></svg></div>
+    <p><strong>Caring task — uncredited and useful:</strong> when you solve a tricky bit (the boot order, a stubborn screen, a battery fit), write the fix into a public README or a forum reply. Someone three months from now will find it at 1&nbsp;a.m. and be grateful to a stranger. Be that stranger.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ───────── CHILL / LIVE ───────── -->
+<section class="section-pad wrap" id="live">
+  <div class="mode-banner reveal">
+    <div class="badge b-l"><svg><use href="#ic-waves"/></svg></div>
+    <div><div class="step accent-l">Mode 04 · Chill</div></div>
+  </div>
+  <div class="sec-head reveal">
+    <h2>Live with it.</h2>
+    <p>The point was never the parts. It was a different relationship with a machine — one that waits for you instead of pulling at you. Set your deck up to be calm by default, and it becomes the device you reach for <em>to think</em>, not the one that thinks at you.</p>
+  </div>
+
+  <div class="chill-list">
+    <div class="chill-item reveal">
+      <div class="q">01</div>
+      <div><h4>Offline-first, on purpose</h4>
+      <p>Make the default state airplane-mode-with-intent: local files, local notes, a local model. Connect when you choose to, not because something wanted your attention.</p></div>
+    </div>
+    <div class="chill-item reveal">
+      <div class="q">02</div>
+      <div><h4>No feed lives here</h4>
+      <p>A deck with no infinite scroll is a quiet room. Keep the addictive surfaces off it entirely. Let this be the machine that's boring in the best way.</p></div>
+    </div>
+    <div class="chill-item reveal">
+      <div class="q">03</div>
+      <div><h4>Attention is a battery, not a tap</h4>
+      <p>Same as the deck's own power: it runs down and needs charging. A device you built to respect that is a daily reminder to do the same for yourself.</p></div>
+    </div>
+    <div class="chill-item reveal">
+      <div class="q">04</div>
+      <div><h4>Done is a place to rest</h4>
+      <p>It will never be finished — there's always another HAT, another mod. That's fine. Use it. A working deck in your bag beats a perfect one on the bench.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta wrap">
+  <div class="cta-card reveal">
+    <h2>Be curious. Build it. Be caring.</h2>
+    <p>Sketch the shape this weekend, order one part, and start. The deck you'll actually carry is the one you began.</p>
+    <div class="cta-btns">
+      <a href="https://www.raspberrypi.com/software/" class="btn btn-primary"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#ic-cpu"/></svg>Get Raspberry Pi OS</a>
+      <a href="cyberdeck-pocket-build-guide.html" class="btn btn-ghost">Pocket Deck variant →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-tag">Be <span class="c">Curious</span>,<br>Be <span class="k">Caring</span>.</div>
+      <div class="foot-links">
+        <a href="https://selfdriven.you">selfdriven.you</a>
+        <a href="https://selfdriven.foundation">selfdriven Foundation</a>
+        <a href="https://www.raspberrypi.com">raspberrypi.com</a>
+        <a href="#top">↑ Back to top</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>A personal operating system for the age of intelligence.</span>
+      <span class="mono">curious · caring · constructive · chill</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// nav scroll state
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>30));
+
+// scroll reveal
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');io.unobserve(x.target);}}),{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// custom cursor
+(function(){
+  var dot=document.getElementById('cdot'),ring=document.getElementById('cring');
+  var rx=0,ry=0,dx=0,dy=0;
+  document.addEventListener('mousemove',function(e){dx=e.clientX;dy=e.clientY;dot.style.left=dx+'px';dot.style.top=dy+'px';});
+  function loop(){rx+=(dx-rx)*.18;ry+=(dy-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);}
+  loop();
+  document.querySelectorAll('a,.phase,.arch,.why-card').forEach(function(el){
+    el.addEventListener('mouseenter',function(){ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='rgba(0,229,160,.6)';});
+    el.addEventListener('mouseleave',function(){ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(240,238,255,.3)';});
+  });
+})();
+</script>
+</body>
+</html>
