@@ -214,6 +214,13 @@ nav.scrolled {
 .nav-logo .markdots i:nth-child(2) { background: var(--caring); }
 .nav-logo .markdots i:nth-child(3) { background: var(--constructive); }
 .nav-logo .markdots i:nth-child(4) { background: var(--chill); }
+@keyframes dotWave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+.nav-logo .markdots.wave i { animation: dotWave .7s ease; }
+.nav-logo .markdots.wave i:nth-child(1) { animation-delay: 0s; }
+.nav-logo .markdots.wave i:nth-child(2) { animation-delay: .12s; }
+.nav-logo .markdots.wave i:nth-child(3) { animation-delay: .24s; }
+.nav-logo .markdots.wave i:nth-child(4) { animation-delay: .36s; }
+@media (prefers-reduced-motion: reduce) { .nav-logo .markdots.wave i { animation: none; } }
 .nav-logo em { font-style: normal; color: var(--curious); }
 .nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-links a {
@@ -1449,6 +1456,21 @@ function switchPane(key) {
     if (modeKeys[i] === key) btn.classList.add('on-' + key);
   });
 }
+</script>
+<script>
+(function () {
+  var dots = document.querySelector('.nav-logo .markdots');
+  var logo = document.querySelector('.nav-logo');
+  if (!dots) return;
+  function wave() {
+    dots.classList.remove('wave');
+    void dots.offsetWidth;        // reflow so the animation can restart
+    dots.classList.add('wave');
+  }
+  if (document.readyState === 'complete') wave();
+  else window.addEventListener('load', wave);
+  (logo || dots).addEventListener('mouseenter', wave);
+})();
 </script>
 </body>
 </html>
