@@ -1,0 +1,92 @@
+{
+  "name": "selfdriven.you",
+  "description": "A personal operating system for the age of intelligence, built on four sustainable modes — Curious, Caring, Constructive, Chill — with a self-sovereign KERI/ACDC identity layer secured by WebAuthn passkeys.",
+  "url": "https://selfdriven.you",
+  "version": "1.0.0",
+  "tagline": "A sustainable rhythm for living a fully human life in the age of intelligence.",
+  "provider": {
+    "organization": "selfdriven Foundation",
+    "url": "https://selfdriven.foundation"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "skills": [
+    {
+      "id": "curious",
+      "name": "Curious",
+      "description": "Explore, ask, learn. The mode that opens doors — noticing what is actually there before you can care, build, or rest well.",
+      "tags": ["mode", "explore", "learn"],
+      "colour": "#f5c842",
+      "icon": "telescope"
+    },
+    {
+      "id": "caring",
+      "name": "Caring",
+      "description": "Listen, hold space. The mode that keeps everything human — attention before advice.",
+      "tags": ["mode", "listen", "presence"],
+      "colour": "#ff5f7e",
+      "icon": "heart"
+    },
+    {
+      "id": "constructive",
+      "name": "Constructive",
+      "description": "Build, ship, move. The mode that turns intention into something real — momentum beats motivation.",
+      "tags": ["mode", "build", "ship"],
+      "colour": "#00e5a0",
+      "icon": "hammer"
+    },
+    {
+      "id": "chill",
+      "name": "Chill",
+      "description": "Pause, breathe, reset. The mode that makes the other three sustainable — rest is part of the work, not a reward earned after it.",
+      "tags": ["mode", "rest", "reset"],
+      "colour": "#7b6cff",
+      "icon": "waves"
+    },
+    {
+      "id": "where-you-at",
+      "name": "Where you at?",
+      "description": "A vibe check that helps you find which of the four modes you are in right now, and what to do next from there.",
+      "tags": ["vibe-check", "self-assessment", "modes"]
+    },
+    {
+      "id": "identity",
+      "name": "Self-Sovereign Identity Builder",
+      "description": "A four-step wizard that generates an Ed25519 KERI autonomic identifier, encrypts the seed under a WebAuthn passkey (PRF / HKDF / AES-256-GCM), and registers witnesses — keys never leave the device.",
+      "tags": ["KERI", "ACDC", "WebAuthn", "passkey", "self-sovereign-identity"]
+    }
+  ],
+  "compliance": {
+    "standards": [
+      "KERI",
+      "ACDC",
+      "FIDO2 / WebAuthn (PRF extension)",
+      "Ed25519"
+    ],
+    "keyManagement": "Ed25519 seed generated in-browser, encrypted with a passkey-derived AES-256-GCM key, stored in IndexedDB; seed zeroed immediately after use",
+    "auditTrail": "append-only KERI key event log (KEL), witnessed"
+  },
+  "skill": {
+    "location": "/mnt/skills/user/selfdriven-you/SKILL.md",
+    "dependsOn": [
+      "selfdriven-ecosystem"
+    ]
+  },
+  "contact": {
+    "team": "team@selfdriven.you",
+    "foundation": "hello@selfdriven.foundation"
+  },
+  "documentationUrl": "https://selfdriven.you/SKILL.md",
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["text/plain", "text/markdown"],
+  "metadata": {
+    "created": "2026-06-14",
+    "updatedAt": "2026-06-14",
+    "region": "ap-southeast-2",
+    "timezone": "Australia/Sydney",
+    "language": "en-AU"
+  }
+}
