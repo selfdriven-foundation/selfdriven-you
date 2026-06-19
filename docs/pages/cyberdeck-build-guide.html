@@ -243,6 +243,23 @@ td small{color:var(--muted)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,229,160,.3)}
 .btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
 .btn-ghost:hover{transform:translateY(-3px);border-color:var(--text)}
+.btn-chill{background:var(--chill-bright);color:#161033}
+.btn-chill:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(123,108,255,.3)}
+
+/* ── manuals / downloads ── */
+.downloads-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:38px}
+@media (max-width:780px){.downloads-grid{grid-template-columns:1fr}}
+.dl-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:30px;transition:transform .25s,border-color .25s}
+.dl-card:hover{transform:translateY(-5px)}
+.dl-card.b1:hover{border-color:rgba(0,229,160,.4)} .dl-card.b2:hover{border-color:rgba(123,108,255,.4)}
+.dl-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.dl-ico svg{width:24px;height:24px}
+.dl-card.b1 .dl-ico{background:var(--constructive-dim);color:var(--constructive)}
+.dl-card.b2 .dl-ico{background:var(--chill-dim);color:var(--chill-bright)}
+.dl-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.dl-card h4{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:8px 0 9px}
+.dl-card.b1 h4{color:var(--constructive)} .dl-card.b2 h4{color:var(--chill-bright)}
+.dl-card p{color:var(--muted);font-size:14.5px;line-height:1.55;margin-bottom:22px}
 
 /* ── footer ── */
 footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;z-index:2}
@@ -284,6 +301,12 @@ footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;
   </symbol>
   <symbol id="ic-skill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/>
+  </symbol>
+  <symbol id="ic-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6M9 9h1"/>
+  </symbol>
+  <symbol id="ic-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
   </symbol>
 </svg>
 
@@ -645,6 +668,33 @@ ollama run llama3.2:3b                                  <span class="cm"># a sma
   </div>
 </section>
 
+<hr class="rule">
+
+<!-- MANUALS / DOWNLOADS -->
+<section class="section-pad wrap" id="manuals">
+  <div class="sec-head reveal">
+    <span class="eyebrow">// take it to the bench</span>
+    <h2>Print it. Grease-stain it.</h2>
+    <p>A glowing screen is a poor workbench companion. Both manuals are offline PDFs, built to print, fold, and live next to the soldering iron.</p>
+  </div>
+  <div class="downloads-grid">
+    <div class="dl-card b1 reveal">
+      <div class="dl-ico"><svg><use href="#ic-pdf"/></svg></div>
+      <div class="dl-tag">PDF · the build</div>
+      <h4>The Field Manual</h4>
+      <p>This whole guide, set for paper — the parts list, the eight assembly steps, and every command in one offline reference you can take off-grid.</p>
+      <a href="/assets/pdf/selfdriven-you-cyberdeck-field-manual.pdf" class="btn btn-primary" download><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#ic-download"/></svg>Download Field Manual</a>
+    </div>
+    <div class="dl-card b2 reveal">
+      <div class="dl-ico"><svg><use href="#ic-pdf"/></svg></div>
+      <div class="dl-tag">PDF · the plans</div>
+      <h4>The Blueprint Manual</h4>
+      <p>The drawings — enclosure blueprints, the Pi mounting pattern, port maps and wiring, dimensioned to print and pin above the bench.</p>
+      <a href="/assets/pdf/selfdriven-you-the-cyberdeck-blueprint-manual.pdf" class="btn btn-chill" download><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#ic-download"/></svg>Download Blueprint Manual</a>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta wrap">
   <div class="cta-card reveal">
@@ -665,6 +715,8 @@ ollama run llama3.2:3b                                  <span class="cm"># a sma
       <div class="foot-tag">Be <span class="c">Curious</span>,<br>Be <span class="b">Constructive</span>,<br>Be <span class="k">Caring</span>.</div>
       <div class="foot-links">
         <a href="/assets/skills/cyberdeck-field-deck.skill" download>Field Deck skill (.skill)</a>
+        <a href="/assets/pdf/selfdriven-you-cyberdeck-field-manual.pdf" download>Field Manual (PDF)</a>
+        <a href="/assets/pdf/selfdriven-you-the-cyberdeck-blueprint-manual.pdf" download>Blueprint Manual (PDF)</a>
         <a href="https://selfdriven.you">selfdriven.you</a>
         <a href="https://selfdriven.foundation">selfdriven Foundation</a>
         <a href="https://www.raspberrypi.com">raspberrypi.com</a>
@@ -694,7 +746,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   document.addEventListener('mousemove',function(e){dx=e.clientX;dy=e.clientY;dot.style.left=dx+'px';dot.style.top=dy+'px';});
   function loop(){rx+=(dx-rx)*.18;ry+=(dy-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);}
   loop();
-  document.querySelectorAll('a,.phase,.arch,.why-card').forEach(function(el){
+  document.querySelectorAll('a,.phase,.arch,.why-card,.dl-card').forEach(function(el){
     el.addEventListener('mouseenter',function(){ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='rgba(0,229,160,.6)';});
     el.addEventListener('mouseleave',function(){ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(240,238,255,.3)';});
   });
