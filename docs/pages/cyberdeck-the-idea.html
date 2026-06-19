@@ -154,6 +154,33 @@ section{position:relative;z-index:2}
 .builders-note{margin-top:26px;font-size:13.5px;color:var(--muted);display:flex;gap:12px;align-items:flex-start}
 .builders-note .mono{color:var(--constructive)}
 
+/* guide-card buttons */
+.gc-btn{margin-top:20px}
+.btn-field{background:var(--constructive);color:#06241a}
+.btn-field:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,229,160,.3)}
+.btn-pocket{background:var(--chill-bright);color:#161033}
+.btn-pocket:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(123,108,255,.3)}
+
+/* audio / podcast */
+.audio-card{display:flex;gap:24px;align-items:center;background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--border2);border-radius:22px;padding:26px 30px;position:relative;overflow:hidden}
+.audio-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--chill),var(--caring))}
+.pp{width:64px;height:64px;border-radius:50%;flex-shrink:0;border:none;background:var(--chill-bright);color:#161033;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s}
+.pp:hover{transform:scale(1.06);box-shadow:0 12px 30px rgba(123,108,255,.4)}
+.pp svg{width:26px;height:26px}
+.pp .i-pause{display:none}
+.pp.playing .i-play{display:none} .pp.playing .i-pause{display:block}
+.audio-body{flex:1;min-width:0}
+.audio-body .eyebrow{color:var(--chill-bright)}
+.audio-body h3{font-size:clamp(19px,2.6vw,25px);font-weight:800;letter-spacing:-.025em;margin:7px 0 14px;color:var(--text)}
+.player{display:flex;align-items:center;gap:14px}
+.abar{flex:1;height:7px;border-radius:99px;background:rgba(255,255,255,.1);position:relative;overflow:hidden}
+.afill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--chill-bright),var(--caring));border-radius:99px}
+.atime{font-size:12px;color:var(--muted);white-space:nowrap}
+.audio-sub{color:var(--muted);font-size:13.5px;margin-top:13px}
+.audio-sub a{color:var(--chill-bright);text-decoration:none}
+.audio-sub a:hover{text-decoration:underline}
+@media(max-width:560px){.audio-card{flex-direction:column;align-items:flex-start;gap:18px;padding:24px}}
+
 /* cta */
 .cta{padding-top:60px;padding-bottom:90px}
 .cta-card{background:linear-gradient(150deg,var(--surface2),var(--surface));border:1px solid var(--border2);border-radius:26px;padding:54px 44px;text-align:center;position:relative;overflow:hidden}
@@ -203,6 +230,8 @@ footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;
   <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></symbol>
   <symbol id="ic-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2"/></symbol>
   <symbol id="ic-chip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M20 9h2M20 14h2M2 9h2M2 14h2"/></symbol>
+  <symbol id="ic-play" viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.52.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor"/></symbol>
+  <symbol id="ic-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4.4" height="16" rx="1.2" fill="currentColor"/><rect x="13.6" y="4" width="4.4" height="16" rx="1.2" fill="currentColor"/></symbol>
 </svg>
 
 <div class="glow-wrap" aria-hidden="true"><div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div></div>
@@ -227,6 +256,28 @@ footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;
   <div class="reveal">
     <p class="big"><span class="dim">A cyberdeck is just the most literal version of a question worth asking about almost everything you use:</span>
     <span class="q">Do I own this, or does it own me?</span></p>
+  </div>
+</section>
+
+<section class="section-pad wrap" id="listen">
+  <div class="audio-card reveal">
+    <button class="pp" id="pp" aria-label="Play episode">
+      <svg class="i-play" viewBox="0 0 24 24"><use href="#ic-play"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24"><use href="#ic-pause"/></svg>
+    </button>
+    <div class="audio-body">
+      <div class="eyebrow">// listen · selfdriven.you podcast</div>
+      <h3>Reclaim your attention with DIY cyberdecks</h3>
+      <div class="player">
+        <div class="abar" id="abar"><div class="afill" id="afill"></div></div>
+        <span class="atime mono" id="atime">0:00 / —:—</span>
+      </div>
+      <p class="audio-sub">The whole idea, read aloud — agency, repair, and calm computing in the age of intelligence. <a href="/assets/audio/selfdriven-you-reclaim-your-attention-with-diy-cyberdecks.m4a" download>Download the episode ↓</a></p>
+      <audio id="aud" preload="metadata">
+        <source src="/assets/audio/selfdriven-you-reclaim-your-attention-with-diy-cyberdecks.m4a" type="audio/mp4">
+        Your browser doesn't support audio playback — <a href="/assets/audio/selfdriven-you-reclaim-your-attention-with-diy-cyberdecks.m4a">download the episode</a> instead.
+      </audio>
+    </div>
   </div>
 </section>
 
@@ -319,20 +370,20 @@ footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;
       <p class="intro">If reading all that made your hands restless, good — the deck stops being a metaphor and becomes a weekend. Two ways in, both full build guides with parts lists, assembly steps, and a software loadout. No prior electronics required, just curious and patient.</p>
 
       <div class="guide-grid">
-        <a href="/cyberdeck-build-guide" class="guide-card gc-field">
+        <div class="guide-card gc-field">
           <div class="gc-ico"><svg><use href="#ic-cpu"/></svg></div>
           <div class="gc-tag">Raspberry Pi 5 · rugged</div>
           <h3>The Field Deck</h3>
           <p>The full build — a Pi 5, 7" screen, mechanical keyboard, and a battery in a case you can take anywhere. A real portable workstation.</p>
-          <div class="go">Open the build guide →</div>
-        </a>
-        <a href="/cyberdeck-pocket-build-guide" class="guide-card gc-pocket">
+          <a href="/cyberdeck-build-guide" class="btn btn-field gc-btn">Open the build guide →</a>
+        </div>
+        <div class="guide-card gc-pocket">
           <div class="gc-ico"><svg><use href="#ic-chip"/></svg></div>
           <div class="gc-tag">Raspberry Pi Zero 2 W · pocket</div>
           <h3>The Pocket Deck</h3>
           <p>The palm-sized variant — a Zero 2 W terminal you carry like a notebook. Start it headless tonight; it sips power and runs for hours.</p>
-          <div class="go">Open the build guide →</div>
-        </a>
+          <a href="/cyberdeck-pocket-build-guide" class="btn btn-pocket gc-btn">Open the build guide →</a>
+        </div>
       </div>
 
       <div class="builders-note">
@@ -360,6 +411,7 @@ footer{border-top:1px solid var(--border);padding:48px 0 60px;position:relative;
       <div class="foot-tag">Be <span class="c">Curious</span>,<br>Be <span class="b">Constructive</span>,<br>Be <span class="k">Caring</span>.</div>
       <div class="foot-links">
         <a href="https://selfdriven.you">selfdriven.you</a>
+        <a href="#listen">Listen · podcast</a>
         <a href="/cyberdeck-build-guide">Field Deck guide</a>
         <a href="/cyberdeck-pocket-build-guide">Pocket Deck guide</a>
         <a href="#top">↑ Back to top</a>
@@ -383,10 +435,23 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   document.addEventListener('mousemove',function(e){dx=e.clientX;dy=e.clientY;dot.style.left=dx+'px';dot.style.top=dy+'px';});
   function loop(){rx+=(dx-rx)*.18;ry+=(dy-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);}
   loop();
-  document.querySelectorAll('a,.value,.tcard,.guide-card').forEach(function(el){
+  document.querySelectorAll('a,.value,.tcard,.guide-card,.pp,.btn').forEach(function(el){
     el.addEventListener('mouseenter',function(){ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='rgba(0,229,160,.55)';});
     el.addEventListener('mouseleave',function(){ring.style.width='34px';ring.style.height='34px';ring.style.borderColor='rgba(240,238,255,.3)';});
   });
+})();
+(function(){
+  var a=document.getElementById('aud'),pp=document.getElementById('pp'),
+      bar=document.getElementById('abar'),fill=document.getElementById('afill'),t=document.getElementById('atime');
+  if(!a||!pp) return;
+  function fmt(s){if(!isFinite(s)||s<0)return'—:—';s=Math.floor(s);var m=Math.floor(s/60),ss=(s%60).toString().padStart(2,'0');return m+':'+ss;}
+  pp.addEventListener('click',function(){a.paused?a.play():a.pause();});
+  a.addEventListener('play',function(){pp.classList.add('playing');});
+  a.addEventListener('pause',function(){pp.classList.remove('playing');});
+  a.addEventListener('loadedmetadata',function(){t.textContent='0:00 / '+fmt(a.duration);});
+  a.addEventListener('timeupdate',function(){var d=isFinite(a.duration)?a.duration:0;fill.style.width=(d?a.currentTime/d*100:0)+'%';t.textContent=fmt(a.currentTime)+' / '+fmt(d);});
+  a.addEventListener('ended',function(){pp.classList.remove('playing');fill.style.width='0';});
+  bar.addEventListener('click',function(e){var r=bar.getBoundingClientRect();if(isFinite(a.duration))a.currentTime=(e.clientX-r.left)/r.width*a.duration;});
 })();
 </script>
 </body>
