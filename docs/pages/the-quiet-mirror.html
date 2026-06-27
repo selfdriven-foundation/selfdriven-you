@@ -171,7 +171,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
 
 <nav id="nav">
-  <a class="brand" href="#top">selfdriven<em>.you</em></a>
+   <a href="/" class="nav-logo"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
   <div class="stage-pill" id="navStage">Autopilot</div>
 </nav>
 
@@ -179,7 +179,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <header class="hero" id="top">
   <div class="ring-hero" id="heroRing"></div>
   <h1>Where <span class="a">You</span> <span class="b">At?</span></h1>
-  <p class="sub">Stop your autopilot. A quiet mirror across the four modes — then one small loop to close. Learn to crawl before you run.</p>
+  <p class="sub">Stop your autopilot. A quiet mirror across the four modes — then one small loop to close. Become aware before you come alive.</p>
   <div class="tag">
     <span class="chip c1">Curious</span><span class="chip c2">Caring</span>
     <span class="chip c3">Constructive</span><span class="chip c4">Chill</span>
@@ -190,9 +190,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <!-- JOURNEY RAIL -->
 <div class="rail" id="rail">
   <div class="stop" data-stage="0"><div class="dot"></div><div class="lbl">Autopilot</div><div class="sm">drifting</div></div>
-  <div class="stop" data-stage="1"><div class="dot"></div><div class="lbl">Crawl</div><div class="sm">you can see clearly</div></div>
-  <div class="stop" data-stage="2"><div class="dot"></div><div class="lbl">Walk</div><div class="sm">you closed a loop</div></div>
-  <div class="stop" data-stage="3"><div class="dot"></div><div class="lbl">Run</div><div class="sm">you run loops, help others</div></div>
+  <div class="stop" data-stage="1"><div class="dot"></div><div class="lbl">Aware</div><div class="sm">you can see clearly</div></div>
+  <div class="stop" data-stage="2"><div class="dot"></div><div class="lbl">Actuate</div><div class="sm">you closed a loop</div></div>
+  <div class="stop" data-stage="3"><div class="dot"></div><div class="lbl">Alive</div><div class="sm">you run loops, help others</div></div>
 </div>
 
 <!-- 01 MIRROR -->
@@ -288,7 +288,7 @@ const MODES=[
      "I let a conversation be slow, leaving a pause instead of filling it.",
      "I stepped back from something good on purpose, for sustainable pace."]}
 ];
-const STAGES=['Autopilot','Crawl','Walk','Run'];
+const STAGES=['Autopilot','Aware','Actuate','Alive'];
 const COL={curious:'#f5c842',caring:'#ff5f7e',constructive:'#00e5a0',chill:'#7b6cff'};
 
 let state={
@@ -328,11 +328,11 @@ function evidenceModes(){return MODES.filter(m=>m.probes.some((_,i)=>state.probe
 function reflectionCount(){let n=0;for(const k in state.reflect){if((state.reflect[k]||'').trim().length>8)n++;}return n;}
 function canvasFull(){return Object.values(state.w).every(v=>(v||'').trim().length>0);}
 function stage(){
-  if(state.closed && evidenceModes()>=3) return 3;          // Run
-  if(state.closed) return 2;                                  // Walk (loop closed)
-  if(state.committed) return 2;                               // Walk (committed+ on the way)
-  if(modesEngaged()>=4 && reflectionCount()>=1) return 1;     // Crawl
-  if(modesEngaged()>0) return 1;                              // entering Crawl
+  if(state.closed && evidenceModes()>=3) return 3;          // Alive
+  if(state.closed) return 2;                                  // Actuate (loop closed)
+  if(state.committed) return 2;                               // Actuate (committed+ on the way)
+  if(modesEngaged()>=4 && reflectionCount()>=1) return 1;     // Aware
+  if(modesEngaged()>0) return 1;                              // entering Aware
   return 0;                                                   // Autopilot
 }
 
