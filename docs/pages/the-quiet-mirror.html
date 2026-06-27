@@ -45,7 +45,20 @@ a{color:inherit}
 /* nav */
 nav{position:fixed;inset:0 0 auto 0;z-index:100;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,border-color .3s}
 nav.scrolled{background:rgba(9,9,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.brand{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;color:var(--text)}
+.brand{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;color:var(--text);display:inline-flex;align-items:center;gap:0}
+.brand .markdots{display:inline-flex;gap:3px;flex-shrink:0;margin-right:4px}
+.brand .markdots i{width:7px;height:7px;border-radius:50%;display:block}
+.brand .markdots i:nth-child(1){background:var(--curious)}
+.brand .markdots i:nth-child(2){background:var(--caring)}
+.brand .markdots i:nth-child(3){background:var(--constructive)}
+.brand .markdots i:nth-child(4){background:var(--chill)}
+@keyframes dotWave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.brand .markdots.wave i{animation:dotWave .7s ease}
+.brand .markdots.wave i:nth-child(1){animation-delay:0s}
+.brand .markdots.wave i:nth-child(2){animation-delay:.12s}
+.brand .markdots.wave i:nth-child(3){animation-delay:.24s}
+.brand .markdots.wave i:nth-child(4){animation-delay:.36s}
+@media (prefers-reduced-motion:reduce){.brand .markdots.wave i{animation:none}}
 .brand em{font-style:normal;color:var(--curious)}
 .stage-pill{font-size:12px;font-weight:700;padding:7px 16px;border-radius:var(--pill);border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.3s}
 
@@ -74,7 +87,7 @@ nav.scrolled{background:rgba(9,9,15,.92);backdrop-filter:blur(20px);border-botto
 .rail .sm{font-size:11px;color:var(--muted2);margin-top:2px}
 
 /* sections */
-section.block{position:relative;z-index:1;padding:84px 0}
+section.block{position:relative;z-index:1;padding-top:84px;padding-bottom:84px}
 .sec-head{max-width:680px;margin-bottom:40px}
 .sec-head h2{font-size:clamp(30px,5vw,52px)}
 .sec-head p{color:var(--muted);margin-top:14px;font-size:17px}
@@ -171,7 +184,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
 
 <nav id="nav">
-   <a href="/" class="nav-logo"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
+  <a href="#top" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
   <div class="stage-pill" id="navStage">Autopilot</div>
 </nav>
 
@@ -463,6 +476,16 @@ function burst(){
 /* ---------- INIT ---------- */
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>40));
 buildCards();renderRings();sync();
+
+/* ---------- BRAND DOT WAVE ---------- */
+(function(){
+  var dots=document.querySelector('.brand .markdots');
+  var logo=document.querySelector('.brand');
+  if(!dots)return;
+  function wave(){dots.classList.remove('wave');void dots.offsetWidth;dots.classList.add('wave');}
+  if(document.readyState==='complete')wave();else window.addEventListener('load',wave);
+  (logo||dots).addEventListener('mouseenter',wave);
+})();
 </script>
 </body>
 </html>
