@@ -146,6 +146,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .wfield .wk{font-family:'Bricolage Grotesque';font-weight:800;font-size:30px;color:var(--curious)}
 .wfield:nth-child(2) .wk{color:var(--caring)}.wfield:nth-child(3) .wk{color:var(--constructive)}
 .wfield:nth-child(4) .wk{color:var(--chill)}.wfield:nth-child(5) .wk{color:var(--curious)}
+.wfield:nth-child(6) .wk{color:var(--caring)}
 .wfield .wq{font-size:12px;color:var(--muted);margin:4px 0 12px}
 .wfield input,.wfield textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:10px 12px;font-family:inherit;font-size:14px}
 .wfield textarea{resize:vertical;min-height:46px}
@@ -191,7 +192,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <!-- HERO -->
 <header class="hero" id="top">
   <div class="ring-hero" id="heroRing"></div>
-  <h1>Where <span class="a">You</span> <span class="b">At?</span></h1>
+  <h1><span class="a">You</span> &amp; the quiet <span class="b">mirror</span></h1>
   <p class="sub">Stop your autopilot. A quiet mirror across the four modes — then one small loop to close. Become aware before you come alive.</p>
   <div class="tag">
     <span class="chip c1">Curious</span><span class="chip c2">Caring</span>
@@ -212,7 +213,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <section class="block wrap">
   <div class="sec-head">
     <span class="num">01 — THE MIRROR</span>
-    <h2>How alive is each mode, right now?</h2>
+    <h2>How active is each mode, right now?</h2>
     <p>No right answer. Drag each slider to where you honestly are today. The ring lights up as you go — that's your current rhythm.</p>
   </div>
   <div class="mirror">
@@ -234,7 +235,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <section class="block wrap">
   <div class="sec-head">
     <span class="num">02 — THE LOOP</span>
-    <h2>Pick one small thing. Run it through the 5&nbsp;W's.</h2>
+    <h2>Pick one small thing. Run it through the 5W1H.</h2>
     <p>The mirror shows you where you are. This is how you move. Keep it small enough to actually finish — that's the whole point.</p>
   </div>
   <div class="canvas">
@@ -243,6 +244,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
     <div class="wfield"><div class="wk">Where</div><div class="wq">The context it happens in.</div><input id="w_where" type="text"></div>
     <div class="wfield"><div class="wk">Who</div><div class="wq">Who's involved, affected, or could witness it.</div><input id="w_who" type="text"></div>
     <div class="wfield"><div class="wk">When</div><div class="wq">A real, near date.</div><input id="w_when" type="text" placeholder="e.g. by Sunday"></div>
+    <div class="wfield"><div class="wk">How</div><div class="wq">How you'll actually do it — the first concrete step.</div><textarea id="w_how" rows="2"></textarea></div>
   </div>
   <div class="commitbar">
     <button class="btn primary" id="commitBtn" disabled>Commit to this loop →</button>
@@ -271,7 +273,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40
 <footer>
   <div class="ticker">Curious Opens · Caring Humanises · Constructive Builds · Chill Sustains · Stay Coherent · Stay Human</div>
   selfdriven.you — a Human Operating System for the age of intelligence
-  <div class="savednote">Your progress saves on this device. <button class="resetbtn" id="resetBtn">Start over</button></div>
+  <div class="savednote">Your progress saves on this device. <button class="resetbtn" id="downloadBtn">Download</button> · <button class="resetbtn" id="resetBtn">Start over</button></div>
 </footer>
 
 <script>
@@ -307,10 +309,47 @@ const COL={curious:'#f5c842',caring:'#ff5f7e',constructive:'#00e5a0',chill:'#7b6
 let state={
   vals:{curious:0,caring:0,constructive:0,chill:0},
   probes:{}, reflect:{},
-  w:{what:'',why:'',where:'',who:'',when:''},
+  w:{what:'',why:'',where:'',who:'',when:'',how:''},
   committed:false, closed:false, name:''
 };
-try{const s=JSON.parse(localStorage.getItem('sd_wya'));if(s)state=Object.assign(state,s);}catch(e){}
+
+/* ---------- PERSISTENCE · IndexedDB ----------
+   The full `state` object (all responses) is stored in IndexedDB:
+   db "selfdriven" → object store "wya" → key "state".
+   Falls back to localStorage if IndexedDB is unavailable, and migrates
+   any legacy localStorage save on first load. Writes are async + fire-and-forget. */
+const DB_NAME='selfdriven', DB_VER=1, STORE='wya', KEY='state', LEGACY_LS='sd_wya';
+let _db=null;
+function idbOpen(){
+  if(_db) return Promise.resolve(_db);
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window)) return reject(new Error('IndexedDB unavailable'));
+    const req=indexedDB.open(DB_NAME,DB_VER);
+    req.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE);};
+    req.onsuccess=e=>{_db=e.target.result;resolve(_db);};
+    req.onerror=()=>reject(req.error);
+  });
+}
+function idbGet(key){
+  return idbOpen().then(db=>new Promise((res,rej)=>{
+    const r=db.transaction(STORE,'readonly').objectStore(STORE).get(key);
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);
+  }));
+}
+function idbSet(key,val){
+  return idbOpen().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction(STORE,'readwrite');
+    tx.objectStore(STORE).put(val,key);
+    tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error);
+  }));
+}
+function idbDel(key){
+  return idbOpen().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction(STORE,'readwrite');
+    tx.objectStore(STORE).delete(key);
+    tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error);
+  }));
+}
 
 /* ---------- RING ---------- */
 function polar(cx,cy,r,deg){const a=(deg-90)*Math.PI/180;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
@@ -416,7 +455,7 @@ function buildCards(){
 }
 
 /* ---------- CANVAS WIRING ---------- */
-['what','why','where','who','when'].forEach(k=>{
+['what','why','where','who','when','how'].forEach(k=>{
   const el=document.getElementById('w_'+k);el.value=state.w[k]||'';
   el.addEventListener('input',e=>{state.w[k]=e.target.value;sync();save();});
 });
@@ -432,8 +471,13 @@ document.getElementById('completeBtn').addEventListener('click',()=>{
 document.getElementById('nameInput').addEventListener('input',e=>{
   state.name=e.target.value;document.getElementById('teeArt').innerHTML=teeSVG();save();
 });
+document.getElementById('downloadBtn').addEventListener('click',downloadMarkdown);
 document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(confirm('Clear your reflection and start over?')){try{localStorage.removeItem('sd_wya');}catch(e){}location.reload();}
+  if(confirm('Clear your reflection and start over?')){
+    idbDel(KEY).catch(()=>{})
+      .then(()=>{try{localStorage.removeItem(LEGACY_LS);}catch(e){}})
+      .finally(()=>location.reload());
+  }
 });
 
 /* ---------- SYNC UI ---------- */
@@ -456,7 +500,63 @@ function sync(){
   const ni=document.getElementById('nameInput');if(state.name&&ni.value!==state.name)ni.value=state.name;
   document.getElementById('teeArt').innerHTML=teeSVG();
 }
-function save(){try{localStorage.setItem('sd_wya',JSON.stringify(state));}catch(e){}}
+function save(){
+  idbSet(KEY,state).catch(()=>{ try{localStorage.setItem(LEGACY_LS,JSON.stringify(state));}catch(e){} });
+}
+
+/* ---------- EXPORT · Markdown ---------- */
+function buildMarkdown(){
+  const st=stage();
+  const stamp=new Date().toLocaleString();
+  const L=[];
+  L.push('# The Quiet Mirror — selfdriven.you');
+  L.push('');
+  L.push('_Exported '+stamp+'_  ');
+  L.push('**Your stage: '+STAGES[st]+'**');
+  L.push('');
+  L.push('---');
+  L.push('');
+  L.push('## How active is each mode, right now');
+  L.push('');
+  MODES.forEach(m=>{
+    L.push('### '+m.name+' — '+state.vals[m.key]+'/100');
+    L.push('_'+m.role+'_  ');
+    L.push('Scale: '+m.low+' ←→ '+m.high);
+    L.push('');
+    m.probes.forEach((p,i)=>{
+      const on=!!state.probes[m.key+i];
+      L.push('- ['+(on?'x':' ')+'] '+p);
+      const r=(state.reflect[m.key+i]||'').trim();
+      if(r) L.push('  > '+r.replace(/\r?\n/g,'\n  > '));
+    });
+    L.push('');
+  });
+  L.push('---');
+  L.push('');
+  L.push('## The loop you committed to');
+  L.push('');
+  [['What','what'],['Why','why'],['Where','where'],['Who','who'],['When','when'],['How','how']].forEach(([label,k])=>{
+    const v=(state.w[k]||'').trim();
+    L.push('- **'+label+':** '+(v||'_(blank)_'));
+  });
+  L.push('');
+  L.push('**Status:** '+(state.closed?'Loop closed ✓':state.committed?'Committed (not yet closed)':'Not yet committed'));
+  if((state.name||'').trim()) L.push('**Milestone name:** '+state.name.trim());
+  L.push('');
+  L.push('---');
+  L.push('_selfdriven.you — a Human Operating System for the age of intelligence_');
+  L.push('');
+  return L.join('\n');
+}
+function downloadMarkdown(){
+  const blob=new Blob([buildMarkdown()],{type:'text/markdown;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='quiet-mirror-'+new Date().toISOString().slice(0,10)+'.md';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 
 /* ---------- CELEBRATION ---------- */
 function burst(){
@@ -475,7 +575,22 @@ function burst(){
 
 /* ---------- INIT ---------- */
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>40));
-buildCards();renderRings();sync();
+
+/* Load saved responses from IndexedDB (migrating any legacy localStorage save), then render. */
+async function boot(){
+  let saved=null;
+  try{ saved=await idbGet(KEY); }catch(e){}
+  if(saved==null){
+    try{ const ls=localStorage.getItem(LEGACY_LS); if(ls){ saved=JSON.parse(ls); idbSet(KEY,saved).catch(()=>{}); } }catch(e){}
+  }
+  if(saved) state=Object.assign(state,saved);
+  // Backfill any missing 5W1H keys so older saves (pre-"How") load cleanly.
+  state.w=Object.assign({what:'',why:'',where:'',who:'',when:'',how:''},state.w);
+  // Re-apply saved values to the static 5W1H fields (mode cards are rebuilt by buildCards).
+  ['what','why','where','who','when','how'].forEach(k=>{const el=document.getElementById('w_'+k);if(el)el.value=state.w[k]||'';});
+  buildCards();renderRings();sync();
+}
+boot();
 
 /* ---------- BRAND DOT WAVE ---------- */
 (function(){
