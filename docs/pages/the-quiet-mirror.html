@@ -141,7 +141,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .reflect .rl{font-size:11px;color:var(--muted);margin-bottom:6px;font-style:italic}
 
 /* 5 W canvas */
-.canvas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.canvas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media(max-width:760px){.canvas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.canvas{grid-template-columns:1fr}}
 .wfield{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px}
 .wfield .wk{font-family:'Bricolage Grotesque';font-weight:800;font-size:30px;color:var(--curious)}
 .wfield:nth-child(2) .wk{color:var(--caring)}.wfield:nth-child(3) .wk{color:var(--constructive)}
