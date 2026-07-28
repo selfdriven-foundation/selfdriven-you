@@ -1,0 +1,418 @@
+---
+layout: null
+title: The Unplugged Guide - selfdriven You
+permalink: /unplugged-guide
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Unplugged Guide · selfdriven.you</title>
+<meta name="description" content="Six levels from always-on to genuinely offline. A progressive guide to unplugging from the internet — go at your own pace and check things off as you go.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090f; --surface:#111118; --surface2:#18181f;
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+  --text:#f0eeff; --muted:#7e7a9a; --muted2:#3d3a55;
+
+  --curious:#f5c842; --caring:#ff5f7e; --constructive:#00e5a0;
+  --chill:#7b6cff; --chill-bright:#9b8fff;
+
+  --curious-dim:rgba(245,200,66,0.13);
+  --caring-dim:rgba(255,95,126,0.13);
+  --constructive-dim:rgba(0,229,160,0.13);
+  --chill-dim:rgba(123,108,255,0.13);
+
+  --pill:999px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg); color:var(--text);
+  line-height:1.6; overflow-x:hidden; cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+a{cursor:none;color:inherit}
+::selection{background:rgba(155,143,255,.3)}
+
+h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.04em}
+
+/* ---------- glow blobs ---------- */
+.gblob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.5;z-index:0;pointer-events:none}
+.gb1{width:520px;height:520px;background:var(--curious);top:-150px;left:-160px;animation:gb 15s ease-in-out infinite}
+.gb2{width:440px;height:440px;background:var(--caring);top:40px;right:-130px;animation:gb 19s ease-in-out infinite reverse}
+.gb3{width:360px;height:360px;background:var(--constructive);bottom:-60px;left:18%;animation:gb 23s ease-in-out infinite 3s}
+.gb4{width:320px;height:320px;background:var(--chill);bottom:20px;right:12%;animation:gb 17s ease-in-out infinite 8s}
+@keyframes gb{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(34px,-26px) scale(1.08)}70%{transform:translate(-22px,30px) scale(.93)}}
+
+/* ---------- cursor ---------- */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--chill-bright);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .12s ease,background .2s}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(240,238,255,.3);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .2s,height .2s,border-color .2s}
+@media (hover:none){body{cursor:auto}a{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 6vw;background:rgba(9,9,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.brand{font-weight:800;font-size:20px;text-decoration:none;color:var(--text)}
+.brand em{font-style:normal;color:var(--chill-bright)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;text-decoration:none;padding:9px 18px;border-radius:var(--pill);background:var(--chill-dim);color:var(--chill-bright);border:1.5px solid rgba(123,108,255,.28);transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-3px) rotate(-1.5deg);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:840px;margin:0 auto;padding:0 24px}
+section{position:relative;z-index:1}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;padding:180px 0 90px;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.7);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--constructive);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:clamp(44px,8vw,80px);font-weight:800;line-height:1.02;margin:26px 0 20px}
+.hero h1 .accent{background:linear-gradient(120deg,var(--chill-bright),var(--caring) 55%,var(--curious));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.sub{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:560px;margin:0 auto 14px}
+.hero .fine{font-size:14px;color:var(--muted2);max-width:520px;margin:0 auto}
+
+/* ---------- progress ---------- */
+.progress-wrap{position:sticky;top:64px;z-index:80;background:rgba(9,9,15,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0}
+.progress-inner{display:flex;align-items:center;gap:16px}
+.progress-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;color:var(--muted);white-space:nowrap}
+.progress-label b{color:var(--text);font-weight:700}
+.bar{flex:1;height:8px;border-radius:var(--pill);background:var(--surface2);overflow:hidden;border:1px solid var(--border)}
+.bar > span{display:block;height:100%;width:0;border-radius:var(--pill);background:linear-gradient(90deg,var(--curious),var(--constructive) 40%,var(--caring) 70%,var(--chill-bright));transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+.reset-btn{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);background:none;border:1px solid var(--border2);border-radius:var(--pill);padding:6px 14px;cursor:none;transition:color .2s,border-color .2s}
+.reset-btn:hover{color:var(--caring);border-color:rgba(255,95,126,.4)}
+@media (hover:none){.reset-btn{cursor:pointer}}
+
+/* ---------- levels ---------- */
+.levels{padding:70px 0 40px;display:flex;flex-direction:column;gap:28px}
+.level{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:34px 32px;transition:border-color .3s,box-shadow .3s}
+.level::before{content:'';position:absolute;left:0;top:26px;bottom:26px;width:4px;border-radius:var(--pill);background:var(--accent,var(--chill-bright));opacity:.9}
+.level.done{border-color:var(--accent,var(--chill-bright))}
+.level.done{box-shadow:0 0 0 1px var(--accent,var(--chill-bright)),0 20px 60px -30px var(--accent,var(--chill-bright))}
+.level-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:6px}
+.level-ic{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--accent-dim,var(--chill-dim));color:var(--accent,var(--chill-bright))}
+.level-ic svg{width:22px;height:22px}
+.level-meta{flex:1;min-width:0}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--chill-bright));display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.count-pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;padding:2px 10px;border-radius:var(--pill);background:var(--accent-dim,var(--chill-dim));color:var(--accent,var(--chill-bright));border:1px solid var(--border2)}
+.level h2{font-size:27px;font-weight:800;margin:6px 0 8px}
+.level .why{color:var(--muted);font-size:16px;margin-bottom:22px;max-width:60ch}
+.actions{list-style:none;display:flex;flex-direction:column;gap:2px}
+.action{display:flex;gap:14px;align-items:flex-start;padding:12px 12px 12px 10px;border-radius:14px;cursor:none;transition:background .2s}
+.action:hover{background:var(--surface2)}
+@media (hover:none){.action{cursor:pointer}}
+.check{flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;border:1.8px solid var(--border2);display:grid;place-items:center;transition:background .2s,border-color .2s}
+.check svg{width:13px;height:13px;stroke:var(--bg);stroke-width:3.4;opacity:0;transform:scale(.5);transition:opacity .18s,transform .18s}
+.action.on .check{background:var(--accent,var(--chill-bright));border-color:var(--accent,var(--chill-bright))}
+.action.on .check svg{opacity:1;transform:scale(1)}
+.action .txt{font-size:15.5px;color:var(--text);transition:color .2s}
+.action.on .txt{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--muted2)}
+.ready{margin-top:22px;padding-top:18px;border-top:1px dashed var(--border2);font-size:14.5px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+.ready b{color:var(--accent,var(--chill-bright));font-weight:600;font-family:'DM Sans',sans-serif}
+.ready svg{flex:none;width:17px;height:17px;margin-top:2px;color:var(--accent,var(--chill-bright))}
+
+/* ---------- closing ---------- */
+.closing{text-align:center;padding:60px 0 40px}
+.closing .card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:46px 34px;position:relative;overflow:hidden}
+.closing .card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(123,108,255,.14),transparent 65%);pointer-events:none}
+.closing h2{font-size:clamp(28px,5vw,40px);font-weight:800;margin-bottom:14px;position:relative}
+.closing p{color:var(--muted);font-size:17px;max-width:52ch;margin:0 auto 26px;position:relative}
+.mode-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative}
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s}
+.mode-pill:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.mode-pill svg{width:16px;height:16px}
+.mp-c{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.mp-k{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.mp-b{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+.mp-l{background:var(--chill-dim);color:var(--chill-bright);border-color:rgba(123,108,255,.28)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--border);padding:44px 0 60px;text-align:center;position:relative;z-index:1}
+footer .brand{font-size:18px;display:inline-block;margin-bottom:12px}
+.foot-links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.foot-links a{font-size:14px;color:var(--muted);text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:var(--chill-bright)}
+footer .fine{font-size:13px;color:var(--muted2)}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:600px){
+  .level{padding:26px 20px}
+  .progress-inner{gap:10px}
+  .reset-btn{padding:6px 10px}
+  .hero{padding:150px 0 70px}
+}
+</style>
+</head>
+<body>
+
+<!-- icon symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-telescope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="13" r="3"/><path d="M3 7l5.5 2.5"/><path d="M3 7l2-4 14.5 6.5-2 4"/><path d="M8.5 9.5L6 20h5l1.5-4"/><path d="M17 16v4"/></symbol>
+  <symbol id="ic-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/></symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></symbol>
+  <symbol id="ic-power" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+</svg>
+
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<nav>
+  <a href="https://selfdriven.you" class="brand">selfdriven<em>.you</em></a>
+  <a href="https://selfdriven.tel" class="nav-cta">More tools <svg width="14" height="14"><use href="#ic-arrow"/></svg></a>
+</nav>
+
+<section class="hero">
+  <div class="gblob gb1"></div><div class="gblob gb2"></div>
+  <div class="gblob gb3"></div><div class="gblob gb4"></div>
+  <div class="wrap">
+    <span class="hero-pill"><span class="dot"></span>The Unplugged Guide</span>
+    <h1>Unplug.<br><span class="accent">On purpose.</span></h1>
+    <p class="sub">Six levels, from always-on to genuinely offline. The goal was never to quit the internet — it's to make it a tool you pick up, not a place you live.</p>
+    <p class="fine">Go at your own pace. Check things off as you go. Nothing here is all-or-nothing — every box you tick is real ground reclaimed.</p>
+  </div>
+</section>
+
+<div class="progress-wrap">
+  <div class="wrap">
+    <div class="progress-inner">
+      <span class="progress-label"><b id="pctDone">0</b> / <span id="pctTotal">0</span> reclaimed</span>
+      <div class="bar"><span id="barFill"></span></div>
+      <button class="reset-btn" id="resetBtn" type="button">Reset</button>
+    </div>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="levels" id="levels"></div>
+</section>
+
+<section class="closing wrap">
+  <div class="card reveal">
+    <h2>The internet becomes a tool again.</h2>
+    <p>Unplugging isn't a punishment or a purity test. It's making room for the four things a full life actually runs on — the same rhythm the rest of selfdriven.you is built around.</p>
+    <div class="mode-row">
+      <span class="mode-pill mp-c"><svg><use href="#ic-telescope"/></svg>Curious</span>
+      <span class="mode-pill mp-k"><svg><use href="#ic-heart"/></svg>Caring</span>
+      <span class="mode-pill mp-b"><svg><use href="#ic-hammer"/></svg>Constructive</span>
+      <span class="mode-pill mp-l"><svg><use href="#ic-waves"/></svg>Chill</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="https://selfdriven.you" class="brand">selfdriven<em>.you</em></a>
+    <div class="foot-links">
+      <a href="https://selfdriven.you">Home</a>
+      <a href="https://selfdriven.tel">All tools &amp; links</a>
+    </div>
+    <p class="fine">A sustainable rhythm for living a fully human life in the age of intelligence.</p>
+  </div>
+</footer>
+
+<script>
+/* ---------------- content ---------------- */
+const LEVELS = [
+  {
+    key:"notice", n:"01", title:"Notice", icon:"ic-telescope",
+    accent:"var(--curious)", dim:"var(--curious-dim)",
+    why:"You can't unplug from something you can't see yet. Before you change anything, just watch yourself use it.",
+    ready:"You can feel the reach for your phone coming a beat before your hand moves.",
+    actions:[
+      "Open your screen-time report and read it honestly — the daily hours, the top three apps",
+      "For one day, notice each time you reach for your phone without actually deciding to",
+      "Name your top trigger: boredom, anxiety, a lull, waiting, avoidance",
+      "When you next reach, ask what you're actually looking for — news, a hit, an exit"
+    ]
+  },
+  {
+    key:"trim", n:"02", title:"Trim the noise", icon:"ic-hammer",
+    accent:"var(--constructive)", dim:"var(--constructive-dim)",
+    why:"Most of the pull is manufactured to keep you there. Turn off the machinery so it stops summoning you.",
+    ready:"Picking up your phone no longer lights up like a slot machine.",
+    actions:[
+      "Turn off every notification that isn't a real human trying to reach you",
+      "Move social and news apps off the home screen into a folder on the last page",
+      "Switch your screen to greyscale — or set a shortcut to toggle it fast",
+      "Log out of the one app you open on autopilot, so opening it takes a moment of choice",
+      "Delete one app you genuinely won't miss by the end of the week"
+    ]
+  },
+  {
+    key:"fence", n:"03", title:"Fence off some ground", icon:"ic-heart",
+    accent:"var(--caring)", dim:"var(--caring-dim)",
+    why:"Presence is a place. Give the people and rooms in your life some phone-free ground to stand on.",
+    ready:"A phone-free meal feels normal, not like white-knuckling through it.",
+    actions:[
+      "No phone at the table — meals belong to whoever is in front of you",
+      "Charge your phone outside the bedroom overnight",
+      "Keep the first 30 minutes after waking completely screen-free",
+      "Keep the last 30 minutes before sleep completely screen-free",
+      "Make one room in your home a no-phone room and hold the line"
+    ]
+  },
+  {
+    key:"reclaim", n:"04", title:"Reclaim the blocks", icon:"ic-waves",
+    accent:"var(--chill-bright)", dim:"var(--chill-dim)",
+    why:"Attention comes back in blocks, not minutes. Take some back on purpose and feel what fills the space.",
+    ready:"Boredom stops registering as an emergency.",
+    actions:[
+      "Protect one focus block a day: phone in another room, one task, a timer",
+      "Run one errand or take one walk with no phone on you at all",
+      "Try a half-day in airplane mode each weekend",
+      "Swap one scroll session for something analog you already own — book, instrument, pen",
+      "Leave your phone at home for one short trip out of the house"
+    ]
+  },
+  {
+    key:"retreat", n:"05", title:"Step fully out", icon:"ic-telescope",
+    accent:"var(--curious)", dim:"var(--curious-dim)",
+    why:"A real reset needs distance. Step out further than feels comfortable and get curious about the life waiting underneath.",
+    ready:"A day offline feels like a gift you gave yourself, not a sacrifice you endured.",
+    actions:[
+      "Take one full screen-free day — make it a weekly unplugged day",
+      "Spend a night somewhere with no wifi, or simply turn the router off",
+      "Go a whole weekend using the internet only as a tool, briefly and on purpose",
+      "Tell one person you'll be offline, so you're not tempted to just check",
+      "Watch what you reach for instead — that's the life the noise was covering"
+    ]
+  },
+  {
+    key:"default", n:"06", title:"Make it the default", icon:"ic-power",
+    accent:"var(--chill-bright)", dim:"var(--chill-dim)", gradient:true,
+    why:"The goal was never to quit for good — it's for offline to become your resting state, and the internet a tool you deliberately pick up.",
+    ready:"This isn't a challenge you're doing anymore. It's just how you live.",
+    actions:[
+      "Open the internet for a reason, and close it once the reason is done",
+      "Keep one ritual permanently unplugged — a walk, a meal, a morning, a room",
+      "Run a monthly screen-time review and adjust exactly one thing",
+      "Re-add anything that truly earns its place; leave everything else gone",
+      "Notice that you're choosing it now, not defaulting into it"
+    ]
+  }
+];
+
+/* ---------------- state / storage ---------------- */
+const STORE_KEY = "sd-unplugged-v1";
+let done = {};
+try { done = JSON.parse(localStorage.getItem(STORE_KEY) || "{}") || {}; } catch(e){ done = {}; }
+function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(done)); } catch(e){} }
+
+/* ---------------- render ---------------- */
+const root = document.getElementById("levels");
+let TOTAL = 0;
+
+LEVELS.forEach(function(lv){
+  TOTAL += lv.actions.length;
+  const el = document.createElement("article");
+  el.className = "level reveal";
+  el.style.setProperty("--accent", lv.accent);
+  el.style.setProperty("--accent-dim", lv.dim);
+  el.dataset.key = lv.key;
+
+  let acts = "";
+  lv.actions.forEach(function(txt,i){
+    const id = lv.key + "-" + i;
+    const on = done[id] ? " on" : "";
+    acts += '<li class="action'+on+'" data-id="'+id+'" role="checkbox" tabindex="0" aria-checked="'+(done[id]?'true':'false')+'">'
+          +   '<span class="check"><svg viewBox="0 0 24 24" fill="none"><use href="#ic-check"/></svg></span>'
+          +   '<span class="txt">'+txt+'</span>'
+          + '</li>';
+  });
+
+  el.innerHTML =
+    '<div class="level-head">'
+    + '<div class="level-ic"><svg><use href="#'+lv.icon+'"/></svg></div>'
+    + '<div class="level-meta">'
+    +   '<div class="eyebrow">Level '+lv.n+' <span class="count-pill" data-count="'+lv.key+'">0 / '+lv.actions.length+'</span></div>'
+    +   '<h2>'+lv.title+'</h2>'
+    +   '<p class="why">'+lv.why+'</p>'
+    + '</div></div>'
+    + '<ul class="actions">'+acts+'</ul>'
+    + '<div class="ready"><svg><use href="#ic-arrow"/></svg><span><b>Level up when:</b> '+lv.ready+'</span></div>';
+
+  root.appendChild(el);
+});
+
+/* ---------------- interactions ---------------- */
+function toggle(li){
+  const id = li.dataset.id;
+  if(done[id]){ delete done[id]; li.classList.remove("on"); li.setAttribute("aria-checked","false"); }
+  else { done[id] = 1; li.classList.add("on"); li.setAttribute("aria-checked","true"); }
+  save();
+  refresh();
+}
+
+root.addEventListener("click", function(e){
+  const li = e.target.closest(".action");
+  if(li) toggle(li);
+});
+root.addEventListener("keydown", function(e){
+  if(e.key !== "Enter" && e.key !== " ") return;
+  const li = e.target.closest(".action");
+  if(li){ e.preventDefault(); toggle(li); }
+});
+
+/* ---------------- progress ---------------- */
+const barFill = document.getElementById("barFill");
+const pctDone = document.getElementById("pctDone");
+const pctTotal = document.getElementById("pctTotal");
+pctTotal.textContent = TOTAL;
+
+function refresh(){
+  let total = 0;
+  LEVELS.forEach(function(lv){
+    let c = 0;
+    lv.actions.forEach(function(_,i){ if(done[lv.key+"-"+i]) c++; });
+    total += c;
+    const pill = document.querySelector('.count-pill[data-count="'+lv.key+'"]');
+    if(pill) pill.textContent = c + " / " + lv.actions.length;
+    const card = document.querySelector('.level[data-key="'+lv.key+'"]');
+    if(card) card.classList.toggle("done", c === lv.actions.length);
+  });
+  pctDone.textContent = total;
+  barFill.style.width = TOTAL ? (total / TOTAL * 100) + "%" : "0%";
+}
+refresh();
+
+document.getElementById("resetBtn").addEventListener("click", function(){
+  if(!confirm("Reset all your progress? This clears every checked box.")) return;
+  done = {}; save();
+  document.querySelectorAll(".action.on").forEach(function(li){ li.classList.remove("on"); li.setAttribute("aria-checked","false"); });
+  refresh();
+});
+
+/* ---------------- cursor ---------------- */
+(function(){
+  var dot=document.getElementById('cdot'), ring=document.getElementById('cring');
+  if(matchMedia('(hover:none)').matches) return;
+  var rx=0,ry=0,dx=0,dy=0;
+  document.addEventListener('mousemove',function(e){ dx=e.clientX; dy=e.clientY; dot.style.left=dx+'px'; dot.style.top=dy+'px'; });
+  function loop(){ rx+=(dx-rx)*.18; ry+=(dy-ry)*.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); }
+  loop();
+  document.addEventListener('mouseover',function(e){
+    if(e.target.closest('a,.action,.reset-btn,.mode-pill')){ ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='rgba(155,143,255,.6)'; }
+  });
+  document.addEventListener('mouseout',function(e){
+    if(e.target.closest('a,.action,.reset-btn,.mode-pill')){ ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='rgba(240,238,255,.3)'; }
+  });
+})();
+
+/* ---------------- reveal ---------------- */
+const io = new IntersectionObserver(function(entries){
+  entries.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('vis'); io.unobserve(x.target); } });
+},{threshold:.14});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
