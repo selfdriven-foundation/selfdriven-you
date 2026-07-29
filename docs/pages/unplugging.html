@@ -1,17 +1,14 @@
 ---
 layout: null
-title: The Unplugged Guide - selfdriven You
-permalink: /unplugged-guide
+title: Unplugging - selfdriven You
+permalink: /unplugging
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Unplugged Guide · selfdriven.you</title>
-<link rel="icon" type="image/png" href="assets/img/selfdriven-you-logo-round-4colour-blend.png">
-<link rel="shortcut icon" href="/assets/img/selfdriven-you-logo-round-4colour-blend.png">
-<link rel="apple-touch-icon" href="/assets/img/selfdriven-you-logo-round-4colour-blend.png" />
+<title>Unplugging · selfdriven.you</title>
 <meta name="description" content="Six levels from always-on to genuinely offline. A progressive guide to unplugging from the internet — go at your own pace and check things off as you go.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,10 +57,21 @@ h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.0
 
 /* ---------- nav ---------- */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 6vw;background:rgba(9,9,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-.brand{font-weight:800;font-size:20px;text-decoration:none;color:var(--text)}
-.brand em{font-style:normal;color:var(--chill-bright)}
-.nav-cta{display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;text-decoration:none;padding:9px 18px;border-radius:var(--pill);background:var(--chill-dim);color:var(--chill-bright);border:1.5px solid rgba(123,108,255,.28);transition:transform .2s,box-shadow .2s}
-.nav-cta:hover{transform:translateY(-3px) rotate(-1.5deg);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;color:var(--text);display:inline-flex;align-items:center;gap:0}
+.brand .markdots{display:inline-flex;gap:3px;flex-shrink:0;margin-right:4px}
+.brand .markdots i{width:7px;height:7px;border-radius:50%;display:block}
+.brand .markdots i:nth-child(1){background:var(--curious)}
+.brand .markdots i:nth-child(2){background:var(--caring)}
+.brand .markdots i:nth-child(3){background:var(--constructive)}
+.brand .markdots i:nth-child(4){background:var(--chill)}
+@keyframes dotWave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.brand .markdots.wave i{animation:dotWave .7s ease}
+.brand .markdots.wave i:nth-child(1){animation-delay:0s}
+.brand .markdots.wave i:nth-child(2){animation-delay:.12s}
+.brand .markdots.wave i:nth-child(3){animation-delay:.24s}
+.brand .markdots.wave i:nth-child(4){animation-delay:.36s}
+@media (prefers-reduced-motion:reduce){.brand .markdots.wave i{animation:none}}
+.brand em{font-style:normal;color:var(--curious)}
 
 /* ---------- layout ---------- */
 .wrap{max-width:840px;margin:0 auto;padding:0 24px}
@@ -88,6 +96,7 @@ section{position:relative;z-index:1}
 .bar > span{display:block;height:100%;width:0;border-radius:var(--pill);background:linear-gradient(90deg,var(--curious),var(--constructive) 40%,var(--caring) 70%,var(--chill-bright));transition:width .5s cubic-bezier(.34,1.56,.64,1)}
 .reset-btn{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);background:none;border:1px solid var(--border2);border-radius:var(--pill);padding:6px 14px;cursor:none;transition:color .2s,border-color .2s}
 .reset-btn:hover{color:var(--caring);border-color:rgba(255,95,126,.4)}
+#downloadBtn:hover{color:var(--chill-bright);border-color:rgba(123,108,255,.45)}
 @media (hover:none){.reset-btn{cursor:pointer}}
 
 /* ---------- levels ---------- */
@@ -140,6 +149,8 @@ footer .brand{font-size:18px;display:inline-block;margin-bottom:12px}
 .foot-links a{font-size:14px;color:var(--muted);text-decoration:none;transition:color .2s}
 .foot-links a:hover{color:var(--chill-bright)}
 footer .fine{font-size:13px;color:var(--muted2)}
+footer .savednote{margin-bottom:10px}
+footer .savednote b{color:var(--muted);font-weight:600}
 
 /* ---------- reveal ---------- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1)}
@@ -170,15 +181,14 @@ footer .fine{font-size:13px;color:var(--muted2)}
 <div class="cursor-ring" id="cring"></div>
 
 <nav>
-  <a href="https://selfdriven.you" class="brand">selfdriven<em>.you</em></a>
-  <a href="https://selfdriven.tel" class="nav-cta">More tools <svg width="14" height="14"><use href="#ic-arrow"/></svg></a>
+  <a href="the-quiet-mirror.html" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
 </nav>
 
 <section class="hero">
   <div class="gblob gb1"></div><div class="gblob gb2"></div>
   <div class="gblob gb3"></div><div class="gblob gb4"></div>
   <div class="wrap">
-    <span class="hero-pill"><span class="dot"></span>The Unplugged Guide</span>
+    <span class="hero-pill"><span class="dot"></span>The Unplugging Guide</span>
     <h1>Unplug.<br><span class="accent">On purpose.</span></h1>
     <p class="sub">Six levels, from always-on to genuinely offline. The goal was never to quit the internet — it's to make it a tool you pick up, not a place you live.</p>
     <p class="fine">Go at your own pace. Check things off as you go. Nothing here is all-or-nothing — every box you tick is real ground reclaimed.</p>
@@ -190,6 +200,7 @@ footer .fine{font-size:13px;color:var(--muted2)}
     <div class="progress-inner">
       <span class="progress-label"><b id="pctDone">0</b> / <span id="pctTotal">0</span> reclaimed</span>
       <div class="bar"><span id="barFill"></span></div>
+      <button class="reset-btn" id="downloadBtn" type="button">Download</button>
       <button class="reset-btn" id="resetBtn" type="button">Reset</button>
     </div>
   </div>
@@ -219,6 +230,7 @@ footer .fine{font-size:13px;color:var(--muted2)}
       <a href="https://selfdriven.you">Home</a>
       <a href="https://selfdriven.tel">All tools &amp; links</a>
     </div>
+    <p class="fine savednote">Your progress saves privately on this device — nothing leaves your browser. Use <b>Download</b> up top to export it as Markdown.</p>
     <p class="fine">A sustainable rhythm for living a fully human life in the age of intelligence.</p>
   </div>
 </footer>
@@ -305,11 +317,46 @@ const LEVELS = [
   }
 ];
 
-/* ---------------- state / storage ---------------- */
-const STORE_KEY = "sd-unplugged-v1";
-let done = {};
-try { done = JSON.parse(localStorage.getItem(STORE_KEY) || "{}") || {}; } catch(e){ done = {}; }
-function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(done)); } catch(e){} }
+/* ---------------- PERSISTENCE · IndexedDB ----------------
+   The full `done` map is stored in IndexedDB:
+   db "selfdriven-unplugged" → object store "unplugged" → key "progress".
+   Falls back to localStorage if IndexedDB is unavailable, and migrates any
+   legacy localStorage save on first load. Writes are async + fire-and-forget. */
+const DB_NAME='selfdriven-unplugged', DB_VER=1, STORE='unplugged', KEY='progress', LEGACY_LS='sd-unplugged-v1';
+let _db=null, done={};
+function idbOpen(){
+  if(_db) return Promise.resolve(_db);
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window)) return reject(new Error('IndexedDB unavailable'));
+    const req=indexedDB.open(DB_NAME,DB_VER);
+    req.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE);};
+    req.onsuccess=e=>{_db=e.target.result;resolve(_db);};
+    req.onerror=()=>reject(req.error);
+  });
+}
+function idbGet(key){
+  return idbOpen().then(db=>new Promise((res,rej)=>{
+    const r=db.transaction(STORE,'readonly').objectStore(STORE).get(key);
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);
+  }));
+}
+function idbSet(key,val){
+  return idbOpen().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction(STORE,'readwrite');
+    tx.objectStore(STORE).put(val,key);
+    tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error);
+  }));
+}
+function idbDel(key){
+  return idbOpen().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction(STORE,'readwrite');
+    tx.objectStore(STORE).delete(key);
+    tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error);
+  }));
+}
+function save(){
+  idbSet(KEY,done).catch(()=>{ try{localStorage.setItem(LEGACY_LS,JSON.stringify(done));}catch(e){} });
+}
 
 /* ---------------- render ---------------- */
 const root = document.getElementById("levels");
@@ -389,11 +436,86 @@ function refresh(){
 refresh();
 
 document.getElementById("resetBtn").addEventListener("click", function(){
-  if(!confirm("Reset all your progress? This clears every checked box.")) return;
-  done = {}; save();
+  if(!confirm("Reset all your progress? This clears every checked box on this device.")) return;
+  done = {};
+  idbDel(KEY).catch(function(){}).then(function(){ try{localStorage.removeItem(LEGACY_LS);}catch(e){} });
   document.querySelectorAll(".action.on").forEach(function(li){ li.classList.remove("on"); li.setAttribute("aria-checked","false"); });
   refresh();
 });
+
+/* ---------------- EXPORT · Markdown ---------------- */
+function levelsCompleted(){
+  return LEVELS.filter(function(lv){ return lv.actions.every(function(_,i){ return done[lv.key+"-"+i]; }); }).length;
+}
+function totalDone(){
+  var t=0; LEVELS.forEach(function(lv){ lv.actions.forEach(function(_,i){ if(done[lv.key+"-"+i]) t++; }); }); return t;
+}
+function buildMarkdown(){
+  var stamp=new Date().toLocaleString();
+  var t=totalDone(), pct=TOTAL?Math.round(t/TOTAL*100):0, lc=levelsCompleted();
+  var L=[];
+  L.push('# The Unplugged Guide — selfdriven.you');
+  L.push('');
+  L.push('_Exported '+stamp+'_  ');
+  L.push('**Progress: '+t+' / '+TOTAL+' reclaimed ('+pct+'%)**  ');
+  L.push('**Levels completed: '+lc+' / '+LEVELS.length+'**');
+  L.push('');
+  L.push('---');
+  L.push('');
+  LEVELS.forEach(function(lv){
+    var c=0; lv.actions.forEach(function(_,i){ if(done[lv.key+"-"+i]) c++; });
+    var mark=(c===lv.actions.length)?' ✓':'';
+    L.push('## Level '+lv.n+' — '+lv.title+'  ('+c+' / '+lv.actions.length+')'+mark);
+    L.push('_'+lv.why+'_');
+    L.push('');
+    lv.actions.forEach(function(txt,i){
+      L.push('- ['+(done[lv.key+"-"+i]?'x':' ')+'] '+txt);
+    });
+    L.push('');
+    L.push('> **Level up when:** '+lv.ready);
+    L.push('');
+    L.push('---');
+    L.push('');
+  });
+  L.push('_selfdriven.you — a sustainable rhythm for living a fully human life in the age of intelligence_');
+  L.push('');
+  return L.join('\n');
+}
+function downloadMarkdown(){
+  var blob=new Blob([buildMarkdown()],{type:'text/markdown;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='unplugged-guide-'+new Date().toISOString().slice(0,10)+'.md';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+}
+document.getElementById("downloadBtn").addEventListener("click", downloadMarkdown);
+
+/* ---------------- BOOT · load saved progress ---------------- */
+function applyDone(){
+  LEVELS.forEach(function(lv){
+    lv.actions.forEach(function(_,i){
+      var id=lv.key+"-"+i;
+      var li=document.querySelector('.action[data-id="'+id+'"]');
+      if(!li) return;
+      var on=!!done[id];
+      li.classList.toggle("on",on);
+      li.setAttribute("aria-checked",on?"true":"false");
+    });
+  });
+  refresh();
+}
+async function boot(){
+  var saved=null;
+  try{ saved=await idbGet(KEY); }catch(e){}
+  if(saved==null){
+    try{ var ls=localStorage.getItem(LEGACY_LS); if(ls){ saved=JSON.parse(ls); idbSet(KEY,saved).catch(function(){}); } }catch(e){}
+  }
+  if(saved && typeof saved==='object') done=saved;
+  applyDone();
+}
+boot();
 
 /* ---------------- cursor ---------------- */
 (function(){
@@ -416,6 +538,16 @@ const io = new IntersectionObserver(function(entries){
   entries.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('vis'); io.unobserve(x.target); } });
 },{threshold:.14});
 document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+/* ---------------- BRAND DOT WAVE ---------------- */
+(function(){
+  var dots=document.querySelector('.brand .markdots');
+  var logo=document.querySelector('.brand');
+  if(!dots)return;
+  function wave(){dots.classList.remove('wave');void dots.offsetWidth;dots.classList.add('wave');}
+  if(document.readyState==='complete')wave();else window.addEventListener('load',wave);
+  (logo||dots).addEventListener('mouseenter',wave);
+})();
 </script>
 </body>
 </html>
