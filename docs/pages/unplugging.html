@@ -20,7 +20,7 @@ permalink: /unplugging
 :root{
   --bg:#09090f; --surface:#111118; --surface2:#18181f;
   --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
-  --text:#f0eeff; --muted:#7e7a9a; --muted2:#3d3a55;
+  --text:#f0eeff; --muted:#8b87a6; --muted2:#6c6989;
 
   --curious:#f5c842; --caring:#ff5f7e; --constructive:#00e5a0;
   --chill:#7b6cff; --chill-bright:#9b8fff;
@@ -46,7 +46,7 @@ a{cursor:none;color:inherit}
 h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.04em}
 
 /* ---------- glow blobs ---------- */
-.gblob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.5;z-index:0;pointer-events:none}
+.gblob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.24;z-index:0;pointer-events:none}
 .gb1{width:520px;height:520px;background:var(--curious);top:-150px;left:-160px;animation:gb 15s ease-in-out infinite}
 .gb2{width:440px;height:440px;background:var(--caring);top:40px;right:-130px;animation:gb 19s ease-in-out infinite reverse}
 .gb3{width:360px;height:360px;background:var(--constructive);bottom:-60px;left:18%;animation:gb 23s ease-in-out infinite 3s}
@@ -82,13 +82,15 @@ section{position:relative;z-index:1}
 
 /* ---------- hero ---------- */
 .hero{position:relative;overflow:hidden;padding:180px 0 90px;text-align:center}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 88% 74% at 50% 50%,rgba(9,9,15,.82),rgba(9,9,15,.5) 46%,rgba(9,9,15,.14) 78%,transparent)}
+.hero .wrap{position:relative;z-index:2}
 .hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.7);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--constructive);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .hero h1{font-size:clamp(44px,8vw,80px);font-weight:800;line-height:1.02;margin:26px 0 20px}
 .hero h1 .accent{background:linear-gradient(120deg,var(--chill-bright),var(--caring) 55%,var(--curious));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero p.sub{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:560px;margin:0 auto 14px}
-.hero .fine{font-size:14px;color:var(--muted2);max-width:520px;margin:0 auto}
+.hero p.sub{font-size:clamp(17px,2.4vw,21px);color:rgba(240,238,255,.9);max-width:560px;margin:0 auto 14px}
+.hero .fine{font-size:14px;color:rgba(240,238,255,.62);max-width:520px;margin:0 auto}
 
 /* ---------- progress ---------- */
 .progress-wrap{position:sticky;top:64px;z-index:80;background:rgba(9,9,15,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0}
@@ -184,14 +186,14 @@ footer .savednote b{color:var(--muted);font-weight:600}
 <div class="cursor-ring" id="cring"></div>
 
 <nav>
-  <a href="/" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
+  <a href="the-quiet-mirror.html" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
 </nav>
 
 <section class="hero">
   <div class="gblob gb1"></div><div class="gblob gb2"></div>
   <div class="gblob gb3"></div><div class="gblob gb4"></div>
   <div class="wrap">
-    <span class="hero-pill"><span class="dot"></span>The Unplugging Guide</span>
+    <span class="hero-pill"><span class="dot"></span>The Unplugged Guide</span>
     <h1>Unplug.<br><span class="accent">On purpose.</span></h1>
     <p class="sub">Six levels, from always-on to genuinely offline. The goal was never to quit the internet — it's to make it a tool you pick up, not a place you live.</p>
     <p class="fine">Go at your own pace. Check things off as you go. Nothing here is all-or-nothing — every box you tick is real ground reclaimed.</p>
@@ -231,7 +233,7 @@ footer .savednote b{color:var(--muted);font-weight:600}
     <a href="https://selfdriven.you" class="brand">selfdriven<em>.you</em></a>
     <div class="foot-links">
       <a href="https://selfdriven.you">Home</a>
-      <a href="https://selfdriven.foundation">The Foundation</a>
+      <a href="https://selfdriven.tel">All tools &amp; links</a>
     </div>
     <p class="fine savednote">Your progress saves privately on this device — nothing leaves your browser. Use <b>Download</b> up top to export it as Markdown.</p>
     <p class="fine">A sustainable rhythm for living a fully human life in the age of intelligence.</p>
