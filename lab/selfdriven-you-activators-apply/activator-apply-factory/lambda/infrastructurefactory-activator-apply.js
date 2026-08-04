@@ -11,7 +11,7 @@ module.exports =
         // ── Config ──────────────────────────────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-get-config',
+            name: 'util-aws-activator-apply-get-config',
             code: function ()
             {
                 const settings = entityos.get({ scope: '_settings' });
@@ -37,7 +37,7 @@ module.exports =
         // ── CORS headers ────────────────────────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-cors-headers',
+            name: 'util-aws-activator-apply-cors-headers',
             code: function ()
             {
                 const settings = entityos.get({ scope: '_settings' });
@@ -62,7 +62,7 @@ module.exports =
                     statusCode: _.get(param, 'status', 200),
                     headers: _.assign(
                         { 'Content-Type': 'application/json' },
-                        entityos.invoke('util-aws-ambassador-apply-cors-headers')
+                        entityos.invoke('util-aws-activator-apply-cors-headers')
                     ),
                     body: JSON.stringify(_.get(param, 'body', {}))
                 };
@@ -72,7 +72,7 @@ module.exports =
         // ── Router ──────────────────────────────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-route',
+            name: 'util-aws-activator-apply-route',
             code: function ()
             {
                 const event = entityos.get({ scope: '_event' });
@@ -86,19 +86,19 @@ module.exports =
                     || _.get(event, 'path')
                     || '/';
 
-                console.log('[ambassador-apply] ' + method + ' ' + rawPath);
+                console.log('[activator-apply] ' + method + ' ' + rawPath);
 
                 if (method === 'OPTIONS')
                 {
                     entityos.invoke('util-end', {
                         statusCode: 204,
-                        headers: entityos.invoke('util-aws-ambassador-apply-cors-headers'),
+                        headers: entityos.invoke('util-aws-activator-apply-cors-headers'),
                         body: ''
                     });
                 }
                 else if (method === 'POST')
                 {
-                    entityos.invoke('util-aws-ambassador-apply-submit');
+                    entityos.invoke('util-aws-activator-apply-submit');
                 }
                 else
                 {
@@ -115,7 +115,7 @@ module.exports =
         // ── Field cleaner ───────────────────────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-clean',
+            name: 'util-aws-activator-apply-clean',
             code: function (param)
             {
                 const value = _.get(param, 'value');
@@ -125,24 +125,24 @@ module.exports =
             }
         });
 
-        // ── Reference generator (AMB-XXXXX) ─────────────────────
+        // ── Reference generator (ACT-XXXXX) ─────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-make-ref',
+            name: 'util-aws-activator-apply-make-ref',
             code: function ()
             {
                 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 const bytes = crypto.randomBytes(5);
                 let out = '';
                 for (let i = 0; i < 5; i++) { out += chars[bytes[i] % chars.length]; }
-                return 'AMB-' + out;
+                return 'ACT-' + out;
             }
         });
 
         // ── IP extraction ───────────────────────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-ip-get',
+            name: 'util-aws-activator-apply-ip-get',
             code: function ()
             {
                 const event = entityos.get({ scope: '_event' });
@@ -157,7 +157,7 @@ module.exports =
         // ── Submit handler: parse, validate, chain to save ──────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-submit',
+            name: 'util-aws-activator-apply-submit',
             code: function ()
             {
                 const event = entityos.get({ scope: '_event' });
@@ -186,7 +186,7 @@ module.exports =
 
                 const clean = function (value, max)
                 {
-                    return entityos.invoke('util-aws-ambassador-apply-clean', { value: value, max: max });
+                    return entityos.invoke('util-aws-activator-apply-clean', { value: value, max: max });
                 };
 
                 const name     = clean(payload.name, 200);
@@ -221,7 +221,7 @@ module.exports =
                     return;
                 }
 
-                const ref = entityos.invoke('util-aws-ambassador-apply-make-ref');
+                const ref = entityos.invoke('util-aws-activator-apply-make-ref');
                 const now = new Date();
 
                 const record = {
@@ -234,23 +234,23 @@ module.exports =
                     mode:        mode,
                     why:         why,
                     hours:       hours,
-                    source:      'selfdriven.you/ambassadors',
+                    source:      'selfdriven.you/activators',
                     meta: {
-                        ip:        entityos.invoke('util-aws-ambassador-apply-ip-get'),
+                        ip:        entityos.invoke('util-aws-activator-apply-ip-get'),
                         userAgent: _.get(event, 'requestContext.http.userAgent')
                                     || _.get(event, 'requestContext.identity.userAgent')
                                     || null
                     }
                 };
 
-                entityos.invoke('util-aws-ambassador-apply-record-save', { ref: ref, record: record, now: now });
+                entityos.invoke('util-aws-activator-apply-record-save', { ref: ref, record: record, now: now });
             }
         });
 
         // ── S3 save ─────────────────────────────────────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-record-save',
+            name: 'util-aws-activator-apply-record-save',
             code: function (param)
             {
                 const ref    = _.get(param, 'ref');
@@ -263,7 +263,7 @@ module.exports =
 
                 if (bucket == undefined)
                 {
-                    console.error('[ambassador-apply] APPLICATIONS_BUCKET not configured');
+                    console.error('[activator-apply] APPLICATIONS_BUCKET not configured');
                     entityos.invoke('util-end',
                         entityos.invoke('util-response-json', {
                             body: { ok: false, error: 'server_not_configured' },
@@ -278,7 +278,7 @@ module.exports =
                 const s3Key = prefix + yyyy + '/' + mm + '/' + ref + '.json';
 
                 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-                const s3 = new S3Client(entityos.invoke('util-aws-ambassador-apply-get-config'));
+                const s3 = new S3Client(entityos.invoke('util-aws-activator-apply-get-config'));
 
                 s3.send(new PutObjectCommand({
                     Bucket:               bucket,
@@ -290,15 +290,15 @@ module.exports =
                 }))
                 .then(function ()
                 {
-                    console.log('[ambassador-apply] saved ref=' + ref + ' email=' + record.email + ' key=' + s3Key);
+                    console.log('[activator-apply] saved ref=' + ref + ' email=' + record.email + ' key=' + s3Key);
                     // Fire the alert, then respond. Alert failure never fails the request.
-                    entityos.invoke('util-aws-ambassador-apply-notify', {
+                    entityos.invoke('util-aws-activator-apply-notify', {
                         ref: ref, record: record, bucket: bucket, key: s3Key
                     });
                 })
                 .catch(function (err)
                 {
-                    console.error('[ambassador-apply] PutObject error:', err);
+                    console.error('[activator-apply] PutObject error:', err);
                     entityos.invoke('util-end',
                         entityos.invoke('util-response-json', {
                             body: { ok: false, error: 'save_failed' },
@@ -312,7 +312,7 @@ module.exports =
         // ── SNS notify (prose email), then respond ──────────────
         entityos.add(
         {
-            name: 'util-aws-ambassador-apply-notify',
+            name: 'util-aws-activator-apply-notify',
             code: function (param)
             {
                 const ref    = _.get(param, 'ref');
@@ -345,7 +345,7 @@ module.exports =
                 const niceDate = new Date(record.submittedAt).toUTCString();
 
                 const message =
-                    'A new ambassador application has come in.\n\n' +
+                    'A new activator application has come in.\n\n' +
                     record.name + ' (' + record.email + ') applied on ' + niceDate + '.\n' +
                     'Based in: ' + (record.location || 'not given') + '.\n' +
                     'Settings they would carry it into: ' + settingsList + '.\n' +
@@ -356,11 +356,11 @@ module.exports =
                     'Reference: ' + ref + '\n' +
                     'Stored at: s3://' + bucket + '/' + key + '\n';
 
-                let subject = 'New ambassador application — ' + record.name + ' (' + ref + ')';
+                let subject = 'New activator application — ' + record.name + ' (' + ref + ')';
                 if (subject.length > 100) { subject = subject.slice(0, 99); }
 
                 const { SNSClient, PublishCommand } = require('@aws-sdk/client-sns');
-                const sns = new SNSClient(entityos.invoke('util-aws-ambassador-apply-get-config'));
+                const sns = new SNSClient(entityos.invoke('util-aws-activator-apply-get-config'));
 
                 sns.send(new PublishCommand({
                     TopicArn: topicArn,
@@ -369,13 +369,13 @@ module.exports =
                 }))
                 .then(function ()
                 {
-                    console.log('[ambassador-apply] alert published ref=' + ref);
+                    console.log('[activator-apply] alert published ref=' + ref);
                     respond();
                 })
                 .catch(function (err)
                 {
                     // Application is already saved — log and still return success.
-                    console.error('[ambassador-apply] SNS publish error (application saved):', err);
+                    console.error('[activator-apply] SNS publish error (application saved):', err);
                     respond();
                 });
             }

@@ -1,6 +1,6 @@
 ---
 layout: null
-title: Build Your Identity - selfdriven You
+title: Activators - selfdriven You
 permalink: /activators
 ---
 <!DOCTYPE html>
@@ -430,7 +430,7 @@ permalink: /activators
     <div class="steps">
       <div class="step reveal"><div class="num mono">01</div><div class="line"></div><h3>Apply</h3><p>Fill in the short form below. About three minutes &mdash; no CV required.</p></div>
       <div class="step reveal"><div class="num mono">02</div><div class="line"></div><h3>Chat</h3><p>A quick, friendly call so we can meet you and answer anything you're wondering.</p></div>
-      <div class="step reveal"><div class="num mono">03</div><div class="line"></div><h3>Train</h3><p>Complete the practical induction and recieve your activator kit.</p></div>
+      <div class="step reveal"><div class="num mono">03</div><div class="line"></div><h3>Train</h3><p>Complete the practical induction and receive your activator kit.</p></div>
       <div class="step reveal"><div class="num mono">04</div><div class="line"></div><h3>Go</h3><p>Start opening conversations in your community, with the network behind you.</p></div>
     </div>
   </div>
@@ -507,6 +507,7 @@ permalink: /activators
             <option>Not sure yet &mdash; keen to find out</option>
           </select>
         </div>
+        <div class="err" data-err="submit" style="display:none">Something went wrong sending that. Please try again, or email us directly.</div>
         <div class="apply-actions"><button class="btn-back" data-back="2">&larr; Back</button><button class="btn-next" id="submit">Send application</button></div>
       </div>
 
@@ -596,11 +597,63 @@ permalink: /activators
     document.querySelectorAll('[data-mode]').forEach(m=>m.className='chip mode-chip');
     c.classList.add('on','on-'+c.dataset.mode);
   }));
-  document.getElementById('submit').addEventListener('click',()=>{
+  // Paste the API endpoint here once the activator-apply factory is deployed
+  // (e.g. https://xxxx.execute-api.ap-southeast-2.amazonaws.com/live).
+  // Leave empty to run in demo mode (no network call; a local ref is shown).
+  const ENDPOINT = '';
+
+  function gatherApplication(){
+    const settings = Array.from(document.querySelectorAll('#settings .chip.on')).map(c=>c.textContent.trim());
+    const modeEl = document.querySelector('[data-mode].on');
+    return {
+      name:     document.getElementById('f-name').value.trim(),
+      email:    document.getElementById('f-email').value.trim(),
+      location: document.getElementById('f-loc').value.trim(),
+      settings: settings,
+      mode:     modeEl ? modeEl.textContent.trim() : '',
+      why:      document.getElementById('f-why').value.trim(),
+      hours:    document.getElementById('f-hours').value
+    };
+  }
+
+  const submitBtn = document.getElementById('submit');
+
+  submitBtn.addEventListener('click', async ()=>{
     if(!validate(3)) return;
-    const ref='ACT-'+Math.random().toString(36).slice(2,7).toUpperCase();
-    document.getElementById('ref-code').textContent='REF \u00b7 '+ref;
-    show('done');
+
+    // Demo mode — no endpoint configured yet
+    if(!ENDPOINT){
+      const ref='ACT-'+Math.random().toString(36).slice(2,7).toUpperCase();
+      document.getElementById('ref-code').textContent='REF \u00b7 '+ref;
+      show('done');
+      return;
+    }
+
+    const original = submitBtn.textContent;
+    submitBtn.textContent = 'Sending\u2026';
+    submitBtn.disabled = true;
+
+    const errBox = document.querySelector('[data-err="submit"]');
+    if(errBox) errBox.style.display = 'none';
+
+    try{
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(gatherApplication())
+      });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok || !data.ok){
+        throw new Error((data && data.error) || ('http_' + res.status));
+      }
+      document.getElementById('ref-code').textContent = 'REF \u00b7 ' + data.ref;
+      show('done');
+    }catch(err){
+      submitBtn.textContent = original;
+      submitBtn.disabled = false;
+      if(errBox) errBox.style.display = 'block';
+      console.error('[activator-apply] submit failed:', err);
+    }
   });
 
   /* ---------- BRAND DOT WAVE ---------- */

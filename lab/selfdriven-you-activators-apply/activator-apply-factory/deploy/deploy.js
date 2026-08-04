@@ -1,5 +1,5 @@
 var entityos = require('entityos');
-var factory  = require('./infrastructurefactory-ambassador-apply');
+var factory  = require('./infrastructurefactory-activator-apply');
 
 entityos.set({ scope: '_settings', value: require('./settings.json') });
 
@@ -16,4 +16,4 @@ entityos.add(
     }
 });
 
-entityos.invoke('app-process-aws-ambassador-apply-deploy');
+entityos.invoke('app-process-aws-activator-apply-deploy');

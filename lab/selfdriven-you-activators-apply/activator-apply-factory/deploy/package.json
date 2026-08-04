@@ -1,5 +1,5 @@
 {
-    "name": "ambassador-apply-deploy",
+    "name": "activator-apply-deploy",
     "version": "1.1.0",
     "scripts": {
         "deploy": "node deploy.js"
