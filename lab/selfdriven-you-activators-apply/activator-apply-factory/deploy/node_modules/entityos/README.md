@@ -1,0 +1,34 @@
+entityos Node.js module
+====================================
+
+Node.js module for entityos.cloud
+
+Makes it easy to init your node app onto the entityos.cloud platform / API and send requests.
+
+> http://entityos.cloud
+> http://docs.entityos.cloud/gettingstarted_nodejs
+> npm install entityos
+> Example app; https://github.com/ibcom/entityos-learn
+
+**Initialise;**
+
+`var entityos = require('entityos');`
+
+Controller methods:
+- entityos.add({name:, note:, code:});
+- entityos.invoke(name, parameters for controller, data for controller);
+
+<!-- end of the list -->
+
+Local data storage methods:
+- entityos.set({scope:, context:, name:, value:});
+- entityos.get({scope:, context:, name:});
+
+<!-- end of the list -->
+
+Cloud data storage methods:
+- entityos.cloud.save({object:, data:, callback:});
+- entityos.cloud.retrieve({object:, data:, callback:});
+- entityos.cloud.invoke({object:, data:, callback:});
+
+<!-- end of the list -->

@@ -56,6 +56,17 @@ module.exports =
             {
                 const settings = entityos.get({ scope: '_settings' });
 
+                // Accept either a single deploy.notifyEmail string or a deploy.notifyEmails
+                // array (or both). Normalise into one trimmed, de-duplicated list.
+                const notifyEmails = _.chain([])
+                    .concat(_.get(settings, 'deploy.notifyEmail', ''))
+                    .concat(_.get(settings, 'deploy.notifyEmails', []))
+                    .flatten()
+                    .map(function (e) { return _.isString(e) ? e.trim() : ''; })
+                    .compact()
+                    .uniq()
+                    .value();
+
                 return {
                     region:             _.get(settings, 'deploy.region', 'ap-southeast-2'),
                     deployBucket:       _.get(settings, 'deploy.deployBucket', 'activator-apply-deploy'),
@@ -72,6 +83,7 @@ module.exports =
                     memory:             _.get(settings, 'deploy.memory', 256),
                     topicName:          _.get(settings, 'deploy.topicName', 'activator-apply-alerts'),
                     notifyEmail:        _.get(settings, 'deploy.notifyEmail', ''),
+                    notifyEmails:       notifyEmails,
                     apiName:            _.get(settings, 'deploy.apiName', 'activator-apply-api'),
                     apiStage:           _.get(settings, 'deploy.apiStage', 'live'),
                     webAclName:         _.get(settings, 'deploy.webAclName', 'activator-apply-waf'),
@@ -275,36 +287,53 @@ module.exports =
                     entityos.set({ scope: 'activator-apply-deploy', context: 'snsTopicArn', value: topicArn });
                     console.log('  ✓ Topic ready:', topicArn);
 
-                    if (deploy.notifyEmail === '')
+                    if (deploy.notifyEmails.length === 0)
                     {
                         entityos.invoke('util-aws-activator-apply-deploy-zip');
                         return;
                     }
 
-                    // Subscribe the notify email if not already subscribed.
+                    // Subscribe each notify email that isn't already on the topic.
+                    // Matching on Endpoint covers both confirmed and PendingConfirmation
+                    // subscriptions, so re-runs never create duplicates.
                     sns.send(new ListSubscriptionsByTopicCommand({ TopicArn: topicArn }))
                     .then(function (subs)
                     {
-                        const existing = _.find(subs.Subscriptions, function (s)
+                        const already = _.map(
+                            _.filter(subs.Subscriptions, function (s) { return s.Protocol === 'email'; }),
+                            'Endpoint'
+                        );
+
+                        const toSubscribe = _.difference(deploy.notifyEmails, already);
+
+                        _.forEach(already, function (e)
                         {
-                            return s.Protocol === 'email' && s.Endpoint === deploy.notifyEmail;
+                            if (_.includes(deploy.notifyEmails, e))
+                            {
+                                console.log('  ✓ Email already subscribed:', e);
+                            }
                         });
 
-                        if (existing)
+                        if (toSubscribe.length === 0)
                         {
-                            console.log('  ✓ Email already subscribed:', deploy.notifyEmail);
                             entityos.invoke('util-aws-activator-apply-deploy-zip');
                             return;
                         }
 
-                        sns.send(new SubscribeCommand({
-                            TopicArn: topicArn,
-                            Protocol: 'email',
-                            Endpoint: deploy.notifyEmail
+                        Promise.all(_.map(toSubscribe, function (email)
+                        {
+                            return sns.send(new SubscribeCommand({
+                                TopicArn: topicArn,
+                                Protocol: 'email',
+                                Endpoint: email
+                            }))
+                            .then(function ()
+                            {
+                                console.log('  → Subscription created for ' + email + ' — they must click the confirmation email');
+                            });
                         }))
                         .then(function ()
                         {
-                            console.log('  → Subscription created for ' + deploy.notifyEmail + ' — they must click the confirmation email');
                             entityos.invoke('util-aws-activator-apply-deploy-zip');
                         })
                         .catch(function (err)
@@ -937,9 +966,10 @@ module.exports =
                 console.log('Applications:', 's3://' + deploy.applicationsBucket + '/' + deploy.applicationsPrefix);
                 console.log('────────────────────────────────────────');
                 console.log('Set this endpoint as ENDPOINT in the /activators page.');
-                if (deploy.notifyEmail !== '')
+                if (deploy.notifyEmails.length !== 0)
                 {
-                    console.log('Note: ' + deploy.notifyEmail + ' must confirm the SNS subscription email before alerts arrive.');
+                    console.log('Note: each recipient must confirm the SNS subscription email before alerts arrive:');
+                    _.forEach(deploy.notifyEmails, function (e) { console.log('  - ' + e); });
                 }
                 console.log('');
 

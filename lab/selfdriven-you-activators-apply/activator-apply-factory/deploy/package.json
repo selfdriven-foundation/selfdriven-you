@@ -1,19 +1,30 @@
 {
     "name": "activator-apply-deploy",
     "version": "1.1.0",
+    "description": "Deploy pipeline for the selfdriven.you activator-apply factory (S3 -> SNS -> IAM -> Lambda -> API Gateway -> WAF)",
+    "private": true,
+    "engines": { "node": ">=20.x" },
     "scripts": {
         "deploy": "node deploy.js"
     },
     "dependencies": {
-        "@aws-sdk/client-api-gateway": "^3.600.0",
-        "@aws-sdk/client-iam":         "^3.600.0",
-        "@aws-sdk/client-lambda":      "^3.600.0",
-        "@aws-sdk/client-s3":          "^3.600.0",
-        "@aws-sdk/client-sns":         "^3.600.0",
-        "@aws-sdk/client-wafv2":       "^3.600.0",
+        "@aws-sdk/client-api-gateway": "3.1092.0",
+        "@aws-sdk/client-iam":         "3.1092.0",
+        "@aws-sdk/client-lambda":      "3.1092.0",
+        "@aws-sdk/client-s3":          "3.1092.0",
+        "@aws-sdk/client-sns":         "3.1092.0",
+        "@aws-sdk/client-wafv2":       "3.1092.0",
         "archiver":                    "^7.0.1",
-        "entityos":                    "^4.0.0",
+        "entityos":                    "^2.2.8",
         "lodash":                      "^4.17.21",
         "prompt-sync":                 "^4.2.0"
+    },
+    "overrides": {
+        "@aws-sdk/client-api-gateway": "3.1092.0",
+        "@aws-sdk/client-iam":         "3.1092.0",
+        "@aws-sdk/client-lambda":      "3.1092.0",
+        "@aws-sdk/client-s3":          "3.1092.0",
+        "@aws-sdk/client-sns":         "3.1092.0",
+        "@aws-sdk/client-wafv2":       "3.1092.0"
     }
 }

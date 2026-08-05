@@ -33,7 +33,7 @@ Idempotent — re-running updates code/config/policy in place. On success it pri
 
 1–2. Deploy bucket (holds the zipped release)
 3–4. Applications bucket — private, AES-256, versioned
-5.   SNS topic `activator-apply-alerts` (idempotent); subscribes `notifyEmail` if set
+5.   SNS topic `activator-apply-alerts` (idempotent); subscribes every address in `notifyEmails` if set
 6–7. Zip + upload release
 8–9. IAM role — basic execution + inline policy: `s3:PutObject` on `applications/*` and `sns:Publish` to the topic only
 10–11. Lambda (Node 20) with env `APPLICATIONS_BUCKET`, `APPLICATIONS_PREFIX`, `ALLOWED_ORIGIN`, `SNS_TOPIC_ARN`
@@ -58,15 +58,15 @@ Idempotent — re-running updates code/config/policy in place. On success it pri
 ## Alerts
 
 Each saved application publishes a readable SNS message (subject + prose body with the
-applicant's details and the S3 location). Set `deploy.notifyEmail` in settings.json to
-auto-subscribe an address — the recipient must click the SNS confirmation email once.
+applicant's details and the S3 location). Set `deploy.notifyEmails` (array) in settings.json to
+auto-subscribe addresses — each recipient must click the SNS confirmation email once.
 Alert failure never fails the request: the application is already saved.
 
 ## Key settings (settings.json → deploy)
 
 | Key | Default | Notes |
 |---|---|---|
-| `notifyEmail` | `""` | Email to subscribe to alerts (empty = none) |
+| `notifyEmails` | `[]` | Email addresses to subscribe to alerts — each must confirm once (empty = none). A single `notifyEmail` string is still accepted. |
 | `apiStage` | `live` | API Gateway stage name |
 | `wafRateLimit` | `300` | Blocked above this many requests / 5 min / IP (min 100) |
 | `allowedOrigin` | `https://selfdriven.you` | CORS origin returned by the Lambda |

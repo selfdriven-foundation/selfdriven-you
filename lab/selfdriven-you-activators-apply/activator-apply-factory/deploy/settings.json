@@ -19,7 +19,7 @@
         "timeout":            15,
         "memory":             256,
         "topicName":          "activator-apply-alerts",
-        "notifyEmail":        "",
+        "notifyEmails":       ["mark.byers@selfdriven.foundation", "peter.horsfall@selfdriven.foundation"],
         "apiName":            "activator-apply-api",
         "apiStage":           "live",
         "webAclName":         "activator-apply-waf",
