@@ -6,7 +6,7 @@
     "dependencies": {
         "@aws-sdk/client-s3":  "^3.600.0",
         "@aws-sdk/client-sns": "^3.600.0",
-        "entityos":            "^4.0.0",
+        "entityos":            "^2.2.8",
         "lodash":              "^4.17.21"
     },
     "devDependencies": {

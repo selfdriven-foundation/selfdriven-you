@@ -363,6 +363,41 @@ module.exports =
                 const lambdaFolder = path.resolve(__dirname, deploy.lambdaFolder);
                 const zipPath = path.join(lambdaFolder, '..', deploy.lambdaZipName);
 
+                // Guard: the handler require()s entityos + lodash, which are NOT in the
+                // Lambda runtime. If they aren't bundled the function returns 502 on every
+                // request (including the CORS preflight). Fail loudly here instead.
+                const requiredModules = ['entityos', 'lodash'];
+                const missing = requiredModules.filter(function (m)
+                {
+                    return !fs.existsSync(path.join(lambdaFolder, 'node_modules', m));
+                });
+                if (missing.length > 0)
+                {
+                    entityos.invoke('util-end',
+                        'Lambda dependencies not bundled: ' + missing.join(', ') +
+                        '. Run "npm install --omit=dev" in ' + deploy.lambdaFolder + ' before deploying.',
+                        '500');
+                    return;
+                }
+
+                // Guard: deploy/ and lambda/ both hold a file named
+                // infrastructurefactory-activator-apply.js — the deploy pipeline and the
+                // request handler respectively. If the deploy factory is mistakenly in
+                // lambda/, the function has no 'route' controller and every request hangs
+                // (Runtime.NodeJsExit → 502). Verify the request handler is the one bundled.
+                const handlerFactory = path.join(lambdaFolder, 'infrastructurefactory-activator-apply.js');
+                const handlerSource = fs.readFileSync(handlerFactory, 'utf8');
+                if (handlerSource.indexOf('util-aws-activator-apply-route') === -1
+                    || handlerSource.indexOf('app-process-aws-activator-apply-deploy') !== -1)
+                {
+                    entityos.invoke('util-end',
+                        'Wrong factory in ' + deploy.lambdaFolder + ': infrastructurefactory-activator-apply.js '
+                        + 'is the deploy pipeline, not the request handler (no util-aws-activator-apply-route). '
+                        + 'Copy the lambda request-handler factory into ' + deploy.lambdaFolder + ' before deploying.',
+                        '500');
+                    return;
+                }
+
                 console.log('[6/14] Zipping lambda folder:', lambdaFolder, '→', zipPath);
 
                 const archiver = require('archiver');
@@ -595,7 +630,10 @@ module.exports =
                 const { LambdaClient, CreateFunctionCommand } = require('@aws-sdk/client-lambda');
                 const lambda = new LambdaClient(entityos.invoke('util-aws-activator-apply-get-config'));
 
-                console.log('[11/14] Creating Lambda function:', deploy.functionName);
+                const attempt     = entityos.get({ scope: 'activator-apply-deploy', context: 'lambdaCreateAttempt' }) || 1;
+                const maxAttempts = 6;
+
+                console.log('[11/14] Creating Lambda function:', deploy.functionName, '(attempt ' + attempt + '/' + maxAttempts + ')');
 
                 lambda.send(new CreateFunctionCommand({
                     FunctionName: deploy.functionName,
@@ -618,11 +656,26 @@ module.exports =
                 {
                     console.log('  ✓ Function created:', response.FunctionArn);
                     entityos.set({ scope: 'activator-apply-deploy', context: 'functionARN', value: response.FunctionArn });
+                    entityos.set({ scope: 'activator-apply-deploy', context: 'lambdaCreateAttempt', value: 1 });
                     entityos.invoke('util-aws-activator-apply-deploy-apigw-check');
                 })
                 .catch(function (err)
                 {
-                    entityos.invoke('util-end', 'CreateFunction error: ' + err.message, '500');
+                    // Freshly created IAM roles aren't immediately assumable — Lambda
+                    // validates assumability on create, so this races IAM propagation.
+                    const rolePropagating = /cannot be assumed by Lambda/i.test(err.message || '');
+
+                    if (rolePropagating && attempt < maxAttempts)
+                    {
+                        const waitMs = 5000;
+                        console.log('  → Role not yet assumable (IAM propagation) — retrying in ' + (waitMs / 1000) + 's');
+                        entityos.set({ scope: 'activator-apply-deploy', context: 'lambdaCreateAttempt', value: attempt + 1 });
+                        setTimeout(function () { entityos.invoke('util-aws-activator-apply-deploy-lambda-create'); }, waitMs);
+                    }
+                    else
+                    {
+                        entityos.invoke('util-end', 'CreateFunction error: ' + err.message, '500');
+                    }
                 });
             }
         });
