@@ -1,0 +1,677 @@
+---
+layout: null
+title: Activators - selfdriven You
+permalink: /rewrite-your-future
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<link rel="icon" type="image/png" href="assets/img/selfdriven-you-logo-round-4colour-blend.png">
+<link rel="shortcut icon" href="/assets/img/selfdriven-you-logo-round-4colour-blend.png">
+<link rel="apple-touch-icon" href="/assets/img/selfdriven-you-logo-round-4colour-blend.png" />
+<title>Rewrite the Future | selfdriven.you</title>
+<meta name="description" content="A practical tool for rewriting your default future — built on the Three Laws of Performance and the four modes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090f; --surface:#111118; --surface2:#18181f;
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+  --text:#f0eeff; --muted:#7e7a9a; --muted2:#3d3a55;
+  --curious:#f5c842; --caring:#ff5f7e; --constructive:#00e5a0; --chill:#7b6cff; --chill-bright:#9b8fff;
+  --curious-dim:rgba(245,200,66,0.13); --caring-dim:rgba(255,95,126,0.13);
+  --constructive-dim:rgba(0,229,160,0.13); --chill-dim:rgba(123,108,255,0.13);
+  --pill:999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text);
+  line-height:1.6; overflow-x:hidden; cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+a{cursor:none}
+::selection{background:rgba(245,200,66,.28)}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif; line-height:1.08}
+.wrap{max-width:960px;margin:0 auto;padding:0 22px}
+
+/* ---------- cursor ---------- */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--curious);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .12s ease,background .2s}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(240,238,255,.3);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .2s,height .2s,border-color .2s}
+@media (hover:none){body{cursor:auto}a{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.nav-in{max-width:960px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.04em;display:inline-flex;align-items:center;gap:0}
+.logo .markdots{display:inline-flex;gap:3px;flex-shrink:0;margin-right:4px}
+.logo .markdots i{width:7px;height:7px;border-radius:50%;display:block}
+.logo .markdots i:nth-child(1){background:var(--curious)}
+.logo .markdots i:nth-child(2){background:var(--caring)}
+.logo .markdots i:nth-child(3){background:var(--constructive)}
+.logo .markdots i:nth-child(4){background:var(--chill)}
+@keyframes dotWave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.logo .markdots.wave i{animation:dotWave .7s ease}
+.logo .markdots.wave i:nth-child(1){animation-delay:0s}
+.logo .markdots.wave i:nth-child(2){animation-delay:.12s}
+.logo .markdots.wave i:nth-child(3){animation-delay:.24s}
+.logo .markdots.wave i:nth-child(4){animation-delay:.36s}
+@media (prefers-reduced-motion:reduce){.logo .markdots.wave i{animation:none}}
+.logo em{font-style:normal;color:var(--curious)}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:var(--pill);transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-cta{border:1px solid var(--border2)!important;color:var(--text)!important}
+@media(max-width:620px){.nav-links .hidesm{display:none}}
+
+/* ---------- glow blobs ---------- */
+.blobs{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.gblob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.42}
+.gb1{width:520px;height:520px;background:var(--curious);top:-170px;left:-160px;animation:gb 15s ease-in-out infinite}
+.gb2{width:440px;height:440px;background:var(--caring);top:20px;right:-140px;animation:gb 19s ease-in-out infinite reverse}
+.gb3{width:360px;height:360px;background:var(--constructive);bottom:-80px;left:16%;animation:gb 23s ease-in-out infinite 3s}
+.gb4{width:320px;height:320px;background:var(--chill);bottom:10px;right:12%;animation:gb 17s ease-in-out infinite 8s}
+@keyframes gb{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(34px,-26px) scale(1.08)}70%{transform:translate(-22px,30px) scale(.93)}}
+@media(max-width:640px){.gblob{opacity:.22}}
+
+/* ---------- hero ---------- */
+header{position:relative;padding:150px 0 78px;overflow:hidden}
+.hero-in{position:relative;z-index:2}
+.hero-scrim{position:relative}
+.hero-scrim::after{content:'';position:absolute;inset:-40px -14%;background:radial-gradient(ellipse at 30% 45%,rgba(9,9,15,.62),transparent 72%);z-index:-1;pointer-events:none}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.7);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--constructive);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+header h1{font-size:clamp(38px,7vw,68px);font-weight:800;letter-spacing:-.04em;margin:26px 0 20px}
+header h1 .grad{background:linear-gradient(100deg,var(--curious),var(--caring) 42%,var(--constructive) 72%,var(--chill-bright));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:620px;margin-bottom:14px}
+.lede strong{color:var(--text);font-weight:600}
+.quotemark{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;color:var(--muted);font-style:italic;margin-top:26px}
+.jump-row{position:relative;display:flex;flex-wrap:wrap;gap:11px;margin-top:34px}
+.jump-row::before{content:'';position:absolute;inset:-26px -8%;background:radial-gradient(ellipse at center,rgba(9,9,15,.5),transparent 74%);z-index:-1;pointer-events:none}
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s}
+.mode-pill svg{width:16px;height:16px}
+.mode-pill:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.mp-c{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.mp-k{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.mp-b{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+.mp-l{background:var(--chill-dim);color:var(--chill-bright);border-color:rgba(123,108,255,.28)}
+
+/* ---------- sections ---------- */
+section{position:relative;padding:64px 0}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.sec-head{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.035em;margin-bottom:16px}
+.sec-sub{color:var(--muted);max-width:640px;font-size:17px}
+.sec-sub strong{color:var(--text);font-weight:600}
+
+/* default future callout */
+.callout{margin-top:34px;background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:22px;padding:30px 30px 32px;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--curious),var(--caring),var(--constructive),var(--chill))}
+.callout h3{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+.callout p{color:var(--muted);font-size:15.5px}
+.callout p+p{margin-top:12px}
+.callout strong{color:var(--text);font-weight:600}
+
+/* three laws */
+.laws{display:grid;gap:18px;margin-top:36px}
+.law{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px 26px 28px;position:relative;transition:border-color .25s,transform .25s}
+.law:hover{border-color:var(--border2);transform:translateY(-3px)}
+.law-top{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.law-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none}
+.law-lens{display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:600;padding:5px 12px;border-radius:var(--pill);border:1.5px solid transparent}
+.law-lens svg{width:14px;height:14px}
+.law h3{font-size:19px;font-weight:700;letter-spacing:-.02em;flex:1 1 240px;min-width:0}
+.law p{color:var(--muted);font-size:15px}
+.law p+p{margin-top:11px}
+.law strong{color:var(--text);font-weight:600}
+.law .maxim{font-family:'Bricolage Grotesque',sans-serif;font-style:italic;color:var(--text);font-size:15.5px;margin-top:14px;padding-left:14px;border-left:2px solid var(--l)}
+.law{--l:var(--curious)}
+.law.l1{--l:var(--curious)} .law.l2{--l:var(--caring)} .law.l3{--l:var(--constructive)}
+.l1 .law-num{background:var(--curious-dim);color:var(--curious)} .l1 .law-lens{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.l2 .law-num{background:var(--caring-dim);color:var(--caring)} .l2 .law-lens{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.l3 .law-num{background:var(--constructive-dim);color:var(--constructive)} .l3 .law-lens{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+
+/* ---------- the practice / worksheet ---------- */
+.practice{background:linear-gradient(180deg,rgba(17,17,24,.5),rgba(9,9,15,0))}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:28px 26px 30px;margin-top:20px;position:relative}
+.step-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:18px}
+.step-badge{flex:none;width:46px;height:46px;border-radius:13px;display:grid;place-items:center}
+.step-badge svg{width:22px;height:22px}
+.step-meta{flex:1;min-width:0}
+.step-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+.step h3{font-size:20px;font-weight:700;letter-spacing:-.025em}
+.step-help{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+.step-help strong{color:var(--text);font-weight:600}
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:7px}
+.field .hint{font-weight:400;color:var(--muted);font-size:12.5px}
+textarea,input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:13px 15px;resize:vertical;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:74px;line-height:1.55}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--fc,var(--curious));box-shadow:0 0 0 3px var(--fcd,var(--curious-dim))}
+.grid2{display:grid;gap:16px}
+@media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+
+/* per-step accent colouring */
+.step.s-c{--fc:var(--curious);--fcd:var(--curious-dim)}
+.step.s-k{--fc:var(--caring);--fcd:var(--caring-dim)}
+.step.s-l{--fc:var(--chill-bright);--fcd:var(--chill-dim)}
+.step.s-b{--fc:var(--constructive);--fcd:var(--constructive-dim)}
+.s-c .step-badge{background:var(--curious-dim);color:var(--curious)} .s-c .step-kicker{color:var(--curious)}
+.s-k .step-badge{background:var(--caring-dim);color:var(--caring)} .s-k .step-kicker{color:var(--caring)}
+.s-l .step-badge{background:var(--chill-dim);color:var(--chill-bright)} .s-l .step-kicker{color:var(--chill-bright)}
+.s-b .step-badge{background:var(--constructive-dim);color:var(--constructive)} .s-b .step-kicker{color:var(--constructive)}
+.insight{margin-top:16px;font-size:13.5px;color:var(--muted);padding:12px 15px;background:var(--bg);border:1px dashed var(--border2);border-radius:12px}
+.insight strong{color:var(--text);font-weight:600}
+.decl textarea{min-height:96px;font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:500}
+
+/* summary / rewrite card */
+.summary{margin-top:26px;background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:22px;padding:30px 28px;position:relative;overflow:hidden}
+.summary::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--curious),var(--caring),var(--constructive),var(--chill))}
+.summary h3{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.summary .empty{color:var(--muted);font-size:15px}
+#sumBody{display:none}
+#sumBody.show{display:block}
+.sum-row{padding:16px 0;border-bottom:1px solid var(--border)}
+.sum-row:last-child{border-bottom:none}
+.sum-k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sum-v{font-size:15.5px;color:var(--text);white-space:pre-wrap}
+.sum-v.decl-v{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.02em;color:var(--constructive)}
+
+/* action bar */
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:600;border:1.5px solid var(--border2);background:transparent;color:var(--text);cursor:none;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.btn svg{width:16px;height:16px}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.btn-primary{background:var(--constructive);color:#04120c;border-color:transparent}
+.btn-ghost:hover{border-color:var(--caring);color:var(--caring)}
+.saved{font-size:12.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;display:inline-flex;align-items:center;gap:7px;opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
+.saved .sd{width:6px;height:6px;border-radius:50%;background:var(--constructive)}
+@media(hover:none){.btn{cursor:pointer}}
+
+/* footer */
+footer{border-top:1px solid var(--border);padding:44px 0 60px;margin-top:40px}
+.foot-in{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+.foot-in p{color:var(--muted);font-size:14px;max-width:440px}
+.foot-in a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--muted2)}
+.modes-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.ml{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+.ml i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- icon symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-telescope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="13" r="3"/><path d="M3 7l5.5 2.5"/><path d="M3 7l2-4 14.5 6.5-2 4"/><path d="M8.5 9.5L6 20h5l1.5-4"/><path d="M17 16v4"/></symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <symbol id="ic-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/></symbol>
+  <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></symbol>
+  <symbol id="ic-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="ic-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></symbol>
+</svg>
+
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<nav>
+  <div class="nav-in">
+    <a href="https://selfdriven.you" class="logo"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
+    <div class="nav-links">
+      <a href="#laws" class="hidesm">The laws</a>
+      <a href="#practice" class="hidesm">The practice</a>
+      <a href="#practice" class="nav-cta">Start</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="blobs">
+    <div class="gblob gb1"></div><div class="gblob gb2"></div>
+    <div class="gblob gb3"></div><div class="gblob gb4"></div>
+  </div>
+  <div class="wrap hero-in">
+    <div class="hero-scrim">
+      <span class="hero-pill"><span class="dot"></span>A practice for stuck situations</span>
+      <h1>Rewrite your future,<br><span class="grad">and old problems disappear.</span></h1>
+      <p class="lede">Some problems never get solved. You try everything, they come back. That's not a willpower gap — it's a <strong>default future</strong> you can't see, quietly running the show. This is a tool for finding it and writing a new one.</p>
+      <p class="quotemark">Built on the Three Laws of Performance (Zaffron &amp; Logan), read through the four modes.</p>
+    </div>
+    <div class="jump-row">
+      <a href="#practice" class="mode-pill mp-c"><svg><use href="#ic-telescope"/></svg>See how it occurs</a>
+      <a href="#practice" class="mode-pill mp-k"><svg><use href="#ic-heart"/></svg>Name the racket</a>
+      <a href="#practice" class="mode-pill mp-l"><svg><use href="#ic-waves"/></svg>Create space</a>
+      <a href="#practice" class="mode-pill mp-b"><svg><use href="#ic-hammer"/></svg>Declare it</a>
+    </div>
+  </div>
+</header>
+
+<!-- default future concept -->
+<section id="idea">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">The one idea underneath everything</p>
+      <h2 class="sec-head">You have a default future.</h2>
+      <p class="sec-sub">It's what you believe, deep in your bones, is <strong>actually going to happen</strong> — the outcome you'd bet on if you were honest. You didn't choose it. Your past wrote it: your assumptions, fears, old evidence. And without noticing, you act in exactly the ways that make it come true.</p>
+    </div>
+    <div class="callout reveal">
+      <h3>Why the usual fixes fail</h3>
+      <p>We attack problems by breaking them into pieces and solving them one at a time. That treats symptoms. The <strong>context</strong> that keeps generating the problem stays untouched — so the problem regrows, often somewhere new. Cut the budget, morale drops, output falls, the numbers get worse.</p>
+      <p>The move isn't a better fix. It's to make the invisible default future <strong>visible</strong>, then write a different one. When the future changes, a whole cluster of old problems stops making sense at once — and disappears.</p>
+    </div>
+  </div>
+</section>
+
+<!-- three laws -->
+<section id="laws">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">The mechanism · three laws</p>
+      <h2 class="sec-head">How the default future runs you.</h2>
+      <p class="sec-sub">Three laws describe the machinery. Like gravity, they operate whether or not you notice them. Each one is a lens — and each maps cleanly onto one of the four modes.</p>
+    </div>
+
+    <div class="laws">
+      <div class="law l1 reveal">
+        <div class="law-top">
+          <span class="law-num">01</span>
+          <span class="law-lens"><svg><use href="#ic-telescope"/></svg>Curious</span>
+          <h3>How a situation <em>occurs</em> to you drives what you do.</h3>
+        </div>
+        <p>Your actions never fight how a situation shows up for you — they match it, perfectly, every time. So the facts matter less than your <strong>reading</strong> of them. And that reading is built from two things: the story you tell about the past, and the outcome you already expect. That expected outcome <em>is</em> your default future.</p>
+        <p class="maxim">First move: notice you're not seeing it as it is. You're seeing it as it appears.</p>
+      </div>
+
+      <div class="law l2 reveal">
+        <div class="law-top">
+          <span class="law-num">02</span>
+          <span class="law-lens"><svg><use href="#ic-heart"/></svg>Caring</span>
+          <h3>How it occurs to you lives in language.</h3>
+        </div>
+        <p>The "occurring" isn't floating in the air — it's made of language. Not just words: tone, silence, the things left <strong>unsaid but fully communicated</strong>. Most of what runs you is a <em>racket</em> — a complaint you've repeated so long it now feels like plain truth. Rackets survive because they pay off. Find the language and you find the lever.</p>
+        <p class="maxim">Whatever you resist, persists. The complaint you defend is the one holding you.</p>
+      </div>
+
+      <div class="law l3 reveal">
+        <div class="law-top">
+          <span class="law-num">03</span>
+          <span class="law-lens"><svg><use href="#ic-hammer"/></svg>Constructive</span>
+          <h3>Future-based language rewrites what's possible.</h3>
+        </div>
+        <p>Descriptive language reports what already happened — useful for looking back, useless for changing anything. <strong>Generative language</strong> speaks a future into being that didn't exist a second ago. "America." "I have a dream." A future declared clearly enough changes how right now occurs to you — and your actions follow.</p>
+        <p class="maxim">You can't paint on a full canvas. First create space <span style="color:var(--chill-bright)">(that's Chill)</span> — then declare.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- the practice -->
+<section id="practice" class="practice">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">The practice · ~15 minutes</p>
+      <h2 class="sec-head">Rewrite one future.</h2>
+      <p class="sec-sub">Pick one situation that keeps not working and walk it through the modes. Everything you type stays <strong>on this device</strong> — saved locally, never sent anywhere. Export it when you're done.</p>
+    </div>
+
+    <!-- step 0: the situation -->
+    <div class="step s-c reveal">
+      <div class="step-head">
+        <div class="step-badge"><svg><use href="#ic-telescope"/></svg></div>
+        <div class="step-meta">
+          <div class="step-kicker">Start · the situation</div>
+          <h3>Name the thing that keeps coming back.</h3>
+        </div>
+      </div>
+      <p class="step-help">One specific situation that hasn't worked no matter what you've tried. A relationship, a project, a pattern with money or health. Be concrete.</p>
+      <div class="field">
+        <label>The stuck situation <span class="hint">— what keeps recurring?</span></label>
+        <textarea data-key="situation" placeholder="e.g. Every project I lead stalls two-thirds of the way through and I end up carrying it alone."></textarea>
+      </div>
+    </div>
+
+    <!-- step 1: curious / law 1 -->
+    <div class="step s-c reveal">
+      <div class="step-head">
+        <div class="step-badge"><svg><use href="#ic-telescope"/></svg></div>
+        <div class="step-meta">
+          <div class="step-kicker">Curious · Law 01</div>
+          <h3>How does it occur to you?</h3>
+        </div>
+      </div>
+      <p class="step-help">Don't describe what's true — describe how it <strong>shows up for you</strong>. Two ingredients build the occurring: your read of the past, and the future you already expect.</p>
+      <div class="grid2">
+        <div class="field">
+          <label>Why you believe it's this way <span class="hint">— your read of the past</span></label>
+          <textarea data-key="past" placeholder="The story you tell about how it got like this."></textarea>
+        </div>
+        <div class="field">
+          <label>How you expect it to turn out <span class="hint">— your default future</span></label>
+          <textarea data-key="expect" placeholder="If nothing changes, where does this honestly end up?"></textarea>
+        </div>
+      </div>
+      <div class="insight">That expectation isn't a prediction — it's an <strong>instruction</strong> you're already following. This whole picture is your reality illusion: not how it is, just how it appears.</div>
+    </div>
+
+    <!-- step 2: caring / law 2 racket -->
+    <div class="step s-k reveal">
+      <div class="step-head">
+        <div class="step-badge"><svg><use href="#ic-heart"/></svg></div>
+        <div class="step-meta">
+          <div class="step-kicker">Caring · Law 02</div>
+          <h3>Name the racket.</h3>
+        </div>
+      </div>
+      <p class="step-help">A racket is a persistent complaint plus a fixed way of being — one you unknowingly keep, because it pays off. Naming all four parts is what loosens its grip.</p>
+      <div class="grid2">
+        <div class="field">
+          <label>The complaint <span class="hint">— the line you keep repeating</span></label>
+          <textarea data-key="complaint" placeholder="What you always think or say about this situation."></textarea>
+        </div>
+        <div class="field">
+          <label>Your fixed way of acting <span class="hint">— what you always do</span></label>
+          <textarea data-key="fixed" placeholder="The move you default to: withdraw, over-give, control, go quiet…"></textarea>
+        </div>
+        <div class="field">
+          <label>The payoff <span class="hint">— what you get to be or avoid</span></label>
+          <textarea data-key="payoff" placeholder="Being right, staying safe, avoiding risk, dodging responsibility, keeping the higher ground…"></textarea>
+        </div>
+        <div class="field">
+          <label>The cost <span class="hint">— what it's quietly taking</span></label>
+          <textarea data-key="cost" placeholder="Energy, closeness, a relationship, aliveness, time you won't get back…"></textarea>
+        </div>
+      </div>
+      <div class="insight">The payoff is <strong>why the racket survives</strong>. The cost is what makes you willing to give it up. Sit with the cost until giving up the payoff feels worth it.</div>
+    </div>
+
+    <!-- step 3: chill / create space -->
+    <div class="step s-l reveal">
+      <div class="step-head">
+        <div class="step-badge"><svg><use href="#ic-waves"/></svg></div>
+        <div class="step-meta">
+          <div class="step-kicker">Chill · create space</div>
+          <h3>Empty the canvas.</h3>
+        </div>
+      </div>
+      <p class="step-help">You can't write a new future over a full one. Space opens when you complete something — <strong>give up being right, forgive, let a grudge go, or declare something finished.</strong></p>
+      <div class="field">
+        <label>What are you willing to give up, forgive, or complete? <span class="hint">— to make room</span></label>
+        <textarea data-key="space" placeholder="The thing you'd have to release for a different future to even fit."></textarea>
+      </div>
+      <div class="insight">This is the quiet, unglamorous step most people skip — and it's the one that makes the next one real.</div>
+    </div>
+
+    <!-- step 4: constructive / law 3 declaration -->
+    <div class="step s-b reveal">
+      <div class="step-head">
+        <div class="step-badge"><svg><use href="#ic-hammer"/></svg></div>
+        <div class="step-meta">
+          <div class="step-kicker">Constructive · Law 03</div>
+          <h3>Declare the new future.</h3>
+        </div>
+      </div>
+      <p class="step-help">Not a wish, not a description of the problem — a <strong>declaration</strong> in future-based language. Present tense, specific, spoken as already underway. This is the sentence you'll live into instead.</p>
+      <div class="field decl">
+        <label>The declaration <span class="hint">— "I am creating a future where…"</span></label>
+        <textarea data-key="declaration" placeholder="I am creating a future where the projects I lead are carried by the whole team, and finishing is something we do together."></textarea>
+      </div>
+      <div class="field">
+        <label>The smallest move that lives into it <span class="hint">— do it in the next 24 hours</span></label>
+        <textarea data-key="action" placeholder="One concrete action a future-you would obviously take."></textarea>
+      </div>
+      <div class="insight">A future only becomes real when you act from it. Make the first action small enough that not doing it would be strange.</div>
+    </div>
+
+    <!-- summary -->
+    <div class="summary reveal">
+      <h3>Your rewrite</h3>
+      <p class="empty" id="sumEmpty">Fill in the steps above and your rewrite assembles here — ready to export.</p>
+      <div id="sumBody">
+        <div class="sum-row"><div class="sum-k">The stuck situation</div><div class="sum-v" data-sum="situation"></div></div>
+        <div class="sum-row"><div class="sum-k">How it occurs · past → expected future</div><div class="sum-v" data-sum="occur"></div></div>
+        <div class="sum-row"><div class="sum-k">The racket · complaint / fixed act / payoff / cost</div><div class="sum-v" data-sum="racket"></div></div>
+        <div class="sum-row"><div class="sum-k">Space created</div><div class="sum-v" data-sum="space"></div></div>
+        <div class="sum-row"><div class="sum-k">The new future — declared</div><div class="sum-v decl-v" data-sum="declaration"></div></div>
+        <div class="sum-row"><div class="sum-k">First move · next 24 hours</div><div class="sum-v" data-sum="action"></div></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="exportBtn"><svg><use href="#ic-download"/></svg>Export as text</button>
+        <button class="btn btn-ghost" id="resetBtn"><svg><use href="#ic-refresh"/></svg>Clear &amp; start over</button>
+        <span class="saved" id="savedTag"><span class="sd"></span>saved on this device</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>
+      <p><a href="https://selfdriven.you">selfdriven.you</a> — a sustainable rhythm for a fully human life in the age of intelligence. This tool adapts <em>The Three Laws of Performance</em> by Steve Zaffron &amp; Dave Logan into a modes-based practice.</p>
+      <div class="modes-legend">
+        <span class="ml"><i style="background:var(--curious)"></i>Curious</span>
+        <span class="ml"><i style="background:var(--caring)"></i>Caring</span>
+        <span class="ml"><i style="background:var(--constructive)"></i>Constructive</span>
+        <span class="ml"><i style="background:var(--chill-bright)"></i>Chill</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- cursor ---------- */
+(function(){
+  var dot=document.getElementById('cdot'), ring=document.getElementById('cring');
+  if(!dot||!ring) return;
+  var rx=0,ry=0,dx=0,dy=0;
+  document.addEventListener('mousemove',function(e){ dx=e.clientX; dy=e.clientY; dot.style.left=dx+'px'; dot.style.top=dy+'px'; });
+  function loop(){ rx+=(dx-rx)*.18; ry+=(dy-ry)*.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); }
+  loop();
+  document.querySelectorAll('a,.btn,textarea,input,.mode-pill').forEach(function(el){
+    el.addEventListener('mouseenter',function(){ ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='rgba(245,200,66,.6)'; });
+    el.addEventListener('mouseleave',function(){ ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='rgba(240,238,255,.3)'; });
+  });
+})();
+
+/* ---------- markdots logo wave (on load + hover) ---------- */
+(function(){
+  var dots=document.querySelector('.logo .markdots');
+  var logo=document.querySelector('.logo');
+  if(!dots) return;
+  function wave(){ dots.classList.remove('wave'); void dots.offsetWidth; dots.classList.add('wave'); }
+  if(document.readyState==='complete') wave(); else window.addEventListener('load',wave);
+  (logo||dots).addEventListener('mouseenter',wave);
+})();
+
+/* ---------- scroll reveal ---------- */
+(function(){
+  var io=new IntersectionObserver(function(es){ es.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('vis'); io.unobserve(x.target); } }); },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+
+/* ---------- persistence (IndexedDB + localStorage fallback + legacy migration) ---------- */
+(function(){
+  var DB_NAME='selfdriven-rewrite', STORE='kv', KEY='state', LEGACY_PREFIX='sd-rewrite-';
+  var FIELDS=['situation','past','expect','complaint','fixed','payoff','cost','space','declaration','action'];
+  var inputs={}, state={}, saveTimer=null, dbRef=null;
+
+  FIELDS.forEach(function(f){ inputs[f]=document.querySelector('[data-key="'+f+'"]'); });
+
+  function openDB(){
+    return new Promise(function(res,rej){
+      if(!('indexedDB' in window)){ rej('no-idb'); return; }
+      var r;
+      try{ r=indexedDB.open(DB_NAME,1); }catch(e){ rej(e); return; }
+      r.onupgradeneeded=function(){ r.result.createObjectStore(STORE); };
+      r.onsuccess=function(){ res(r.result); };
+      r.onerror=function(){ rej(r.error); };
+    });
+  }
+  function idbGet(db,key){
+    return new Promise(function(res,rej){
+      var tx=db.transaction(STORE,'readonly').objectStore(STORE).get(key);
+      tx.onsuccess=function(){ res(tx.result); }; tx.onerror=function(){ rej(tx.error); };
+    });
+  }
+  function idbSet(db,key,val){
+    return new Promise(function(res,rej){
+      var tx=db.transaction(STORE,'readwrite').objectStore(STORE).put(val,key);
+      tx.onsuccess=function(){ res(); }; tx.onerror=function(){ rej(tx.error); };
+    });
+  }
+  function lsGet(){ try{ var v=localStorage.getItem(DB_NAME); return v?JSON.parse(v):null; }catch(e){ return null; } }
+  function lsSet(v){ try{ localStorage.setItem(DB_NAME,JSON.stringify(v)); }catch(e){} }
+
+  // pull any legacy per-field localStorage keys into a single object
+  function migrateLegacy(){
+    var found=null;
+    try{
+      FIELDS.forEach(function(f){
+        var v=localStorage.getItem(LEGACY_PREFIX+f);
+        if(v!==null){ (found=found||{})[f]=v; localStorage.removeItem(LEGACY_PREFIX+f); }
+      });
+    }catch(e){}
+    return found;
+  }
+
+  function collect(){ var o={}; FIELDS.forEach(function(f){ o[f]=inputs[f]?inputs[f].value:''; }); return o; }
+
+  function persist(){
+    state=collect();
+    if(dbRef){ idbSet(dbRef,KEY,state).catch(function(){ lsSet(state); }); }
+    else { lsSet(state); }
+    flashSaved();
+    renderSummary();
+  }
+
+  var savedTag=document.getElementById('savedTag'), flashTimer=null;
+  function flashSaved(){
+    if(!savedTag) return;
+    savedTag.classList.add('show');
+    clearTimeout(flashTimer);
+    flashTimer=setTimeout(function(){ savedTag.classList.remove('show'); },1400);
+  }
+
+  function hydrate(data){
+    if(!data) return;
+    FIELDS.forEach(function(f){ if(inputs[f] && typeof data[f]==='string'){ inputs[f].value=data[f]; } });
+    renderSummary();
+  }
+
+  /* ---------- summary rendering ---------- */
+  function v(f){ return (inputs[f]&&inputs[f].value.trim())||''; }
+  function renderSummary(){
+    var any=FIELDS.some(function(f){ return v(f); });
+    var body=document.getElementById('sumBody'), empty=document.getElementById('sumEmpty');
+    if(!any){ body.classList.remove('show'); empty.style.display='block'; return; }
+    empty.style.display='none'; body.classList.add('show');
+
+    set('situation', v('situation'));
+    var occur='';
+    if(v('past')) occur+='Past: '+v('past');
+    if(v('expect')) occur+=(occur?'\n':'')+'Expected: '+v('expect');
+    set('occur', occur);
+    var r=[];
+    if(v('complaint')) r.push('Complaint — '+v('complaint'));
+    if(v('fixed')) r.push('Fixed act — '+v('fixed'));
+    if(v('payoff')) r.push('Payoff — '+v('payoff'));
+    if(v('cost')) r.push('Cost — '+v('cost'));
+    set('racket', r.join('\n'));
+    set('space', v('space'));
+    set('declaration', v('declaration'));
+    set('action', v('action'));
+  }
+  function set(sumKey,val){
+    var el=document.querySelector('[data-sum="'+sumKey+'"]');
+    if(!el) return;
+    if(!val){ el.textContent='—'; el.style.opacity='.4'; }
+    else { el.textContent=val; el.style.opacity='1'; }
+  }
+
+  /* ---------- export ---------- */
+  function exportText(){
+    var lines=[];
+    lines.push('REWRITE THE FUTURE — selfdriven.you');
+    lines.push('Based on the Three Laws of Performance (Zaffron & Logan)');
+    lines.push('Date: '+new Date().toLocaleDateString());
+    lines.push('');
+    lines.push('== THE STUCK SITUATION ==');
+    lines.push(v('situation')||'(blank)');
+    lines.push('');
+    lines.push('== 01 · CURIOUS — how it occurs to me ==');
+    lines.push('Read of the past: '+(v('past')||'(blank)'));
+    lines.push('Default future I expect: '+(v('expect')||'(blank)'));
+    lines.push('');
+    lines.push('== 02 · CARING — the racket ==');
+    lines.push('Complaint: '+(v('complaint')||'(blank)'));
+    lines.push('Fixed way of acting: '+(v('fixed')||'(blank)'));
+    lines.push('Payoff: '+(v('payoff')||'(blank)'));
+    lines.push('Cost: '+(v('cost')||'(blank)'));
+    lines.push('');
+    lines.push('== CHILL — space I created ==');
+    lines.push(v('space')||'(blank)');
+    lines.push('');
+    lines.push('== 03 · CONSTRUCTIVE — the new future ==');
+    lines.push('Declaration: '+(v('declaration')||'(blank)'));
+    lines.push('First move (next 24h): '+(v('action')||'(blank)'));
+    lines.push('');
+    lines.push('— Rewrite the future, and old problems disappear.');
+    var blob=new Blob([lines.join('\n')],{type:'text/plain'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    var slug=(v('situation')||'rewrite').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'rewrite';
+    a.href=url; a.download='rewrite-the-future-'+slug+'.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+  }
+
+  function reset(){
+    if(!confirm('Clear everything and start over? This can\u2019t be undone.')) return;
+    FIELDS.forEach(function(f){ if(inputs[f]) inputs[f].value=''; });
+    state={};
+    if(dbRef){ idbSet(dbRef,KEY,{}).catch(function(){}); }
+    lsSet({});
+    renderSummary();
+    document.getElementById('practice').scrollIntoView({behavior:'smooth'});
+  }
+
+  /* ---------- wire up ---------- */
+  FIELDS.forEach(function(f){
+    if(!inputs[f]) return;
+    inputs[f].addEventListener('input',function(){
+      renderSummary();
+      clearTimeout(saveTimer);
+      saveTimer=setTimeout(persist,350);
+    });
+  });
+  var eb=document.getElementById('exportBtn'); if(eb) eb.addEventListener('click',exportText);
+  var rb=document.getElementById('resetBtn'); if(rb) rb.addEventListener('click',reset);
+
+  /* ---------- boot ---------- */
+  openDB().then(function(db){
+    dbRef=db;
+    return idbGet(db,KEY);
+  }).then(function(data){
+    var legacy=migrateLegacy();
+    if((!data || !Object.keys(data).length) && legacy){ data=legacy; }
+    if(!data || !Object.keys(data).length){ var ls=lsGet(); if(ls) data=ls; }
+    hydrate(data);
+    if(legacy && dbRef){ idbSet(dbRef,KEY,collect()).catch(function(){}); }
+  }).catch(function(){
+    // IndexedDB unavailable — fall back to localStorage entirely
+    var legacy=migrateLegacy();
+    var data=lsGet()||legacy;
+    hydrate(data);
+  });
+})();
+</script>
+</body>
+</html>
