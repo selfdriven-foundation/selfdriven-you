@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The undertow — selfdriven.you</title>
+<meta name="description" content="When obsession turns destructive: how to tell intense from harmful, count the real cost, spot the red flags, and use the 4Cs — Chill, Caring, Curious, Constructive — to get back to shore.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090f;--surface:#111118;--surface2:#18181f;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#f0eeff;--muted:#8f8bad;--muted2:#3d3a55;
+  --soft:rgba(240,238,255,.8);
+  --curious:#f5c842;--caring:#ff5f7e;--constructive:#00e5a0;--chill:#7b6cff;--chill-bright:#9b8fff;
+  --curious-dim:rgba(245,200,66,.13);--caring-dim:rgba(255,95,126,.13);--constructive-dim:rgba(0,229,160,.13);--chill-dim:rgba(123,108,255,.13);
+  --pill:999px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:132px}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none}
+a,button,.check-row{cursor:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* cursor */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--curious);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .12s ease,background .2s}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(240,238,255,.3);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .2s,height .2s,border-color .2s}
+@media (hover:none){body,a,button,.check-row{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* nav */
+nav.top{position:fixed;top:0;left:0;right:0;height:64px;z-index:100;display:flex;align-items:center;background:rgba(9,9,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+nav.top .wrap{width:100%;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;color:var(--text);display:inline-flex;align-items:center;gap:0}
+.brand .markdots{display:inline-flex;gap:3px;flex-shrink:0;margin-right:4px}
+.brand .markdots i{width:7px;height:7px;border-radius:50%;display:block}
+.brand .markdots i:nth-child(1){background:var(--curious)}
+.brand .markdots i:nth-child(2){background:var(--caring)}
+.brand .markdots i:nth-child(3){background:var(--constructive)}
+.brand .markdots i:nth-child(4){background:var(--chill)}
+@keyframes dotWave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.brand .markdots.wave i{animation:dotWave .7s ease}
+.brand .markdots.wave i:nth-child(1){animation-delay:0s}
+.brand .markdots.wave i:nth-child(2){animation-delay:.12s}
+.brand .markdots.wave i:nth-child(3){animation-delay:.24s}
+.brand .markdots.wave i:nth-child(4){animation-delay:.36s}
+@media (prefers-reduced-motion:reduce){.brand .markdots.wave i{animation:none}}
+.brand em{font-style:normal;color:var(--curious)}
+.nav-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* hero — quieter blobs for a heavier subject */
+.hero{position:relative;overflow:hidden;padding:148px 0 84px}
+.gblob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.18;z-index:0}
+.gb1{width:520px;height:520px;background:var(--curious);top:-150px;left:-160px;animation:gb 15s ease-in-out infinite}
+.gb2{width:440px;height:440px;background:var(--caring);top:40px;right:-130px;animation:gb 19s ease-in-out infinite reverse}
+.gb3{width:360px;height:360px;background:var(--constructive);bottom:-60px;left:18%;animation:gb 23s ease-in-out infinite 3s}
+.gb4{width:320px;height:320px;background:var(--chill);bottom:20px;right:12%;animation:gb 17s ease-in-out infinite 8s}
+@keyframes gb{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(34px,-26px) scale(1.08)}70%{transform:translate(-22px,30px) scale(.93)}}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 88% 74% at 50% 50%,rgba(9,9,15,.86),rgba(9,9,15,.55) 46%,rgba(9,9,15,.18) 78%,transparent)}
+.hero .wrap{position:relative;z-index:2;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.7);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--caring);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+.hero h1{text-wrap:balance;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,7.6vw,88px);line-height:.98;letter-spacing:-.045em;margin:24px auto 20px;max-width:960px}
+.grad{background:linear-gradient(90deg,var(--caring),var(--chill-bright));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{max-width:660px;margin:0 auto;font-size:clamp(17px,2.1vw,20px);line-height:1.55;color:rgba(240,238,255,.9)}
+.safety{display:inline-block;text-align:center;margin-top:26px;padding:10px 18px;border-radius:16px;background:rgba(9,9,15,.6);border:1px solid rgba(255,95,126,.3);font-size:14px;color:rgba(240,238,255,.86)}
+.safety a{color:var(--text);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(255,95,126,.5)}
+.hero .fine{margin-top:16px;font-size:13px;color:rgba(240,238,255,.62)}
+.jump-row{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+.jump-row::before{content:'';position:absolute;inset:-30px -10%;background:radial-gradient(ellipse at center,rgba(9,9,15,.55),transparent 72%);z-index:-1;pointer-events:none}
+
+/* mode pills + chips */
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s}
+.mode-pill:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.mode-pill svg{width:16px;height:16px}
+.mp-c{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.mp-k{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.mp-b{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+.mp-l{background:var(--chill-dim);color:var(--chill-bright);border-color:rgba(123,108,255,.28)}
+.chip{display:inline-flex;align-items:center;padding:2px 10px;border-radius:var(--pill);font-family:'Bricolage Grotesque',sans-serif;font-size:12.5px;font-weight:600;border:1px solid transparent;line-height:1.5}
+.c-curious{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.c-caring{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.c-constructive{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+.c-chill{background:var(--chill-dim);color:var(--chill-bright);border-color:rgba(123,108,255,.28)}
+
+/* progress */
+.progress-wrap{position:sticky;top:64px;z-index:50;background:rgba(9,9,15,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.progress-wrap .wrap{display:flex;align-items:center;gap:14px;height:56px}
+.ptext{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap}
+.ptext b{color:var(--text);font-weight:700}
+.ptext .sep{margin:0 8px;color:var(--muted2)}
+.ptext .pico{width:13px;height:13px;vertical-align:-2px;margin-right:6px;color:var(--muted)}
+.bar{flex:1;min-width:40px;height:6px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--chill-bright),var(--caring),var(--curious),var(--constructive));transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--pill);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:border-color .2s,background .2s,transform .2s;white-space:nowrap}
+.btn:hover{border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+.btn svg{width:15px;height:15px}
+.btn.ghost{background:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--text)}
+
+/* sections */
+section.block{padding:76px 0 0}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.eyebrow b{font-weight:500;color:var(--text)}
+h2{text-wrap:balance;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(31px,4.8vw,52px);line-height:1.02;letter-spacing:-.04em;margin:10px 0 14px;max-width:860px}
+.lede{max-width:690px;font-size:17px;color:var(--soft)}
+h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:-.03em;line-height:1.15}
+.ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--accent-dim);color:var(--accent);flex-shrink:0}
+.ico svg{width:20px;height:20px}
+
+/* 01 — the line */
+.line{margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:22px;overflow:hidden}
+.lrow{display:grid;grid-template-columns:150px 1fr 1fr;border-top:1px solid var(--border)}
+.lrow:first-child{border-top:0}
+.lrow>div{padding:14px 22px}
+.lk{display:flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.li{color:var(--soft);font-size:15.5px}
+.ld{color:var(--text);font-size:15.5px;background:rgba(255,95,126,.045);border-left:1px solid var(--border)}
+.lhead>div{padding-top:18px;padding-bottom:14px}
+.lhead .li,.lhead .ld{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:19px;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+.lhead .li{color:var(--constructive)}
+.lhead .ld{color:var(--caring)}
+.lhead svg{width:18px;height:18px}
+
+/* 02 — the ledger */
+.ledger{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,box-shadow .3s}
+.card-head{display:flex;align-items:center;gap:12px}
+.card-head .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{font-size:23px}
+.card-head .count-pill{margin-left:auto}
+.card.full{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 18px 60px -24px var(--accent)}
+.card .why{font-size:14.5px;color:rgba(240,238,255,.74);padding-left:14px;border-left:2px solid var(--accent)}
+.rows{list-style:none;display:grid;gap:8px}
+.check-row{display:grid;grid-template-columns:22px 1fr;column-gap:12px;align-items:start;padding:12px 14px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);transition:border-color .2s,background .2s;-webkit-user-select:none;user-select:none}
+.check-row:hover{border-color:var(--border2)}
+.check-row:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.check-row .check{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--border2);display:grid;place-items:center;margin-top:1px;transition:background .2s,border-color .2s}
+.check-row .check svg{width:14px;height:14px;opacity:0;color:var(--bg);transition:opacity .15s}
+.check-row .tier{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.check-row .txt{font-size:15px;color:var(--text)}
+.check-row.on{border-color:var(--accent);background:var(--accent-dim)}
+.check-row.on .check{background:var(--accent);border-color:var(--accent)}
+.check-row.on .check svg{opacity:1}
+.count-pill{font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:4px 11px;border-radius:var(--pill);background:var(--surface2);color:var(--muted);border:1px solid var(--border);white-space:nowrap}
+.card.full .count-pill,.card.done .count-pill{background:var(--accent-dim);color:var(--accent);border-color:transparent}
+.reading{position:relative;overflow:hidden;margin-top:16px;padding:22px 24px 22px 28px;background:var(--surface);border:1px solid var(--border2);border-radius:20px}
+.reading::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--chill-bright),var(--caring),var(--constructive),var(--curious))}
+.reading .rk{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.reading .rt{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:21px;letter-spacing:-.03em;margin:4px 0 6px}
+.reading p{color:var(--soft);font-size:15.5px;max-width:820px}
+.reading .rfine{margin-top:8px;font-size:13px;color:var(--muted)}
+
+/* 03 — red flags */
+.flags{margin-top:28px;display:grid;gap:12px}
+.rf{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:20px 22px;background:var(--surface);border:1px solid rgba(255,95,126,.28);border-radius:20px}
+.rf .ico{--accent:var(--caring);--accent-dim:var(--caring-dim);width:44px;height:44px}
+.rf h3{font-size:19px;margin-bottom:4px}
+.rf p{color:var(--soft);font-size:15px}
+.rf .go{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tel{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--pill);background:var(--surface2);border:1px solid var(--border2);color:var(--text);text-decoration:none;font-size:13.5px;font-weight:600;transition:border-color .2s}
+.tel:hover{border-color:rgba(255,255,255,.32)}
+.tel b{font-family:'JetBrains Mono',monospace;font-weight:500;color:var(--curious);white-space:nowrap}
+.tel.urgent{border-color:rgba(255,95,126,.55);background:var(--caring-dim)}
+.tel.urgent b{color:var(--caring)}
+
+/* 04 — the undertow's voice */
+.voices{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+.voice{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.voice::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--accent)}
+.voice .mk{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.voice blockquote{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:22px;line-height:1.15;letter-spacing:-.03em;color:var(--text)}
+.voice p{color:var(--soft);font-size:15px;flex:1}
+.counter{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;padding-top:12px;border-top:1px solid var(--border);font-size:14px;color:var(--soft)}
+.counter span:last-child{flex-basis:100%}
+.counter svg{width:14px;height:14px;color:var(--muted)}
+
+/* 05 — repair */
+.repair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.card.done{box-shadow:0 0 0 1px var(--accent),0 18px 60px -24px var(--accent)}
+.card .step-n{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.repair-note{margin-top:16px;font-size:14px;color:var(--muted);max-width:760px}
+
+/* 06 — plan */
+.boxes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.box h3{font-size:21px;display:flex;align-items:center;gap:12px}
+.box h3 small{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:1px}
+.box label{font-size:14px;font-weight:600;color:var(--text);margin-top:2px}
+.box textarea{width:100%;min-height:92px;resize:vertical;background:var(--bg);border:1px solid var(--border2);border-radius:14px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;outline:none;transition:border-color .2s,box-shadow .2s}
+.box textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.box textarea::placeholder{color:rgba(240,238,255,.32)}
+.saved{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);transition:color .3s}
+.saved.flash{color:var(--constructive)}
+
+/* 07 — someone you love */
+.two{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-top:28px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:24px 26px}
+.panel h3{font-size:21px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.panel ul{list-style:none;display:grid;gap:12px}
+.panel li{position:relative;padding-left:20px;color:var(--soft);font-size:15.5px}
+.panel li b{color:var(--text);font-weight:600}
+.panel li::before{content:'';position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.panel p{color:var(--soft);font-size:15.5px}
+.panel .go{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+
+/* 08 — help */
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.svc{display:flex;flex-direction:column;gap:3px;padding:16px 18px;border-radius:18px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-decoration:none;transition:border-color .2s,transform .2s}
+a.svc:hover{border-color:var(--border2);transform:translateY(-2px)}
+.svc .nm{font-weight:600;font-size:15px}
+.svc .num{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--curious)}
+.svc .for{font-size:13.5px;color:var(--muted)}
+.svc.urgent{border-color:rgba(255,95,126,.45);background:linear-gradient(180deg,rgba(255,95,126,.08),var(--surface))}
+.svc.urgent .num{color:var(--caring)}
+.help-else{margin-top:16px;font-size:14px;color:var(--muted)}
+.help-else a{color:var(--text)}
+
+/* closing + footer */
+.closing{padding:96px 0 12px;text-align:center;overflow:hidden}
+.closing h2{margin:10px auto 14px}
+.closing .lede{margin:0 auto}
+.closing .jump-row{margin-top:28px}
+.companion{display:inline-flex;align-items:center;gap:8px;margin-top:26px;font-size:14.5px;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--border2);padding-bottom:2px}
+.companion:hover{color:var(--text)}
+.companion svg{width:15px;height:15px}
+footer{margin-top:72px;border-top:1px solid var(--border);padding:32px 0 44px}
+footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px}
+.flinks{display:flex;gap:20px}
+.flinks a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s}
+.flinks a:hover{color:var(--text)}
+.savednote{font-size:13px;color:var(--muted);max-width:420px}
+.tagline{width:100%;font-size:13px;color:var(--muted)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .gblob,.hero-pill .dot{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* responsive */
+@media (max-width:980px){.voices{grid-template-columns:1fr 1fr}.services{grid-template-columns:1fr 1fr}}
+@media (max-width:820px){.ledger,.repair,.boxes,.two{grid-template-columns:1fr}}
+@media (max-width:700px){
+  .lrow{grid-template-columns:1fr 1fr}
+  .lrow .lk{grid-column:1/-1;padding-bottom:0}
+  .lhead .lk{display:none}
+  .lrow>div{padding:12px 16px}
+  .lrow:not(.lhead) .lk~div{padding-top:6px}
+  .ld{border-left:1px solid var(--border)}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .hero{padding:124px 0 64px}
+  section.block{padding-top:60px}
+  .voices,.services{grid-template-columns:1fr}
+  .ptext .lbl{display:none}
+  .btn span{display:none}
+  .btn{padding:8px 10px}
+  .nav-tag{display:none}
+  .card,.panel,.rf{padding:20px}
+  .rf{grid-template-columns:1fr;gap:12px}
+  .gblob{opacity:.16}
+  .li,.ld{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-telescope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="17" cy="13" r="3"/><path d="M3 7l5.5 2.5"/><path d="M3 7l2-4 14.5 6.5-2 4"/>
+    <path d="M8.5 9.5L6 20h5l1.5-4"/><path d="M17 16v4"/>
+  </symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </symbol>
+  <symbol id="ic-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/>
+    <path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>
+  </symbol>
+  <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+  </symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+  </symbol>
+  <symbol id="ic-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+  </symbol>
+  <symbol id="ic-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+  </symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/>
+  </symbol>
+  <symbol id="ic-ledger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+  </symbol>
+  <symbol id="ic-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </symbol>
+  <symbol id="ic-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </symbol>
+  <symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </symbol>
+  <symbol id="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14"/><path d="M5 12h14"/>
+  </symbol>
+</svg>
+
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<nav class="top">
+  <div class="wrap">
+    <a href="the-quiet-mirror.html" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
+    <span class="nav-tag">the 4Cs · when it turns</span>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
+  <div class="wrap">
+    <span class="hero-pill"><span class="dot"></span>When obsession turns destructive</span>
+    <h1>The undertow.<br><span class="grad">When it starts to cost.</span></h1>
+    <p class="sub">Destructive obsession rarely feels like drowning. It feels like swimming harder — while your health, money and the people you love drift further away. This page is for noticing the pull, counting the cost honestly, and getting back to shore.</p>
+    <div class="safety">In danger right now? Call <a href="tel:000">000</a> — or Lifeline on <a href="tel:131114">13 11 14</a>, any time.</div>
+    <div class="jump-row">
+      <a class="mode-pill mp-l" href="#r-chill"><svg><use href="#ic-waves"/></svg>Chill</a>
+      <a class="mode-pill mp-k" href="#r-caring"><svg><use href="#ic-heart"/></svg>Caring</a>
+      <a class="mode-pill mp-c" href="#r-curious"><svg><use href="#ic-telescope"/></svg>Curious</a>
+      <a class="mode-pill mp-b" href="#r-constructive"><svg><use href="#ic-hammer"/></svg>Constructive</a>
+    </div>
+    <p class="fine">Honest, not clinical — and not a diagnosis. Everything you tick or type stays on this device.</p>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="wrap">
+    <span class="ptext"><svg class="pico" aria-hidden="true"><use href="#ic-ledger"/></svg><b id="signN">0</b><span class="lbl"> signs ticked</span><span class="sep">·</span><b id="repN">0</b> / <span id="repTotal">0</span><span class="lbl"> repair</span> moves</span>
+    <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+    <button type="button" class="btn" id="dlBtn" title="Download as Markdown"><svg><use href="#ic-download"/></svg><span>Download</span></button>
+    <button type="button" class="btn ghost" id="resetBtn" title="Clear everything on this page"><svg><use href="#ic-reset"/></svg><span>Reset</span></button>
+  </div>
+</div>
+
+<main>
+
+<section class="block" id="line">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>01</b> · The line</div>
+      <h2>Intense isn’t the problem. Destructive is.</h2>
+      <p class="lede">The same trait can build a life or quietly take one apart. The difference isn’t how much you care about the thing — it’s what the caring is costing, and who is paying.</p>
+    </div>
+    <div class="line reveal" role="table" aria-label="Intense versus destructive obsession">
+      <div class="lrow lhead" role="row"><div class="lk" role="columnheader"></div><div class="li" role="columnheader"><svg><use href="#ic-plus"/></svg>Intense</div><div class="ld" role="columnheader"><svg><use href="#ic-alert"/></svg>Destructive</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">Choice</div><div class="li" role="cell">You chose it, and could choose otherwise</div><div class="ld" role="cell">It chose you, and choosing feels impossible</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">Stopping</div><div class="li" role="cell">Hard, but you can</div><div class="ld" role="cell">You stop, and it pulls you straight back</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">The cost</div><div class="li" role="cell">Time and attention</div><div class="ld" role="cell">Health, money, trust, safety</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">Openness</div><div class="li" role="cell">You talk about it freely</div><div class="ld" role="cell">You hide it, play it down, or lie about it</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">Other people</div><div class="li" role="cell">Benefit from your depth</div><div class="ld" role="cell">Are paying for it</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">Afterwards</div><div class="li" role="cell">Rest refills you</div><div class="ld" role="cell">Nothing refills you except more of it</div></div>
+      <div class="lrow" role="row"><div class="lk" role="rowheader">Over time</div><div class="li" role="cell">The pull stays about the same</div><div class="ld" role="cell">It takes more to feel the same</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="ledger-sec">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>02</b> · The ledger</div>
+      <h2>Count the cost — honestly.</h2>
+      <p class="lede">Four places destructive obsession takes from, one per mode it pushes aside. Tick what’s true right now, not what was true on your best week. Nobody sees this but you.</p>
+    </div>
+    <div class="ledger" id="ledger"></div>
+    <div class="reading reveal" id="reading" aria-live="polite">
+      <div class="rk">What your ledger is saying</div>
+      <div class="rt" id="readingTitle"></div>
+      <p id="readingText"></p>
+      <p class="rfine">A rough guide, not a score or a diagnosis. The red flags below matter more than any count.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="flags">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>03</b> · Red flags</div>
+      <h2>Stop here if any of these are true.</h2>
+      <p class="lede">These aren’t things to work through with a checklist. Each one is a reason to talk to a real person — today.</p>
+    </div>
+    <div class="flags">
+      <div class="rf reveal">
+        <span class="ico"><svg><use href="#ic-alert"/></svg></span>
+        <div><h3>You’re thinking about hurting yourself</h3><p>Or that people would be better off without you. You don’t have to be sure it’s “bad enough” to call.</p>
+        <div class="go"><a class="tel urgent" href="tel:131114">Lifeline <b>13 11 14</b></a><a class="tel" href="tel:1300659467">Suicide Call Back Service <b>1300 659 467</b></a><a class="tel urgent" href="tel:000">Immediate danger <b>000</b></a></div></div>
+      </div>
+      <div class="rf reveal">
+        <span class="ico"><svg><use href="#ic-alert"/></svg></span>
+        <div><h3>It’s about a person who has asked for space</h3><p>You’re still checking on them, contacting them, or turning up — after they’ve pulled away or said stop. Whatever it feels like from inside, that’s harm to them. Stop contact now and talk to your GP or a psychologist. If it’s a partner or ex and you’re monitoring, controlling or frightening them, call the Men’s Referral Service.</p>
+        <div class="go"><a class="tel" href="tel:1300766491">No to Violence — Men’s Referral Service <b>1300 766 491</b></a></div></div>
+      </div>
+      <div class="rf reveal">
+        <span class="ico"><svg><use href="#ic-alert"/></svg></span>
+        <div><h3>You’re hiding losses, or chasing money back</h3><p>Debt you haven’t told anyone about. Borrowing to keep going. Betting to win back what’s gone. Tell someone tonight.</p>
+        <div class="go"><a class="tel" href="tel:1800858858">Gambling Help <b>1800 858 858</b></a></div></div>
+      </div>
+      <div class="rf reveal">
+        <span class="ico"><svg><use href="#ic-alert"/></svg></span>
+        <div><h3>You’re using something to keep going — or to come down</h3><p>Alcohol, stimulants or other drugs have become how you fuel it or how you switch it off, and it’s taking more.</p>
+        <div class="go"><a class="tel" href="tel:1800250015">National Alcohol and Other Drug Hotline <b>1800 250 015</b></a></div></div>
+      </div>
+      <div class="rf reveal">
+        <span class="ico"><svg><use href="#ic-alert"/></svg></span>
+        <div><h3>The obsession is food, weight, your body or exercise</h3><p>It’s taking over your days, your mood or your health. This is common, serious and treatable — and specialists know it well.</p>
+        <div class="go"><a class="tel" href="tel:1800334673">Butterfly Foundation <b>1800 33 4673</b></a></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="voice">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>04</b> · The undertow’s voice</div>
+      <h2>Why it’s so hard to see from inside.</h2>
+      <p class="lede">Destructive obsession protects itself. It sounds reasonable, and it sounds like you. Learn the four voices, and the mode that answers each one.</p>
+    </div>
+    <div class="voices">
+      <article class="voice reveal" style="--accent:var(--curious);--accent-dim:var(--curious-dim)">
+        <div class="mk">Narrowing</div>
+        <blockquote>“Nothing else really interests me anyway.”</blockquote>
+        <p>The world shrinks until the obsession looks normal-sized. Without anything to compare it to, the cost becomes invisible.</p>
+        <div class="counter"><svg><use href="#ic-arrow"/></svg><span class="chip c-curious">Curious</span><span>widen the frame</span></div>
+      </article>
+      <article class="voice reveal" style="--accent:var(--caring);--accent-dim:var(--caring-dim)">
+        <div class="mk">Hiding</div>
+        <blockquote>“They wouldn’t understand.”</blockquote>
+        <p>Secrecy feels like privacy. It’s actually the undertow cutting off the feedback — the people who would notice and say something.</p>
+        <div class="counter"><svg><use href="#ic-arrow"/></svg><span class="chip c-caring">Caring</span><span>let someone in</span></div>
+      </article>
+      <article class="voice reveal" style="--accent:var(--chill-bright);--accent-dim:var(--chill-dim)">
+        <div class="mk">Escalating</div>
+        <blockquote>“Just this once more.”</blockquote>
+        <p>Each round takes a bit more to feel the same, and each “last time” resets the clock. The pull gets stronger by being obeyed.</p>
+        <div class="counter"><svg><use href="#ic-arrow"/></svg><span class="chip c-chill">Chill</span><span>take a real pause</span></div>
+      </article>
+      <article class="voice reveal" style="--accent:var(--constructive);--accent-dim:var(--constructive-dim)">
+        <div class="mk">Justifying</div>
+        <blockquote>“I’ve put too much in to stop now.”</blockquote>
+        <p>Sunk cost and “I’m so close” keep you going long after the evidence says stop. Ask when you first said you were close.</p>
+        <div class="counter"><svg><use href="#ic-arrow"/></svg><span class="chip c-constructive">Constructive</span><span>test the story</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="repair-sec">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>05</b> · Back to shore</div>
+      <h2>The 4Cs, as a repair sequence.</h2>
+      <p class="lede">Here the order matters. Chill creates the distance, Caring breaks the secrecy, Curious finds out what the obsession is doing for you, and Constructive builds the guardrails. Start at the top.</p>
+    </div>
+    <div class="repair" id="repair"></div>
+    <p class="repair-note reveal">Willpower is the weakest tool here. Distance, people and structure do the heavy lifting — and professional help isn’t a last resort, it’s part of the sequence.</p>
+  </div>
+</section>
+
+<section class="block" id="plan">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>06</b> · Your plan</div>
+      <h2>Write it down before the pull comes back.</h2>
+      <p class="lede">Decisions made in the current don’t hold. Decide now, while you can see the shore. These save on this device and come with you in the download.</p>
+    </div>
+    <div class="boxes" id="boxes"></div>
+    <div class="saved" id="savedMsg" aria-live="polite">Saves as you type.</div>
+  </div>
+</section>
+
+<section class="block" id="loved">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>07</b> · Someone you love</div>
+      <h2>If you’re watching someone get pulled under.</h2>
+      <p class="lede">It’s its own kind of hard. The aim is caring without carrying all of it.</p>
+    </div>
+    <div class="two">
+      <div class="panel reveal" style="--accent:var(--caring);--accent-dim:var(--caring-dim)">
+        <h3><span class="ico"><svg><use href="#ic-users"/></svg></span>Caring, without carrying</h3>
+        <ul>
+          <li><b>Name what you see, specifically and kindly.</b> The behaviour, not their character — “you’ve been up past 3 most nights this month” lands better than “you’re obsessed”.</li>
+          <li><b>Don’t cover for it.</b> Paying debts, making excuses or keeping the secret removes the feedback that might help them stop.</li>
+          <li><b>Expect defensiveness.</b> Say it once, clearly. Leave the door open. Ask what would help.</li>
+          <li><b>Look after yourself too.</b> Most of the services below support family and friends as well — you can call them about someone else.</li>
+        </ul>
+      </div>
+      <div class="panel reveal" style="--accent:var(--chill-bright);--accent-dim:var(--chill-dim)">
+        <h3><span class="ico"><svg><use href="#ic-shield"/></svg></span>If you feel unsafe</h3>
+        <p>If you’re frightened of them, being controlled, monitored or followed — that isn’t yours to manage alone, and it isn’t your fault.</p>
+        <div class="go"><a class="tel" href="tel:1800737732">1800RESPECT <b>1800 737 732</b></a><a class="tel urgent" href="tel:000">Immediate danger <b>000</b></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="help">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><b>08</b> · Help</div>
+      <h2>People whose job this is.</h2>
+      <p class="lede">Free and confidential in Australia. Calling isn’t admitting defeat — it’s the Caring and Curious modes, pointed at yourself.</p>
+    </div>
+    <div class="services">
+      <a class="svc urgent reveal" href="tel:000"><span class="nm">Emergency</span><span class="num">000</span><span class="for">Immediate danger to you or anyone else.</span></a>
+      <a class="svc urgent reveal" href="tel:131114"><span class="nm">Lifeline</span><span class="num">13 11 14</span><span class="for">24/7 crisis support, whatever’s going on.</span></a>
+      <a class="svc reveal" href="tel:1300659467"><span class="nm">Suicide Call Back Service</span><span class="num">1300 659 467</span><span class="for">24/7 counselling if suicide is on your mind or someone else’s.</span></a>
+      <a class="svc reveal" href="tel:1300224636"><span class="nm">Beyond Blue</span><span class="num">1300 22 4636</span><span class="for">24/7 support for anxiety, depression and feeling overwhelmed.</span></a>
+      <a class="svc reveal" href="tel:1300789978"><span class="nm">MensLine Australia</span><span class="num">1300 78 99 78</span><span class="for">24/7 counselling for men — stress, relationships, anything.</span></a>
+      <a class="svc reveal" href="tel:1800858858"><span class="nm">Gambling Help</span><span class="num">1800 858 858</span><span class="for">Gambling harm — yours, or someone you’re worried about.</span></a>
+      <a class="svc reveal" href="tel:1800250015"><span class="nm">National Alcohol and Other Drug Hotline</span><span class="num">1800 250 015</span><span class="for">Alcohol and drug use — yours or someone else’s.</span></a>
+      <a class="svc reveal" href="tel:1800334673"><span class="nm">Butterfly Foundation</span><span class="num">1800 33 4673</span><span class="for">Eating, body image and exercise worries.</span></a>
+      <a class="svc reveal" href="tel:1300766491"><span class="nm">Men’s Referral Service</span><span class="num">1300 766 491</span><span class="for">For men worried about their own controlling or abusive behaviour.</span></a>
+      <a class="svc reveal" href="tel:1800737732"><span class="nm">1800RESPECT</span><span class="num">1800 737 732</span><span class="for">If you’re on the receiving end of control, abuse or violence.</span></a>
+      <div class="svc reveal"><span class="nm">Your GP</span><span class="num">Book this week</span><span class="for">Ask about a mental health treatment plan and a referral.</span></div>
+    </div>
+    <p class="help-else reveal">Outside Australia, <a href="https://findahelpline.com" rel="noopener" target="_blank">findahelpline.com</a> lists free, confidential support by country.</p>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap reveal">
+    <div class="eyebrow">Turning back</div>
+    <h2>You’re not the obsession. You’re the one who can turn back.</h2>
+    <p class="lede">The intensity that pulled you out is the same intensity that can bring you in. Chill for distance. Caring to break the secrecy. Curious to understand it. Constructive to build the guardrails.</p>
+    <div class="jump-row">
+      <a class="mode-pill mp-l" href="#r-chill"><svg><use href="#ic-waves"/></svg>Chill</a>
+      <a class="mode-pill mp-k" href="#r-caring"><svg><use href="#ic-heart"/></svg>Caring</a>
+      <a class="mode-pill mp-c" href="#r-curious"><svg><use href="#ic-telescope"/></svg>Curious</a>
+      <a class="mode-pill mp-b" href="#r-constructive"><svg><use href="#ic-hammer"/></svg>Constructive</a>
+    </div>
+    <a class="companion" href="the-obsessive-nature.html">Intense, but not destructive? Start with Obsessive by nature <svg><use href="#ic-arrow"/></svg></a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="the-quiet-mirror.html" class="brand"><span class="markdots"><i></i><i></i><i></i><i></i></span><span style="margin-left:6px">selfdriven<em>.you</em></span></a>
+    <div class="flinks"><a href="https://selfdriven.you">Home</a><a href="https://selfdriven.tel">All tools</a></div>
+    <div class="savednote">Your answers save privately on this device. On a shared device, use Reset when you’re done.</div>
+    <div class="tagline">A sustainable rhythm for living a fully human life in the age of intelligence.</div>
+  </div>
+</footer>
+
+<script>
+/* ---------- content model ---------- */
+const MODES = {
+  curious:      { name:'Curious',      icon:'ic-telescope', color:'var(--curious)',      dim:'var(--curious-dim)' },
+  caring:       { name:'Caring',       icon:'ic-heart',     color:'var(--caring)',       dim:'var(--caring-dim)' },
+  constructive: { name:'Constructive', icon:'ic-hammer',    color:'var(--constructive)', dim:'var(--constructive-dim)' },
+  chill:        { name:'Chill',        icon:'ic-waves',     color:'var(--chill-bright)', dim:'var(--chill-dim)' }
+};
+
+const LEDGER = [
+  { key:'body', mode:'chill', title:'Body', sub:'What you’ve stopped listening to',
+    why:'Chill is the first mode to go. The body keeps the score long before the mind admits it.',
+    signs:[
+      'Sleep keeps losing to it — regularly, not just once',
+      'Meals get skipped, or you eat and drink to keep going or to come down',
+      'You push through pain, illness or exhaustion to keep at it',
+      'Caffeine, alcohol or something else has become how you manage the intensity'
+    ]},
+  { key:'people', mode:'caring', title:'People', sub:'Who’s paying for it',
+    why:'Caring gets crowded out quietly — first by absence, then by irritation, then by secrets.',
+    signs:[
+      'People close to you have said they’re worried — more than once',
+      'You’ve missed things that mattered to someone you love',
+      'You go cold or snap when you’re interrupted',
+      'You hide how much time, money or energy it really takes'
+    ]},
+  { key:'life', mode:'constructive', title:'Life', sub:'The structure that’s cracking',
+    why:'All the building energy goes into one thing, and everything else stops being maintained.',
+    signs:[
+      'Money is going into it that you can’t really afford',
+      'Work, study or commitments are slipping because of it',
+      'You’ve broken your own promises about limits or stopping',
+      'Bills, admin, home or health appointments are piling up'
+    ]},
+  { key:'mind', mode:'curious', title:'Mind', sub:'The world getting smaller',
+    why:'Curiosity narrows to a single point. Everything outside it starts to feel grey.',
+    signs:[
+      'Nothing else holds your interest any more',
+      'You feel flat, anxious or empty when you’re not doing it',
+      'It’s become who you are — losing it would feel like losing yourself',
+      'It takes more of it to feel the same as it used to'
+    ]}
+];
+
+const REPAIR_TIERS = ['Today', 'This week', 'Keep doing'];
+
+const REPAIR = [
+  { key:'chill', mode:'chill', n:'01', title:'Create distance',
+    why:'You can’t out-think a pull you’re standing in. Distance first, decisions later.',
+    actions:[
+      'Put real distance between you and it for the next few hours — log out, leave the device in another room, get outside.',
+      'Add friction: delete the app, remove saved cards, block the site, hand the key to someone else. Make the next round take effort.',
+      'Protect sleep before anything else. A tired brain has the weakest brakes.'
+    ]},
+  { key:'caring', mode:'caring', n:'02', title:'Break the secrecy',
+    why:'Hiding is how the undertow keeps you. Being known — fully — is how it lets go.',
+    actions:[
+      'Tell one person you trust the real size of it: the time, the money, what it’s cost. Not the edited version.',
+      'Ask someone it has affected how it’s been for them — then just listen. No defending, no explaining.',
+      'Agree a regular check-in with someone who’ll ask you straight, and give them permission to.'
+    ]},
+  { key:'curious', mode:'curious', n:'03', title:'Get a proper read',
+    why:'Destructive obsession is usually doing a job — numbing, escaping, controlling. Find out which job, with help.',
+    actions:[
+      'Book a GP appointment and say it plainly: “Something I do has become harmful and I can’t stop on my own.”',
+      'Notice what you feel just before the pull. Write it down the next three times. That feeling is what to work on.',
+      'Bring back one small thing the obsession crowded out — a person, a walk, something you loved before.'
+    ]},
+  { key:'constructive', mode:'constructive', n:'04', title:'Build guardrails',
+    why:'Willpower runs out. Structure doesn’t. Make the limits specific, visible, and someone else’s business too.',
+    actions:[
+      'Write your stop rules down — what you won’t do, and what you’ll do instead when the pull hits.',
+      'Make one limit visible to someone else: a shared budget, a screen-time report, a person who holds the card.',
+      'Plan for slips. A slip is information, not proof — note what led to it and tighten one guardrail.'
+    ]}
+];
+
+const PLAN = [
+  { key:'rules',   mode:'constructive', title:'Stop rules',   q:'What I won’t do any more — specific enough to check:', ph:'e.g. no betting apps on my phone · laptop shut by 10pm · no contacting them' },
+  { key:'tell',    mode:'caring',       title:'Who I’ll tell', q:'Who I’ll tell the real size of it, and when:',         ph:'A name, and the day I’ll do it' },
+  { key:'instead', mode:'chill',        title:'When it pulls', q:'When the pull hits, I’ll…',                            ph:'Leave the room, walk the block, call someone, shower, sleep on it' },
+  { key:'read',    mode:'curious',      title:'A proper read', q:'Who I’ll see, and when I’ll book it:',                 ph:'My GP, a psychologist, one of the services on this page' }
+];
+
+const RED_FLAGS = [
+  'Thinking about hurting yourself, or that people would be better off without you — Lifeline 13 11 14 · Suicide Call Back Service 1300 659 467 · 000 in immediate danger',
+  'Still checking on, contacting or turning up for a person who has asked for space — stop contact; GP or psychologist · Men’s Referral Service 1300 766 491',
+  'Hiding losses or chasing money back — Gambling Help 1800 858 858',
+  'Using alcohol or other drugs to keep going or come down — National Alcohol and Other Drug Hotline 1800 250 015',
+  'Food, weight, body or exercise has become the obsession — Butterfly Foundation 1800 33 4673'
+];
+
+const SIGN_TOTAL = LEDGER.reduce((s, d) => s + d.signs.length, 0);
+const REP_TOTAL = REPAIR.reduce((s, r) => s + r.actions.length, 0);
+
+/* ---------- state + persistence (own IndexedDB, localStorage fallback) ---------- */
+const DB_NAME = 'selfdriven-undertow';
+const DB_VER = 1;
+const STORE = 'undertow';
+const KEY = 'state';
+const LEGACY_LS = 'sd-undertow-v1';
+
+let state = { signs:{}, done:{}, plan:{} };
+
+function normalise(v){
+  const o = (v && typeof v === 'object') ? v : {};
+  const obj = x => (x && typeof x === 'object') ? x : {};
+  return { signs:obj(o.signs), done:obj(o.done), plan:obj(o.plan) };
+}
+
+let dbPromise = null;
+function idbOpen(){
+  if (dbPromise) return dbPromise;
+  dbPromise = new Promise((resolve, reject) => {
+    if (!('indexedDB' in window)) { reject(new Error('IndexedDB unavailable')); return; }
+    let req;
+    try { req = indexedDB.open(DB_NAME, DB_VER); } catch (e) { reject(e); return; }
+    req.onupgradeneeded = () => { const db = req.result; if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+    req.onblocked = () => reject(new Error('IndexedDB blocked'));
+  });
+  dbPromise.catch(() => { dbPromise = null; });
+  return dbPromise;
+}
+function idbGet(k){
+  return idbOpen().then(db => new Promise((resolve, reject) => {
+    const r = db.transaction(STORE, 'readonly').objectStore(STORE).get(k);
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  }));
+}
+function idbSet(k, v){
+  return idbOpen().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).put(v, k);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  }));
+}
+function idbDel(k){
+  return idbOpen().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).delete(k);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  }));
+}
+function lsGet(){ try { return JSON.parse(localStorage.getItem(LEGACY_LS) || 'null'); } catch (e) { return null; } }
+function lsSet(v){ try { localStorage.setItem(LEGACY_LS, JSON.stringify(v)); } catch (e) {} }
+function lsDel(){ try { localStorage.removeItem(LEGACY_LS); } catch (e) {} }
+
+const savedMsg = document.getElementById('savedMsg');
+let flashTimer = null;
+function flashSaved(){
+  if (!savedMsg) return;
+  savedMsg.textContent = 'Saved on this device · ' + new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  savedMsg.classList.add('flash');
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => savedMsg.classList.remove('flash'), 1400);
+}
+function save(){
+  const snapshot = JSON.parse(JSON.stringify(state));
+  return idbSet(KEY, snapshot).then(flashSaved).catch(() => { lsSet(snapshot); flashSaved(); });
+}
+let typeTimer = null;
+function saveSoon(){ clearTimeout(typeTimer); typeTimer = setTimeout(save, 400); }
+
+/* ---------- rendering ---------- */
+const accentStyle = m => `--accent:${MODES[m].color};--accent-dim:${MODES[m].dim}`;
+const checkRow = (kind, id, tier, txt) =>
+  `<li class="check-row" data-kind="${kind}" data-id="${id}" role="checkbox" aria-checked="false" tabindex="0"><span class="check"><svg><use href="#ic-check"/></svg></span><span class="body">${tier ? `<span class="tier">${tier}</span>` : ''}<span class="txt">${txt}</span></span></li>`;
+
+function renderLedger(){
+  document.getElementById('ledger').innerHTML = LEDGER.map(d => {
+    const m = MODES[d.mode];
+    return `<article class="card reveal" id="l-${d.key}" style="${accentStyle(d.mode)}">
+      <div class="card-head"><span class="ico"><svg><use href="#${m.icon}"/></svg></span><div><div class="k">${m.name} · ${d.sub}</div><h3>${d.title}</h3></div><span class="count-pill" data-count="${d.key}">0 / ${d.signs.length}</span></div>
+      <p class="why">${d.why}</p>
+      <ul class="rows">${d.signs.map((s, i) => checkRow('sign', `${d.key}-${i}`, '', s)).join('')}</ul>
+    </article>`;
+  }).join('');
+}
+
+function renderRepair(){
+  document.getElementById('repair').innerHTML = REPAIR.map(r => {
+    const m = MODES[r.mode];
+    return `<article class="card reveal" id="r-${r.key}" style="${accentStyle(r.mode)}">
+      <div class="card-head"><span class="ico"><svg><use href="#${m.icon}"/></svg></span><div><div class="k">${r.n} · ${m.name}</div><h3>${r.title}</h3></div><span class="count-pill" data-rcount="${r.key}">0 / ${r.actions.length}</span></div>
+      <p class="why">${r.why}</p>
+      <ul class="rows">${r.actions.map((a, i) => checkRow('move', `${r.key}-${i}`, REPAIR_TIERS[i], a)).join('')}</ul>
+    </article>`;
+  }).join('');
+}
+
+function renderBoxes(){
+  document.getElementById('boxes').innerHTML = PLAN.map(p => {
+    const m = MODES[p.mode];
+    return `<div class="box reveal" style="${accentStyle(p.mode)}">
+      <h3><span class="ico"><svg><use href="#${m.icon}"/></svg></span><span><small>${m.name}</small>${p.title}</span></h3>
+      <label for="plan-${p.key}">${p.q}</label>
+      <textarea id="plan-${p.key}" data-plan="${p.key}" placeholder="${p.ph}"></textarea>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- derived ---------- */
+const domainCount = d => d.signs.filter((_, i) => state.signs[`${d.key}-${i}`]).length;
+const repairCount = r => r.actions.filter((_, i) => state.done[`${r.key}-${i}`]).length;
+const signTotal = () => LEDGER.reduce((s, d) => s + domainCount(d), 0);
+const repairTotal = () => REPAIR.reduce((s, r) => s + repairCount(r), 0);
+
+function reading(){
+  const n = signTotal();
+  const full = LEDGER.filter(d => domainCount(d) === d.signs.length);
+  let title, text;
+  if (n === 0){
+    title = 'Nothing ticked yet.';
+    text = 'If that’s honest, good — come back if it changes. If you hesitated over a few, that hesitation is worth listening to.';
+  } else if (n <= 3){
+    title = 'Some cost is showing.';
+    text = 'Worth watching, and worth one honest conversation with someone you trust. Start with the Chill and Caring moves below.';
+  } else if (n <= 7){
+    title = 'This is costing real things.';
+    text = 'Start the repair sequence this week — distance first, then tell someone the real size of it. A GP appointment belongs in this week too.';
+  } else {
+    title = 'That’s a lot to carry on your own.';
+    text = 'Please talk to your GP or one of the services on this page — this is exactly what they’re for. You don’t need to fix it before you ask.';
+  }
+  if (full.length){
+    text += ` Your ${full.map(d => d.title.toLowerCase()).join(' and ')} ${full.length > 1 ? 'ledgers are' : 'ledger is'} full — start there.`;
+  }
+  return { title, text };
+}
+
+function refresh(){
+  LEDGER.forEach(d => {
+    const card = document.getElementById(`l-${d.key}`); if (!card) return;
+    const c = domainCount(d);
+    card.querySelector(`[data-count="${d.key}"]`).textContent = `${c} / ${d.signs.length}`;
+    card.classList.toggle('full', c === d.signs.length);
+  });
+  REPAIR.forEach(r => {
+    const card = document.getElementById(`r-${r.key}`); if (!card) return;
+    const c = repairCount(r);
+    card.querySelector(`[data-rcount="${r.key}"]`).textContent = `${c} / ${r.actions.length}`;
+    card.classList.toggle('done', c === r.actions.length);
+  });
+  const rt = repairTotal();
+  document.getElementById('signN').textContent = signTotal();
+  document.getElementById('repN').textContent = rt;
+  document.getElementById('repTotal').textContent = REP_TOTAL;
+  document.getElementById('barFill').style.width = (REP_TOTAL ? (rt / REP_TOTAL) * 100 : 0) + '%';
+  const r = reading();
+  document.getElementById('readingTitle').textContent = r.title;
+  document.getElementById('readingText').textContent = r.text;
+}
+
+function mapFor(kind){ return kind === 'sign' ? state.signs : state.done; }
+
+function applyState(){
+  document.querySelectorAll('.check-row').forEach(el => {
+    const on = !!mapFor(el.dataset.kind)[el.dataset.id];
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-checked', on ? 'true' : 'false');
+  });
+  document.querySelectorAll('textarea[data-plan]').forEach(ta => { ta.value = state.plan[ta.dataset.plan] || ''; });
+  refresh();
+}
+
+/* ---------- interaction ---------- */
+function toggleRow(el){
+  const map = mapFor(el.dataset.kind), id = el.dataset.id;
+  if (map[id]) delete map[id]; else map[id] = 1;
+  const on = !!map[id];
+  el.classList.toggle('on', on);
+  el.setAttribute('aria-checked', on ? 'true' : 'false');
+  refresh(); save();
+}
+
+function bindEvents(){
+  ['ledger', 'repair'].forEach(id => {
+    const host = document.getElementById(id);
+    host.addEventListener('click', e => { const r = e.target.closest('.check-row'); if (r) toggleRow(r); });
+    host.addEventListener('keydown', e => {
+      const r = e.target.closest('.check-row');
+      if (r && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggleRow(r); }
+    });
+  });
+  document.getElementById('boxes').addEventListener('input', e => {
+    const ta = e.target.closest('textarea[data-plan]'); if (!ta) return;
+    if (ta.value.trim()) state.plan[ta.dataset.plan] = ta.value; else delete state.plan[ta.dataset.plan];
+    saveSoon();
+  });
+  document.getElementById('dlBtn').addEventListener('click', downloadMarkdown);
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Clear everything you’ve ticked and written on this page?')) return;
+    state = { signs:{}, done:{}, plan:{} };
+    clearTimeout(typeTimer);
+    idbDel(KEY).catch(() => {}).then(() => { lsDel(); });
+    applyState();
+    if (savedMsg) { savedMsg.classList.remove('flash'); savedMsg.textContent = 'Cleared. Saves as you type.'; }
+  });
+}
+
+/* ---------- markdown export ---------- */
+function pad(n){ return String(n).padStart(2, '0'); }
+function fileName(){
+  const d = new Date();
+  return `the-undertow-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}.md`;
+}
+
+function buildMarkdown(){
+  const L = [];
+  const r = reading();
+  L.push('# The undertow — selfdriven.you', '');
+  L.push(`_Exported ${new Date().toLocaleString()} · private: this is your own self-check, keep it somewhere safe_`, '');
+  L.push(`**Signs ticked: ${signTotal()} / ${SIGN_TOTAL}**  `);
+  L.push(`**Repair moves: ${repairTotal()} / ${REP_TOTAL}**`, '');
+  L.push(`> **${r.title}** ${r.text}`, '', '---', '');
+
+  L.push('## My ledger', '');
+  LEDGER.forEach(d => {
+    const c = domainCount(d);
+    L.push(`### ${d.title} (${MODES[d.mode].name}) — ${d.sub}  (${c} / ${d.signs.length})`, '');
+    d.signs.forEach((s, i) => L.push(`- [${state.signs[`${d.key}-${i}`] ? 'x' : ' '}] ${s}`));
+    L.push('');
+  });
+  L.push('---', '');
+
+  L.push('## My plan', '');
+  PLAN.forEach(p => {
+    const v = (state.plan[p.key] || '').trim();
+    L.push(`**${p.title}** (${MODES[p.mode].name}) — ${p.q}`, '');
+    L.push(v ? v.split('\n').map(l => '> ' + l).join('\n') : '> _not written yet_', '');
+  });
+  L.push('---', '');
+
+  L.push('## Back to shore — the repair sequence', '');
+  REPAIR.forEach(rp => {
+    const c = repairCount(rp);
+    L.push(`### ${rp.n} · ${MODES[rp.mode].name} — ${rp.title}  (${c} / ${rp.actions.length})${c === rp.actions.length ? ' ✓' : ''}`, '');
+    L.push(`_${rp.why}_`, '');
+    rp.actions.forEach((a, i) => L.push(`- [${state.done[`${rp.key}-${i}`] ? 'x' : ' '}] **${REPAIR_TIERS[i]}** — ${a}`));
+    L.push('');
+  });
+  L.push('---', '');
+
+  L.push('## Red flags — talk to a real person today', '');
+  RED_FLAGS.forEach(f => L.push(`- ${f}`));
+  L.push('', '**In danger right now:** 000 · Lifeline 13 11 14 (24/7)', '');
+  L.push('---', '', '_selfdriven.you — a sustainable rhythm for living a fully human life in the age of intelligence_', '');
+  return L.join('\n');
+}
+
+function downloadMarkdown(){
+  const blob = new Blob([buildMarkdown()], { type:'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fileName();
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 500);
+}
+
+/* ---------- boot: render first, then load async ---------- */
+function boot(){
+  return idbGet(KEY)
+    .then(v => {
+      if (v) return v;
+      const legacy = lsGet();
+      if (legacy) return idbSet(KEY, legacy).then(() => { lsDel(); return legacy; }).catch(() => legacy);
+      return null;
+    })
+    .catch(() => lsGet())
+    .then(v => { if (v) state = normalise(v); applyState(); });
+}
+
+renderLedger();
+renderRepair();
+renderBoxes();
+bindEvents();
+refresh();
+boot();
+
+/* ---------- brand markdots ---------- */
+(function(){
+  document.querySelectorAll('.brand').forEach(function(logo){
+    var dots = logo.querySelector('.markdots'); if (!dots) return;
+    function wave(){ dots.classList.remove('wave'); void dots.offsetWidth; dots.classList.add('wave'); }
+    if (document.readyState === 'complete') wave(); else window.addEventListener('load', wave);
+    logo.addEventListener('mouseenter', wave);
+  });
+})();
+
+/* ---------- cursor ---------- */
+(function(){
+  var dot = document.getElementById('cdot'), ring = document.getElementById('cring');
+  if (!dot || !ring || window.matchMedia('(hover:none)').matches) return;
+  var rx = 0, ry = 0, dx = 0, dy = 0;
+  document.addEventListener('mousemove', function(e){ dx = e.clientX; dy = e.clientY; dot.style.left = dx + 'px'; dot.style.top = dy + 'px'; });
+  function loop(){ rx += (dx - rx) * .18; ry += (dy - ry) * .18; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); }
+  loop();
+  var HOT = 'a, button, .check-row, textarea';
+  document.addEventListener('mouseover', function(e){
+    if (e.target.closest(HOT)) { ring.style.width = '52px'; ring.style.height = '52px'; ring.style.borderColor = 'rgba(245,200,66,.6)'; }
+  });
+  document.addEventListener('mouseout', function(e){
+    if (e.target.closest(HOT)) { ring.style.width = '34px'; ring.style.height = '34px'; ring.style.borderColor = 'rgba(240,238,255,.3)'; }
+  });
+})();
+
+/* ---------- scroll reveal ---------- */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(function(el){ el.classList.add('vis'); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(x){ if (x.isIntersecting){ x.target.classList.add('vis'); io.unobserve(x.target); } });
+  }, { threshold:.14 });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
