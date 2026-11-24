@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alan Watts in Four Modes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one dark column, hero over four mode blobs, then Watts read through
+   Curious / Caring / Constructive / Chill, each as idea + practice; life and books as ledgers. */
+:root {
+  color-scheme: dark;
+  --bg: #09090f;
+  --surface: #111118;
+  --surface2: #18181f;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0eeff;
+  --muted: #a39fc0;
+  --muted2: #3d3a55;
+  --curious: #f5c842;
+  --caring: #ff5f7e;
+  --constructive: #00e5a0;
+  --chill: #7b6cff;
+  --chill-bright: #9b8fff;
+  --curious-dim: rgba(245,200,66,0.13);
+  --caring-dim: rgba(255,95,126,0.13);
+  --constructive-dim: rgba(0,229,160,0.13);
+  --chill-dim: rgba(123,108,255,0.13);
+  --pill: 999px;
+  --display: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif;
+  --body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; cursor: none; overflow-x: hidden;
+}
+a { color: inherit; cursor: none; }
+a:focus-visible { outline: 2px solid var(--curious); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+/* cursor */
+.cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--curious); pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+.cursor-ring { position: fixed; top: 0; left: 0; width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid rgba(240,238,255,.3); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .2s, height .2s, border-color .2s; }
+@media (hover: none) { body, a { cursor: auto; } .cursor-dot, .cursor-ring { display: none; } }
+
+/* nav */
+nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  background: rgba(9,9,15,.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 58px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -0.03em; }
+.brand em { font-style: normal; color: var(--curious); }
+.markdots { display: inline-flex; gap: 4px; }
+.markdots i { width: 8px; height: 8px; border-radius: 50%; animation: bob 2.4s ease-in-out infinite; }
+.markdots i:nth-child(1) { background: var(--curious); }
+.markdots i:nth-child(2) { background: var(--caring); animation-delay: .2s; }
+.markdots i:nth-child(3) { background: var(--constructive); animation-delay: .4s; }
+.markdots i:nth-child(4) { background: var(--chill-bright); animation-delay: .6s; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.navlinks { display: flex; gap: 18px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.navlinks a { text-decoration: none; }
+.navlinks a:hover { color: var(--text); }
+@media (max-width: 560px) { .navlinks a:not(.keep) { display: none; } }
+
+/* hero */
+.hero { position: relative; overflow: hidden; padding: 112px 0 56px; }
+.gblob { position: absolute; border-radius: 50%; filter: blur(95px); opacity: .34; z-index: 0; }
+.gb1 { width: 520px; height: 520px; background: var(--curious); top: -180px; left: -180px; animation: gb 15s ease-in-out infinite; }
+.gb2 { width: 440px; height: 440px; background: var(--caring); top: 20px; right: -160px; animation: gb 19s ease-in-out infinite reverse; }
+.gb3 { width: 360px; height: 360px; background: var(--constructive); bottom: -120px; left: 18%; animation: gb 23s ease-in-out infinite 3s; }
+.gb4 { width: 320px; height: 320px; background: var(--chill); bottom: -40px; right: 12%; animation: gb 17s ease-in-out infinite 8s; }
+@keyframes gb { 0%,100% { transform: translate(0,0) scale(1); } 40% { transform: translate(34px,-26px) scale(1.08); } 70% { transform: translate(-22px,30px) scale(.93); } }
+.hero::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 30% 45%, rgba(9,9,15,.78), rgba(9,9,15,.35) 60%, transparent 85%); }
+.hero .wrap { position: relative; z-index: 2; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(9,9,15,.55); border: 1px solid rgba(255,255,255,.22);
+  border-radius: var(--pill); padding: 7px 16px;
+  font-size: 12px; font-weight: 500; color: rgba(240,238,255,.8);
+  letter-spacing: .08em; text-transform: uppercase;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.hero-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--constructive); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+h1 { font-weight: 800; letter-spacing: -0.04em; line-height: .98; font-size: clamp(44px, 9vw, 92px); margin: 18px 0 16px; }
+h1 span { color: var(--curious); }
+.lede { max-width: 60ch; font-size: clamp(16px, 2.2vw, 19px); color: rgba(240,238,255,.86); }
+.jump-row { position: relative; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.mode-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: var(--pill);
+  font-family: var(--display); font-size: 14px; font-weight: 600;
+  text-decoration: none; border: 1.5px solid transparent;
+  transition: transform .2s, box-shadow .2s;
+}
+.mode-pill:hover { transform: translateY(-4px) rotate(-1.5deg); box-shadow: 0 14px 36px rgba(0,0,0,.5); }
+.mode-pill svg { width: 16px; height: 16px; }
+.mp-c { background: var(--curious-dim); color: var(--curious); border-color: rgba(245,200,66,.28); }
+.mp-k { background: var(--caring-dim); color: var(--caring); border-color: rgba(255,95,126,.28); }
+.mp-b { background: var(--constructive-dim); color: var(--constructive); border-color: rgba(0,229,160,.28); }
+.mp-l { background: var(--chill-dim); color: var(--chill-bright); border-color: rgba(123,108,255,.28); }
+
+/* facts strip */
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 36px; }
+.facts div { background: rgba(17,17,24,.88); padding: 14px 16px; }
+.facts dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.facts dd { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; margin-top: 2px; }
+@media (max-width: 700px) { .facts { grid-template-columns: 1fr 1fr; } }
+
+/* sections */
+section { padding: 44px 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+h2 { font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; font-size: clamp(28px, 5vw, 44px); margin: 6px 0 12px; }
+.prose { max-width: 65ch; color: rgba(240,238,255,.84); }
+.prose p + p { margin-top: 12px; }
+
+/* modes */
+.modes { display: grid; gap: 14px; margin-top: 22px; }
+.mode {
+  --c: var(--curious); --d: var(--curious-dim);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+  padding: 22px; display: grid; grid-template-columns: 1.25fr 1fr; gap: 22px;
+  border-left: 3px solid var(--c); scroll-margin-top: 74px;
+}
+.mode.k { --c: var(--caring); --d: var(--caring-dim); }
+.mode.b { --c: var(--constructive); --d: var(--constructive-dim); }
+.mode.l { --c: var(--chill-bright); --d: var(--chill-dim); }
+.mode-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.mode-ic { width: 40px; height: 40px; border-radius: 12px; background: var(--d); color: var(--c); display: grid; place-items: center; flex: none; }
+.mode-ic svg { width: 20px; height: 20px; }
+.mode-num { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+.mode h3 { font-weight: 800; font-size: 24px; letter-spacing: -0.03em; line-height: 1.1; }
+.mode p { color: rgba(240,238,255,.84); max-width: 60ch; }
+.mode p + p { margin-top: 10px; }
+.src { margin-top: 12px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.try { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; align-self: start; }
+.try h4 { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--c); margin-bottom: 8px; }
+.try ul { list-style: none; display: grid; gap: 10px; }
+.try li { display: grid; grid-template-columns: 82px 1fr; gap: 10px; font-size: 14.5px; line-height: 1.45; }
+.try li b { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+@media (max-width: 760px) { .mode { grid-template-columns: 1fr; gap: 16px; padding: 18px; } }
+
+/* timeline + books */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+.ledger { list-style: none; border-top: 1px solid var(--border2); }
+.ledger li { display: grid; grid-template-columns: 58px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.45; }
+.ledger time, .ledger .yr { font-family: var(--mono); font-size: 13px; color: var(--curious); font-variant-numeric: tabular-nums; padding-top: 1px; }
+.ledger em { font-style: normal; font-weight: 600; color: var(--text); }
+.ledger span { color: rgba(240,238,255,.8); }
+.ledger a { color: var(--text); text-decoration: underline; text-decoration-color: rgba(245,200,66,.55); text-underline-offset: 3px; }
+.ledger a:hover { color: var(--curious); }
+.ledger .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--curious); padding-top: 3px; }
+.note { margin-top: 12px; font-size: 14px; color: var(--muted); max-width: 65ch; }
+.note a { color: var(--text); text-underline-offset: 3px; }
+h3.sub { font-weight: 700; letter-spacing: -0.03em; font-size: 20px; margin-bottom: 10px; }
+
+/* caution */
+.caution { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 22px; }
+.caution p { max-width: 65ch; color: rgba(240,238,255,.84); }
+.caution p + p { margin-top: 10px; }
+
+footer { border-top: 1px solid var(--border); padding: 26px 0 40px; margin-top: 20px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+footer a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border2); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .gblob, .markdots i, .hero-pill .dot { animation: none; }
+  .mode-pill { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-telescope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="17" cy="13" r="3"/><path d="M3 7l5.5 2.5"/><path d="M3 7l2-4 14.5 6.5-2 4"/>
+    <path d="M8.5 9.5L6 20h5l1.5-4"/><path d="M17 16v4"/>
+  </symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </symbol>
+  <symbol id="ic-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/>
+    <path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>
+  </symbol>
+  <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+  </symbol>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#who">
+      <span class="markdots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>selfdriven<em>.you</em></span>
+    </a>
+    <div class="navlinks">
+      <a href="#modes" class="keep">Four modes</a>
+      <a href="#life">Life</a>
+      <a href="#books">Books</a>
+      <a href="#talks">Talks</a>
+      <a href="#caution">Read with care</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
+  <div class="wrap">
+    <span class="hero-pill"><span class="dot"></span>Alan Watts · 1915–1973</span>
+    <h1>The <span>watercourse</span> way.</h1>
+    <p class="lede">Alan Watts spent forty years explaining Zen, Taoism and Vedanta to Western audiences in plain, funny English. His central claim was simple: you are something the whole universe is doing, and most of your strain comes from forgetting that. Here he is, read through the four modes.</p>
+    <div class="jump-row">
+      <a class="mode-pill mp-c" href="#curious"><svg><use href="#ic-telescope"/></svg>Curious</a>
+      <a class="mode-pill mp-k" href="#caring"><svg><use href="#ic-heart"/></svg>Caring</a>
+      <a class="mode-pill mp-b" href="#constructive"><svg><use href="#ic-hammer"/></svg>Constructive</a>
+      <a class="mode-pill mp-l" href="#chill"><svg><use href="#ic-waves"/></svg>Chill</a>
+    </div>
+    <dl class="facts">
+      <div><dt>Born</dt><dd>Chislehurst, Kent</dd></div>
+      <div><dt>Worked from</dt><dd>San Francisco Bay</dd></div>
+      <div><dt>Books</dt><dd>More than 25</dd></div>
+      <div><dt>Called himself</dt><dd>An entertainer</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main>
+<section id="who">
+  <div class="wrap">
+    <p class="eyebrow">Who he was</p>
+    <h2>A translator, not a teacher of rules.</h2>
+    <div class="prose">
+      <p>Watts found Buddhism as a schoolboy in England, published his first book on Zen at twenty-one, and moved to the United States in 1938. He trained as an Episcopal priest, served as a university chaplain, then left the church in 1950 and settled in California.</p>
+      <p>From there he taught at the American Academy of Asian Studies, broadcast weekly on Berkeley's KPFA, and lectured wherever he was asked. He never claimed to be a Zen master. His skill was translation: taking ideas that sounded exotic and showing they describe ordinary experience.</p>
+    </div>
+  </div>
+</section>
+
+<section id="modes" style="padding-top:8px">
+  <div class="wrap">
+    <p class="eyebrow">Four modes</p>
+    <h2>What Watts adds to each mode.</h2>
+    <p class="prose">One idea from his work for each mode, with something small to do about it.</p>
+
+    <div class="modes">
+      <article class="mode c" id="curious">
+        <div>
+          <div class="mode-head">
+            <span class="mode-ic"><svg><use href="#ic-telescope"/></svg></span>
+            <div><div class="mode-num">Mode 01 · Curious</div><h3>Ask who is asking.</h3></div>
+          </div>
+          <p>Watts thought the most interesting question was the one nobody is encouraged to ask: what do you mean by "I"? The usual answer is a small self sitting behind the eyes, steering a body. He argued that this is a social convention and a poor description of what is going on.</p>
+          <p>Look closely and the boundary blurs. You did not decide to beat your heart or grow your hair. The same process that does those things also does the weather and the tides.</p>
+          <p class="src">Source: The Book (1966)</p>
+        </div>
+        <aside class="try">
+          <h4>Try it</h4>
+          <ul>
+            <li><b>2 minutes</b><span>Listen to the sounds around you without naming them. Notice that hearing happens with no effort from you.</span></li>
+            <li><b>Today</b><span>Catch one moment where you say "I" and ask what exactly it refers to.</span></li>
+            <li><b>This week</b><span>Read chapter one of The Book. It is short and funny.</span></li>
+          </ul>
+        </aside>
+      </article>
+
+      <article class="mode k" id="caring">
+        <div>
+          <div class="mode-head">
+            <span class="mode-ic"><svg><use href="#ic-heart"/></svg></span>
+            <div><div class="mode-num">Mode 02 · Caring</div><h3>Nothing exists alone.</h3></div>
+          </div>
+          <p>For Watts an organism and its environment were one process seen from two ends. A bee implies flowers. A person implies air, soil, language and other people. Separation is a useful way of talking and a misleading way of living.</p>
+          <p>Care follows from that without needing a moral lecture. If the other person is part of the field you are also part of, paying attention to them is accuracy as much as kindness.</p>
+          <p class="src">Source: Nature, Man and Woman (1958)</p>
+        </div>
+        <aside class="try">
+          <h4>Try it</h4>
+          <ul>
+            <li><b>2 minutes</b><span>Pick one thing you used today and trace three people it depended on.</span></li>
+            <li><b>Today</b><span>In one conversation, listen as if the other person were telling you something about yourself.</span></li>
+            <li><b>This week</b><span>Thank someone whose work you rely on and never see.</span></li>
+          </ul>
+        </aside>
+      </article>
+
+      <article class="mode b" id="constructive">
+        <div>
+          <div class="mode-head">
+            <span class="mode-ic"><svg><use href="#ic-hammer"/></svg></span>
+            <div><div class="mode-num">Mode 03 · Constructive</div><h3>Work the way you would dance.</h3></div>
+          </div>
+          <p>Watts kept returning to music. Nobody plays a piece to reach the final chord, and nobody dances to arrive at a spot on the floor. He thought we treat life as a journey with a prize at the end and miss the point, which was the playing.</p>
+          <p>This is still a way of getting things done. Work held as play tends to be better work. The grain of the wood, the shape of the problem and the timing of the moment do part of the job when you stop forcing them.</p>
+          <p class="src">Source: The Tao of Philosophy lectures; Tao: The Watercourse Way (1975)</p>
+        </div>
+        <aside class="try">
+          <h4>Try it</h4>
+          <ul>
+            <li><b>2 minutes</b><span>Do one small task at half speed and give it your full attention.</span></li>
+            <li><b>Today</b><span>On the stuck thing, ask which way it already wants to go, then push that way.</span></li>
+            <li><b>This week</b><span>Make something with no audience and no deadline.</span></li>
+          </ul>
+        </aside>
+      </article>
+
+      <article class="mode l" id="chill">
+        <div>
+          <div class="mode-head">
+            <span class="mode-ic"><svg><use href="#ic-waves"/></svg></span>
+            <div><div class="mode-num">Mode 04 · Chill</div><h3>Stop stirring the water.</h3></div>
+          </div>
+          <p>His best-known idea is the backwards law. Chase security and you feel more anxious. Grip the water and it runs through your fingers. Try hard to relax and you tense up. Some things only arrive when you stop reaching for them.</p>
+          <p>The Taoists called the alternative wu wei, action without forcing. Watts compared the mind to muddy water, which clears fastest when left alone. Rest, in this picture, is the condition for seeing straight.</p>
+          <p class="src">Source: The Wisdom of Insecurity (1951)</p>
+        </div>
+        <aside class="try">
+          <h4>Try it</h4>
+          <ul>
+            <li><b>2 minutes</b><span>Sit and let your breath run itself. Do not improve it.</span></li>
+            <li><b>Today</b><span>Leave one worry unsolved on purpose until tomorrow.</span></li>
+            <li><b>This week</b><span>Take a walk with no destination and no headphones.</span></li>
+          </ul>
+        </aside>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="life">
+  <div class="wrap">
+    <p class="eyebrow">Life and work</p>
+    <h2>Fifty-eight years, two continents.</h2>
+    <div class="two">
+      <div>
+        <h3 class="sub">Timeline</h3>
+        <ul class="ledger">
+          <li><time>1915</time><span>Born 6 January in Chislehurst, Kent.</span></li>
+          <li><time>1936</time><span>Publishes <em>The Spirit of Zen</em> at twenty-one.</span></li>
+          <li><time>1938</time><span>Moves to the United States.</span></li>
+          <li><time>1945</time><span>Ordained an Episcopal priest; chaplain at Northwestern University.</span></li>
+          <li><time>1950</time><span>Leaves the priesthood.</span></li>
+          <li><time>1951</time><span>Joins the American Academy of Asian Studies in San Francisco.</span></li>
+          <li><time>1953</time><span>Begins weekly radio talks on KPFA, Berkeley.</span></li>
+          <li><time>1957</time><span><em>The Way of Zen</em> becomes a bestseller.</span></li>
+          <li><time>1960s</time><span>Lives and works aboard the ferryboat Vallejo in Sausalito.</span></li>
+          <li><time>1973</time><span>Dies 16 November at home near Mount Tamalpais, California.</span></li>
+        </ul>
+      </div>
+      <div id="books" style="scroll-margin-top:74px">
+        <h3 class="sub">Where to start reading</h3>
+        <ul class="ledger">
+          <li><span class="yr">1951</span><span><a href="https://www.penguinrandomhouse.com/books/205321/the-wisdom-of-insecurity-by-alan-w-watts/"><em>The Wisdom of Insecurity</em></a><br>The shortest route in. Anxiety, the present moment, the backwards law.</span></li>
+          <li><span class="yr">1957</span><span><a href="https://www.penguinrandomhouse.com/books/187469/the-way-of-zen-by-alan--watts/"><em>The Way of Zen</em></a><br>History and practice of Zen, still a standard introduction.</span></li>
+          <li><span class="yr">1961</span><span><a href="https://openlibrary.org/works/OL1877170W"><em>Psychotherapy East and West</em></a><br>Eastern liberation paths compared with Western therapy.</span></li>
+          <li><span class="yr">1966</span><span><a href="https://www.penguinrandomhouse.com/books/187467/the-book-by-alan-watts/"><em>The Book</em></a><br>On the taboo against knowing who you are. His clearest statement.</span></li>
+          <li><span class="yr">1972</span><span><em>In My Own Way</em><br>The autobiography.</span></li>
+          <li><span class="yr">1975</span><span><a href="https://en.wikipedia.org/wiki/Tao:_The_Watercourse_Way"><em>Tao: The Watercourse Way</em></a><br>Published after his death, completed with Al Chung-liang Huang.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="talks" style="scroll-margin-top:60px;padding-top:8px">
+  <div class="wrap">
+    <p class="eyebrow">Talks</p>
+    <h2>Hear him say it.</h2>
+    <p class="prose">Watts was a better speaker than writer, by his own account. These are full lectures on the Alan Watts Organization's official channel, run by his son Mark.</p>
+    <ul class="ledger" style="margin-top:18px;max-width:760px">
+      <li><span class="tag">Self</span><span><a href="https://www.youtube.com/watch?v=C48hI9Qb2q4"><em>Myth of Myself</em>, part 1</a><br>From the Tao of Philosophy series. The separate ego as a story we were taught.</span></li>
+      <li><span class="tag">Tao</span><span><a href="https://www.youtube.com/watch?v=Ql4wGGTDapA"><em>Taoist Way</em></a><br>From Philosophies of Asia. Wu wei, the watercourse, and not forcing things.</span></li>
+      <li><span class="tag">World</span><span><a href="https://www.youtube.com/watch?v=NvLlpY9vd9E"><em>Individual and the World</em>, part 1</a><br>How a person and their surroundings go together as one process.</span></li>
+      <li><span class="tag">Sit</span><span><a href="https://www.youtube.com/watch?v=vj_EFvKMgio"><em>On Meditation</em></a><br>From the Eastern Wisdom collection. Meditation without a goal.</span></li>
+    </ul>
+    <p class="note">More at the <a href="https://www.youtube.com/channel/UC3wxPA1Sph--HxKGdOGVjrg">official YouTube channel</a> and <a href="https://alanwatts.org">alanwatts.org</a>.</p>
+  </div>
+</section>
+
+<section id="caution" style="scroll-margin-top:60px">
+  <div class="wrap">
+    <div class="caution">
+      <p class="eyebrow">Read with care</p>
+      <h2 style="font-size:clamp(24px,4vw,32px)">He said he was not a guru. Believe him.</h2>
+      <p>Watts described himself as a philosophical entertainer. He had no formal Zen training, and scholars have criticised how freely he simplified the traditions he drew on. He also drank heavily in his later years, and his own life did not always match the ease he described.</p>
+      <p>None of that cancels the ideas. It does suggest how to use them: as a way of looking to test against your own experience, with no one to follow.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>selfdriven.you · Curious · Caring · Constructive · Chill</span>
+    
+  </div>
+</footer>
+
+<script>
+(function(){
+  var dot=document.getElementById('cdot'), ring=document.getElementById('cring');
+  var rx=0, ry=0, dx=0, dy=0;
+  document.addEventListener('mousemove', function(e){ dx=e.clientX; dy=e.clientY; dot.style.left=dx+'px'; dot.style.top=dy+'px'; });
+  function loop(){ rx+=(dx-rx)*.18; ry+=(dy-ry)*.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); }
+  loop();
+  document.querySelectorAll('a').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='rgba(245,200,66,.6)'; });
+    el.addEventListener('mouseleave', function(){ ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='rgba(240,238,255,.3)'; });
+  });
+})();
+</script>
+</body>
+</html>
