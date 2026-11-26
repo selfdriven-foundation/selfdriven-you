@@ -1,0 +1,867 @@
+---
+layout: null
+title: "Self-tests - selfdriven Health"
+permalink: /self-tests
+---
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Self-tests - selfdriven Health</title>
+<meta name="description" content="Self-testing in Australia: DNA, stool and blood tests you can order yourself, what each one can and can't tell you, what's free first, and how i-screen works.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2309090f'/%3E%3Ccircle cx='14' cy='32' r='6' fill='%23f5c842'/%3E%3Ccircle cx='27' cy='32' r='6' fill='%23ff5f7e'/%3E%3Ccircle cx='40' cy='32' r='6' fill='%2300e5a0'/%3E%3Ccircle cx='53' cy='32' r='6' fill='%237b6cff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* selfdriven.health 4Cs system, dark by design (single look, shared with every guide).
+   Layout: practical guide. Hero = a path of six starting points, best evidence first.
+   Amber (Curious) leads because this page is about checking before you act.
+   Colour on this page grades evidence: mint = strong, amber = depends on your question,
+   rose = skip or ask first. Violet marks DNA. */
+:root{
+  color-scheme:dark;
+  --bg:#09090f;--surface:#111118;--surface2:#18181f;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#f0eeff;--muted:#8f8bad;--muted2:#3d3a55;
+  --soft:rgba(240,238,255,.8);
+  --curious:#f5c842;--caring:#ff5f7e;--constructive:#00e5a0;--chill:#7b6cff;--chill-bright:#9b8fff;
+  --curious-dim:rgba(245,200,66,.13);--caring-dim:rgba(255,95,126,.13);--constructive-dim:rgba(0,229,160,.13);--chill-dim:rgba(123,108,255,.13);
+  --curious-line:rgba(245,200,66,.3);--caring-line:rgba(255,95,126,.3);--constructive-line:rgba(0,229,160,.3);--chill-line:rgba(123,108,255,.34);
+  --neutral-dim:rgba(240,238,255,.07);
+  --ink:#09090f;
+  --pill:999px;
+  --sd-accent:var(--curious);
+  --display:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sans:'DM Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:24px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--curious);outline-offset:2px}
+a{color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* evidence colour sets */
+.d-strong{--c:var(--constructive);--c-dim:var(--constructive-dim);--c-line:var(--constructive-line)}
+.d-depends{--c:var(--curious);--c-dim:var(--curious-dim);--c-line:var(--curious-line)}
+.d-skip{--c:var(--caring);--c-dim:var(--caring-dim);--c-line:var(--caring-line)}
+.d-dna{--c:var(--chill-bright);--c-dim:var(--chill-dim);--c-line:var(--chill-line)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding-block:136px 76px}
+.gblob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.16;z-index:0}
+.gb1{width:520px;height:520px;background:var(--curious);top:-170px;left:-180px;animation:gb 17s ease-in-out infinite}
+.gb2{width:460px;height:460px;background:var(--constructive);top:40px;right:-150px;animation:gb 21s ease-in-out infinite reverse}
+.gb3{width:340px;height:340px;background:var(--chill);bottom:-90px;left:30%;animation:gb 23s ease-in-out infinite 3s}
+.gb4{width:280px;height:280px;background:var(--caring);bottom:20px;right:30%;animation:gb 19s ease-in-out infinite 8s}
+@keyframes gb{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(34px,-26px) scale(1.08)}70%{transform:translate(-22px,30px) scale(.93)}}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 88% 74% at 50% 50%,rgba(9,9,15,.86),rgba(9,9,15,.55) 46%,rgba(9,9,15,.18) 78%,transparent)}
+.hero .wrap{position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:56px;align-items:center}
+.hero-copy{min-width:0}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.7);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--curious);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+.hero h1{text-wrap:balance;font-family:var(--display);font-weight:800;font-size:clamp(40px,6.3vw,76px);line-height:.98;letter-spacing:-.045em;margin:24px 0 20px}
+.grad{background:linear-gradient(90deg,var(--curious),var(--constructive));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{max-width:560px;font-size:clamp(17px,2vw,19.5px);line-height:1.55;color:rgba(240,238,255,.9)}
+.byline{margin-top:18px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.byline b{color:var(--soft);font-weight:500}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+
+/* the path card: six starting points, best evidence first */
+.path{background:linear-gradient(180deg,var(--surface2),var(--surface));border:1px solid var(--border2);border-radius:22px;padding:24px 26px 18px;box-shadow:0 30px 70px rgba(0,0,0,.55);min-width:0}
+.n-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--border2);margin-bottom:6px}
+.n-title{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.035em}
+.n-count{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.nb{white-space:nowrap}
+.line{position:relative}
+.line::before{content:'';position:absolute;left:11px;top:22px;bottom:22px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--constructive-line),var(--curious-line),var(--caring-line))}
+.pulses{position:absolute;left:0;top:0;bottom:0;width:24px;pointer-events:none}
+.pulses i{position:absolute;left:8px;width:8px;height:8px;border-radius:50%;opacity:0;background:var(--curious);box-shadow:0 0 10px var(--curious);animation:goDown 4.2s linear infinite}
+@keyframes goDown{0%{top:18px;opacity:0}12%{opacity:1}88%{opacity:1}100%{top:calc(100% - 26px);opacity:0}}
+.stations{list-style:none;position:relative}
+.stations a{position:relative;display:flex;align-items:baseline;gap:10px;padding:10px 0 10px 36px;text-decoration:none;color:var(--soft);font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.02em;transition:color .2s}
+.stations a::before{content:'';position:absolute;left:5px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--bg);border:2px solid var(--c);transition:background .2s,transform .2s}
+.stations li.origin a::before{background:var(--c)}
+.stations a:hover,.stations a:focus-visible{color:var(--text)}
+.stations a:hover::before,.stations a:focus-visible::before{background:var(--c);transform:scale(1.15)}
+.stations .lead{flex:1;min-width:16px;border-bottom:1.5px dotted var(--muted2);transform:translateY(-4px)}
+.stations .dom{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--c);white-space:nowrap}
+.n-foot{margin-top:10px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 16px}
+.n-foot span{display:inline-flex;align-items:center;gap:7px}
+.n-foot i{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* pills + chips + buttons */
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:var(--pill);font-family:var(--display);font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s}
+.mode-pill:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.mode-pill svg{width:16px;height:16px}
+.mp-c{background:var(--curious-dim);color:var(--curious);border-color:var(--curious-line)}
+.mp-k{background:var(--caring-dim);color:var(--caring);border-color:var(--caring-line)}
+.mp-b{background:var(--constructive-dim);color:var(--constructive);border-color:var(--constructive-line)}
+.mp-l{background:var(--chill-dim);color:var(--chill-bright);border-color:var(--chill-line)}
+.mp-solid{background:var(--curious);color:var(--ink);border-color:var(--curious)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--pill);font-family:var(--display);font-size:12.5px;font-weight:600;border:1px solid transparent;line-height:1.5;white-space:nowrap}
+.c-curious{background:var(--curious-dim);color:var(--curious);border-color:var(--curious-line)}
+.c-caring{background:var(--caring-dim);color:var(--caring);border-color:var(--caring-line)}
+.c-constructive{background:var(--constructive-dim);color:var(--constructive);border-color:var(--constructive-line)}
+.c-chill{background:var(--chill-dim);color:var(--chill-bright);border-color:var(--chill-line)}
+.c-neutral{background:var(--neutral-dim);color:var(--soft);border-color:var(--border2)}
+.c-area{background:var(--c-dim);color:var(--c);border-color:var(--c-line)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:var(--pill);border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-family:var(--sans);font-size:13.5px;font-weight:600;transition:border-color .2s,transform .2s;white-space:nowrap;text-decoration:none}
+.btn:hover{border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+.btn svg{width:15px;height:15px}
+.btn.go{background:var(--curious);border-color:var(--curious);color:var(--ink)}
+
+/* sections */
+section.block{padding-block:84px 0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.eyebrow b{font-weight:500;color:var(--curious)}
+h2{text-wrap:balance;font-family:var(--display);font-weight:800;font-size:clamp(31px,4.8vw,52px);line-height:1.02;letter-spacing:-.04em;margin:10px 0 14px;max-width:880px}
+.lede{max-width:700px;font-size:17px;color:var(--soft)}
+h3{font-family:var(--display);font-weight:700;letter-spacing:-.03em;line-height:1.15;text-wrap:balance}
+.note{margin-top:16px;font-size:14px;color:var(--muted);max-width:760px}
+.note b{color:var(--text);font-weight:600}
+.note a{color:var(--soft);text-underline-offset:3px}
+.ref{font-family:var(--mono);font-size:.72em;font-weight:500;color:var(--muted);text-decoration:none;vertical-align:.32em;margin-left:1px;white-space:nowrap}
+.ref:hover{color:var(--curious)}
+.lit{transition:border-color .35s,box-shadow .35s,background .35s}
+.lit.on{border-color:var(--c-line)!important;box-shadow:0 0 0 4px var(--c-dim)}
+.trow.lit.on{box-shadow:none;background:var(--c-dim)}
+
+/* start here: facts + two ways */
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.fact{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.fact .big{font-family:var(--display);font-weight:800;font-size:clamp(38px,4.6vw,52px);letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
+.fact .big small{font-size:.38em;letter-spacing:-.01em;font-weight:700;margin-left:6px;color:var(--soft)}
+.fact p{font-size:14.5px;color:var(--muted);line-height:1.5}
+.f-amber .big{color:var(--curious)}.f-violet .big{color:var(--chill-bright)}.f-mint .big{color:var(--constructive)}
+.two-ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.way{border-radius:20px;padding:20px 22px;border:1px dashed var(--border2);min-width:0}
+.way h3{font-size:19px;margin-bottom:4px}
+.way p{font-size:14.5px;color:var(--soft)}
+.way .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.way .k i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.way.solid{border:1px solid var(--c-line);background:var(--c-dim);border-style:solid}
+.way ul{list-style:none;display:grid;gap:8px;margin-top:10px}
+.way li{font-size:14.5px;color:var(--soft);display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start}
+.way li svg{width:15px;height:15px;color:var(--c);margin-top:4px}
+.way li b{color:var(--text);font-weight:600}
+
+/* finder: find your starting point */
+.finder{margin-top:30px;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:18px;align-items:stretch}
+.fq{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:24px 24px 22px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.fq .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.fq .k b{color:var(--text);font-weight:500}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--border2);border-radius:20px;padding:3px;background:var(--bg);gap:2px}
+.seg button{padding:7px 13px;border-radius:var(--pill);font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap;transition:background .2s,color .2s}
+.seg button:hover{color:var(--text)}
+.seg button[aria-pressed="true"]{background:var(--curious-dim);color:var(--curious)}
+.seg.sym button[data-v="yes"][aria-pressed="true"]{background:var(--caring-dim);color:var(--caring)}
+.fr{border-radius:24px;padding:24px 24px 20px;border:1px dashed var(--border2);display:flex;flex-direction:column;gap:12px;min-width:0}
+.fr .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.recs{list-style:none;display:grid;gap:12px;counter-reset:rc}
+.recs li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;counter-increment:rc;font-size:14.5px;color:var(--soft)}
+.recs li::before{content:counter(rc);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--c,var(--curious));color:var(--c,var(--curious));font-family:var(--mono);font-size:12.5px}
+.recs li b{display:block;color:var(--text);font-family:var(--display);font-weight:700;font-size:16.5px;letter-spacing:-.02em;margin-bottom:2px}
+.recs li a{color:var(--text);text-underline-offset:3px;text-decoration-color:var(--border2)}
+.recs li a:hover{color:var(--curious)}
+.recs .num{font-family:var(--mono);font-size:13px;white-space:nowrap}
+.fr .fine{margin-top:auto;padding-top:12px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
+
+/* table rows (DNA) */
+.thread{margin-top:30px;background:var(--surface);border:1px solid var(--border);border-radius:22px;overflow:hidden}
+.trow{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,.8fr) minmax(0,1.65fr);border-top:1px solid var(--border)}
+.trow:first-child{border-top:0}
+.trow>div{padding:18px 22px;min-width:0}
+.thead>div{padding-block:14px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tname{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.025em}
+.tname small{display:block;margin-top:4px;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0;color:var(--muted)}
+.tben{font-size:14.5px;color:var(--soft)}
+.tben .lbl{display:none}
+.tben .mono{font-family:var(--mono);font-size:13.5px;color:var(--text);font-variant-numeric:tabular-nums}
+.tcheck{display:flex;flex-direction:column;align-items:flex-start;gap:8px;border-left:1px solid var(--border)}
+.tcheck p{font-size:14.5px;color:var(--soft);line-height:1.5}
+.tcheck p b{color:var(--text);font-weight:600}
+.flag{display:flex;align-items:flex-start;gap:12px;margin-top:14px;padding:14px 18px;border-radius:16px;border:1px dashed var(--border2);font-size:14px;color:var(--soft);max-width:860px}
+.flag svg{width:18px;height:18px;flex:none;color:var(--c,var(--caring));margin-top:2px}
+.flag b{color:var(--text);font-weight:600}
+.flag .num{font-family:var(--mono);font-size:13px;color:var(--text);white-space:nowrap;text-decoration:none;border-bottom:1px solid var(--border2)}
+
+/* science-style cards (stool) */
+.sci{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:30px}
+.scard{border-radius:22px;padding:24px 24px 22px;border:1px solid var(--c-line);background:var(--c-dim);display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}
+.scard h3{font-size:clamp(21px,2.4vw,25px)}
+.scard p{font-size:15px;color:var(--soft)}
+.scard p b{color:var(--text);font-weight:600}
+.scard .stat{display:flex;align-items:baseline;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:-.04em;color:var(--c);font-size:44px;line-height:1}
+.scard .stat small{font-size:14px;letter-spacing:-.005em;font-weight:600;color:var(--soft);font-family:var(--sans)}
+.scard .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
+.oversimple{margin-top:14px;border-radius:20px;padding:20px 22px;border:1px dashed var(--border2);display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 18px;align-items:start}
+.oversimple .q{grid-row:span 2;font-family:var(--display);font-weight:800;font-size:44px;line-height:.8;color:var(--curious)}
+.oversimple h3{font-size:19px}
+.oversimple p{font-size:14.5px;color:var(--soft);max-width:820px}
+
+/* price menus */
+.menus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:30px}
+.menus.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.menu-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px 14px;min-width:0}
+.menu-card .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--c);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.menu-card .k i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.menu-card h3{font-size:19px;margin-bottom:8px}
+.menu{list-style:none}
+.menu li{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-top:1px solid var(--border)}
+.menu .nm{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:-.015em;min-width:0}
+.menu .nm small{display:block;font-family:var(--sans);font-weight:500;font-size:12.5px;letter-spacing:0;color:var(--muted)}
+.menu .lead{flex:1;min-width:12px;border-bottom:1.5px dotted var(--muted2);transform:translateY(-4px)}
+.menu .pr{font-family:var(--mono);font-size:13.5px;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.menu .pr s{color:var(--muted);margin-right:6px;font-size:12px}
+
+/* steps (how it works, the check) */
+.steps{border-radius:24px;padding:26px 26px 22px;border:1px dashed var(--border2);display:flex;flex-direction:column;gap:14px;min-width:0}
+.steps ol{list-style:none;display:grid;gap:14px;counter-reset:st}
+.steps li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;align-items:start;counter-increment:st}
+.steps li::before{content:counter(st);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--curious);color:var(--curious);font-family:var(--mono);font-size:13px}
+.steps li h3{font-size:18px;margin-top:5px}
+.steps li p{font-size:14.5px;color:var(--soft);margin-top:2px}
+.steps .why6{margin-top:auto;padding-top:14px;border-top:1px solid var(--border);font-size:13.5px;color:var(--muted)}
+.steps .why6 b{color:var(--text);font-weight:600}
+.howto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:30px;align-items:start}
+.check6{margin-top:30px}
+.check6 ol{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;row-gap:18px}
+
+/* provider: i-screen */
+.prov{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:14px;margin-top:30px;align-items:stretch}
+.pcard{background:linear-gradient(180deg,var(--surface2),var(--surface));border:1px solid var(--curious-line);border-radius:24px;padding:26px 26px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pcard-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.pcard h3{font-size:clamp(26px,3vw,32px)}
+.pcard dl{display:grid;gap:9px;font-size:14px}
+.pcard dl div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding-top:9px;border-top:1px solid var(--border)}
+.pcard dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.pcard dd{color:var(--soft);min-width:0;overflow-wrap:anywhere}
+.pcard dd b{color:var(--text);font-weight:600}
+.pcard .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.pside{display:grid;gap:14px;min-width:0}
+.pside .way{display:flex;flex-direction:column}
+.others{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
+.others>div{padding:18px 20px;border-radius:18px;border:1px dashed var(--border2);display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}
+.others h3{font-size:17px}
+.others p{font-size:14px;color:var(--soft)}
+.others .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+
+/* sources */
+.sources{margin-top:36px;border-top:1px solid var(--border);padding-top:18px}
+.sources summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em}
+.sources summary::-webkit-details-marker{display:none}
+.sources summary svg{width:16px;height:16px;transition:transform .2s;color:var(--muted)}
+.sources[open] summary svg{transform:rotate(90deg)}
+.sources summary span{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--muted);border:1px solid var(--border2);border-radius:var(--pill);padding:1px 9px}
+.sources ol{margin:16px 0 0;padding-left:26px;display:grid;gap:8px;font-size:13.5px;color:var(--muted);max-width:900px}
+.sources li{padding-left:4px;scroll-margin-top:90px}
+.sources li:target{color:var(--soft)}
+.sources a{color:var(--soft);text-decoration-color:var(--border2);text-underline-offset:3px;overflow-wrap:anywhere}
+.sources a:hover{color:var(--curious)}
+
+/* closing */
+.closing{padding-block:96px 12px;text-align:center;overflow:hidden}
+.closing h2{margin:10px auto 14px}
+.closing .lede{margin:0 auto}
+.jump-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:30px}
+.companion-row{margin-top:26px;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:6px}
+.companion{font-size:14.5px;line-height:1.7;color:var(--soft);text-decoration:underline;text-decoration-color:var(--border2);text-underline-offset:5px;text-decoration-thickness:1px}
+.companion:hover{color:var(--text);text-decoration-color:var(--soft)}
+.companion .nw{white-space:nowrap}
+.companion svg{display:inline-block;width:15px;height:15px;vertical-align:-2px;margin-left:6px}
+
+@media (prefers-reduced-motion:reduce){
+  .gblob,.hero-pill .dot{animation:none}
+  .pulses{display:none}
+  html{scroll-behavior:auto}
+  .lit{transition:none}
+}
+
+/* responsive */
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .path{max-width:520px}
+  .finder,.howto,.prov{grid-template-columns:1fr}
+  .menus{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .others{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .facts,.two-ways,.sci,.menus.two{grid-template-columns:1fr}
+  .trow{grid-template-columns:1fr}
+  .thead{display:none}
+  .tben{padding-top:0!important}
+  .tben .lbl{display:inline;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:8px}
+  .tcheck{border-left:0;padding-top:0!important}
+  .check6 ol{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .hero{padding-block:116px 60px}
+  section.block{padding-top:64px}
+  .gblob{opacity:.14}
+  .path{padding:20px 18px 16px}
+  .n-title{font-size:20px}
+  .n-count{font-size:10px;letter-spacing:.08em}
+  .menus,.others{grid-template-columns:1fr}
+  .trow>div{padding:16px 18px}
+  .fq,.fr,.steps,.pcard{padding:22px 18px 18px}
+  .pcard dl div{grid-template-columns:1fr;gap:2px}
+  .oversimple{grid-template-columns:1fr}
+  .oversimple .q{grid-row:auto;font-size:36px}
+}
+
+/* ---------- selfdriven.health chrome: nav, cursor, footer (shared by every guide) ---------- */
+.sd-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(9,9,15,.74);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.sd-nav.sd-fixed{position:fixed;top:0;left:0;right:0;padding-top:env(safe-area-inset-top,0px)}
+.sd-nav-in{max-width:1100px;margin:0 auto;padding-inline:24px;min-height:63px;display:flex;align-items:center;gap:14px}
+.sd-logo{font-family:var(--display);font-size:19px;font-weight:800;letter-spacing:-.04em;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
+.sd-logo em{font-style:normal;color:var(--caring)}
+.sd-nav .markdots,.sd-foot .markdots{display:inline-flex;gap:3px;flex-shrink:0}
+.sd-nav .markdots i,.sd-foot .markdots i{width:7px;height:7px;border-radius:50%;display:block}
+.sd-nav .markdots i:nth-child(1),.sd-foot .markdots i:nth-child(1){background:var(--curious)}
+.sd-nav .markdots i:nth-child(2),.sd-foot .markdots i:nth-child(2){background:var(--caring)}
+.sd-nav .markdots i:nth-child(3),.sd-foot .markdots i:nth-child(3){background:var(--constructive)}
+.sd-nav .markdots i:nth-child(4),.sd-foot .markdots i:nth-child(4){background:var(--chill)}
+@keyframes sdWave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.markdots.wave i{animation:sdWave .7s ease}
+.markdots.wave i:nth-child(2){animation-delay:.12s}.markdots.wave i:nth-child(3){animation-delay:.24s}.markdots.wave i:nth-child(4){animation-delay:.36s}
+.sd-crumb{font-family:var(--display);font-size:14.5px;font-weight:600;letter-spacing:-.01em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sd-sp{flex:1}
+.sd-links{display:flex;gap:22px}
+.sd-links a{font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;transition:color .2s}
+.sd-links a:hover{color:var(--text)}
+.sd-cta{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--sd-accent);color:var(--ink);font-family:var(--display);font-size:13.5px;font-weight:700;line-height:1.2;padding:10px 18px;border-radius:999px;text-decoration:none;white-space:nowrap;transition:transform .2s,box-shadow .2s}
+.sd-cta:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.45)}
+@media (max-width:1040px){.sd-links{display:none}}
+@media (max-width:560px){.sd-crumb{display:none}.sd-cta{padding:9px 14px;font-size:13px}}
+@media (max-width:640px){.sd-nav-in{padding-inline:16px}}
+@media (max-width:420px){.sd-nav-in{gap:10px}.sd-nav .sd-logo{font-size:17px;gap:8px}}
+body>main,.sd-foot{position:relative;z-index:1}
+
+#cur{display:none}
+@media (hover:hover) and (pointer:fine){
+  body,a,button,label,summary,select,[role="button"],[role="tab"]{cursor:none}
+  #cur{display:block;opacity:0;width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--curious);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:width .18s,height .18s,margin .18s,opacity .18s;will-change:transform}
+  #cur.on{opacity:1}
+  #cur.on.big{width:52px;height:52px;margin:-26px 0 0 -26px;opacity:.45}
+}
+
+.sd-foot{margin-top:104px;padding:56px 16px 44px;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;background:var(--bg);color:var(--muted)}
+.sd-foot .sd-logo{font-size:20px;margin-bottom:4px}
+.sd-tag{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.sd-more{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0 8px;max-width:760px}
+.sd-more a{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;border:1.5px solid var(--border2);color:var(--text);font-family:var(--display);font-size:13px;font-weight:700;text-decoration:none;transition:transform .2s,border-color .2s}
+.sd-more a:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.3)}
+.sd-more a i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.sd-divider{width:32px;height:1px;background:var(--border2);margin:10px auto 4px}
+.sd-init{font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+.sd-init a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--border2);padding-bottom:1px;transition:color .2s,border-color .2s}
+.sd-init a:hover{color:var(--curious);border-color:var(--curious)}
+.sd-note{font-family:var(--sans);font-size:12.5px;color:var(--muted);max-width:640px;line-height:1.6;margin:10px 0 0}
+.sd-note b{color:var(--text);font-weight:600}
+@media (prefers-reduced-motion:reduce){.markdots.wave i{animation:none!important}#cur{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="ic-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></symbol>
+  <symbol id="ic-dna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m17 6-2.5-2.5"/><path d="m14 8-1-1"/><path d="m7 18 2.5 2.5"/><path d="m3.5 14.5.5.5"/><path d="m20 9 .5.5"/><path d="m6.5 12.5 1 1"/><path d="m16.5 10.5 1 1"/><path d="m10 16 1.5 1.5"/></symbol>
+  <symbol id="ic-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/></symbol>
+  <symbol id="ic-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+  <symbol id="ic-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+</svg>
+
+<div id="cur" aria-hidden="true"></div>
+
+<header class="sd-nav sd-fixed" id="sdNav">
+  <div class="sd-nav-in">
+    <a class="sd-logo" href="https://www.selfdriven.health/" aria-label="selfdriven.health home"><span class="markdots" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>selfdriven<em>.health</em></span></a>
+    <span class="sd-crumb">/ Self-tests</span>
+    <span class="sd-sp"></span>
+    <nav class="sd-links" aria-label="Sections"><a href="#start">Start here</a><a href="#dna">DNA</a><a href="#stool">Stool</a><a href="#blood">Blood</a><a href="#iscreen">i-screen</a></nav>
+    <a class="sd-cta" href="#check">Before you order</a>
+  </div>
+</header>
+
+<main>
+<header class="hero" id="top">
+  <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-pill"><span class="dot"></span>Guide · Self-testing in Australia</span>
+        <h1>Test yourself, then <span class="grad">know what it means.</span></h1>
+        <p class="sub">You can order DNA, stool and blood tests in Australia without seeing a doctor first. Some are free and well proven. Others are expensive and tell you less than they promise. This guide sorts them, starting with what's free.</p>
+        <p class="byline"><b>DNA · Stool · Blood</b> · prices checked November 2026</p>
+        <div class="cta-row">
+          <a class="mode-pill mp-solid" href="#finder"><svg><use href="#ic-compass"/></svg>Find your starting point</a>
+          <a class="mode-pill mp-c" href="#iscreen"><svg><use href="#ic-flask"/></svg>How i-screen works</a>
+        </div>
+      </div>
+
+      <nav class="path" aria-label="Six starting points, best evidence first">
+        <div class="n-head"><span class="n-title">Where to start</span><span class="n-count">Best evidence first</span></div>
+        <div class="line">
+          <div class="pulses" aria-hidden="true"><i></i><i style="animation-delay:1.4s"></i><i style="animation-delay:2.8s"></i></div>
+          <ol class="stations">
+            <li class="origin d-strong"><a href="#t-nbcsp" data-lit="t-nbcsp"><span>Bowel screening kit</span><span class="lead"></span><span class="dom">Free · 45–74</span></a></li>
+            <li class="d-strong"><a href="#t-core" data-lit="t-core"><span>Core blood panel</span><span class="lead"></span><span class="dom">From $39</span></a></li>
+            <li class="d-strong"><a href="#r-carrier" data-lit="r-carrier"><span>Carrier screening</span><span class="lead"></span><span class="dom">Medicare</span></a></li>
+            <li class="d-depends"><a href="#t-micro" data-lit="t-micro"><span>Gut microbiome map</span><span class="lead"></span><span class="dom">$239+</span></a></li>
+            <li class="d-depends"><a href="#r-wellness" data-lit="r-wellness"><span>Wellness DNA</span><span class="lead"></span><span class="dom">$389</span></a></li>
+            <li class="d-skip"><a href="#r-mthfr" data-lit="r-mthfr"><span>MTHFR · IgG food</span><span class="lead"></span><span class="dom">Skip</span></a></li>
+          </ol>
+        </div>
+        <div class="n-foot"><span><i style="background:var(--constructive)"></i>Strong evidence</span><span><i style="background:var(--curious)"></i>Depends on your question</span><span><i style="background:var(--caring)"></i>Skip or ask first</span></div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="start">
+  <div class="wrap">
+    <div class="eyebrow"><b>Start here</b> · free and funded first</div>
+    <h2>Before you pay for a test, use the free ones.</h2>
+    <p class="lede">Australia already pays for some of the most useful tests you can do from home. Private self-testing works best on top of those, not instead of them.</p>
+
+    <div class="facts">
+      <div class="fact f-mint"><div class="big">45–74<small>years</small></div><p>If you're eligible and in this age band, you can do a free bowel screening test at home every 2 <span class="nb">years.<a class="ref" href="#s7">[7]</a><a class="ref" href="#s8">[8]</a></span></p></div>
+      <div class="fact f-violet"><div class="big">3<small>conditions</small></div><p>Medicare funds reproductive carrier testing for cystic fibrosis, spinal muscular atrophy and fragile X if you're pregnant or planning a <span class="nb">pregnancy.<a class="ref" href="#s21">[21]</a></span></p></div>
+      <div class="fact f-amber"><div class="big">8 Oct<small>2026</small></div><p>Since this date, life insurers can't use your genetic test results to refuse cover or charge you <span class="nb">more.<a class="ref" href="#s14">[14]</a><a class="ref" href="#s15">[15]</a></span></p></div>
+    </div>
+
+    <div class="two-ways">
+      <div class="way d-strong"><div class="k"><i></i>No symptoms</div><h3>Screening and baselines</h3><p>Testing to catch something early, or to know your numbers before anything goes wrong. This is where self-testing fits.</p></div>
+      <div class="way d-skip"><div class="k"><i></i>Symptoms</div><h3>See a GP, not a kit</h3><p>Bleeding from the bowel, unexplained weight loss or an ongoing change in your bowel habits means seeing your doctor straight away. Don't use a screening test to rule these <span class="nb">out.<a class="ref" href="#s7">[7]</a></span></p></div>
+    </div>
+
+    <div class="finder" id="finder">
+      <div class="fq">
+        <div>
+          <div class="k" id="q1">1 · <b>Any symptoms right now?</b></div>
+          <div class="seg sym" role="group" aria-labelledby="q1" data-q="sym">
+            <button type="button" data-v="no" aria-pressed="true">No</button>
+            <button type="button" data-v="yes" aria-pressed="false">Yes</button>
+          </div>
+        </div>
+        <div>
+          <div class="k" id="q2">2 · <b>Your age</b></div>
+          <div class="seg" role="group" aria-labelledby="q2" data-q="age">
+            <button type="button" data-v="u45" aria-pressed="false">Under 45</button>
+            <button type="button" data-v="45" aria-pressed="true">45–74</button>
+            <button type="button" data-v="75" aria-pressed="false">75+</button>
+          </div>
+        </div>
+        <div>
+          <div class="k" id="q3">3 · <b>What do you want to know?</b></div>
+          <div class="seg" role="group" aria-labelledby="q3" data-q="goal">
+            <button type="button" data-v="general" aria-pressed="true">General health</button>
+            <button type="button" data-v="gut" aria-pressed="false">My gut</button>
+            <button type="button" data-v="genes" aria-pressed="false">My genes</button>
+            <button type="button" data-v="preg" aria-pressed="false">Planning a pregnancy</button>
+          </div>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="k">Your starting point</div>
+        <ol class="recs" id="recs" aria-live="polite">
+          <li class="d-strong"><div><b>Free bowel screening kit.</b>Aged 45–49? Request one online or on <a class="num" href="tel:1800627701">1800 627 701</a>. Aged 50–74? One is mailed to you every 2 years. <a href="#stool">Stool tests</a></div></li>
+          <li class="d-strong"><div><b>A core blood panel.</b>Full blood count, HbA1c, cholesterol, iron, vitamin D and thyroid are common first tests. At i-screen they run $39–$69 each, or $140 for the 38-marker Essential Health Test. <a href="#blood">Blood tests</a></div></li>
+          <li class="d-depends"><div><b>Then run the six-question check.</b>Six questions to ask before you pay for any test. <a href="#check">Before you order</a></div></li>
+        </ol>
+        <p class="fine">A starting point, not a diagnosis. Your GP knows your history and can order many of these tests with a Medicare rebate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="eyebrow"><b>The rules</b> · how self-testing works here</div>
+    <h2>You collect the sample. An accredited lab runs the test.</h2>
+    <p class="lede">Since 2010, Australia has banned the sale of home tests that you run and read yourself for serious diseases. That covers cancer and genetic markers of disease, and a 2020 review kept both <span class="nb">banned.<a class="ref" href="#s10">[10]</a><a class="ref" href="#s11">[11]</a></span> What you can buy are collection kits and request forms: you provide the sample, and a lab does the testing and reporting.</p>
+
+    <div class="two-ways">
+      <div class="way"><div class="k">Route one</div><h3>Direct-access pathology</h3><p>Services such as i-screen and iMedical issue the pathology request form for you. You take it to a collection centre for blood, or use a home kit for a swab, stool or <span class="nb">breath.<a class="ref" href="#s1">[1]</a><a class="ref" href="#s33">[33]</a></span></p></div>
+      <div class="way"><div class="k">Route two</div><h3>Clinician-led home kits</h3><p>Some services put a health professional between you and the lab. Eugene's genetic tests include a genetic counsellor, and Microba's gut tests now go through a <span class="nb">practitioner.<a class="ref" href="#s19">[19]</a><a class="ref" href="#s25">[25]</a></span></p></div>
+    </div>
+    <p class="note"><b>Why overseas DNA kits don't give health reports here.</b> In its submission to the TGA review, 23andMe said it follows the Australian ban and doesn't offer its Genetic Health Risk tests in <span class="nb">Australia.<a class="ref" href="#s12">[12]</a></span></p>
+  </div>
+</section>
+
+<section class="block" id="dna">
+  <div class="wrap">
+    <div class="eyebrow"><b>DNA</b> · cheek swab or saliva</div>
+    <h2>Same spit, very different answers.</h2>
+    <p class="lede">A cheek swab or saliva tube can tell you about ancestry, wellness traits, carrier status or inherited disease risk. The sample is the same. How much you can rely on the answer isn't.</p>
+
+    <div class="thread" role="table" aria-label="Kinds of DNA test available to Australians">
+      <div class="trow thead" role="row"><div role="columnheader">Test</div><div role="columnheader">Cost and how</div><div role="columnheader">What the evidence says</div></div>
+      <div class="trow lit d-strong" role="row" id="r-carrier">
+        <div role="cell"><div class="tname">Reproductive carrier screening<small>Cystic fibrosis, SMA, fragile X</small></div></div>
+        <div class="tben" role="cell"><span class="lbl">Cost</span>Medicare rebate through your GP or a service like Eugene</div>
+        <div class="tcheck" role="cell"><span class="chip c-constructive">Strong</span><p>Funded since November 2023 for anyone pregnant or planning a pregnancy, and their <span class="nb">partner.<a class="ref" href="#s21">[21]</a></span> One test per condition per <span class="nb">lifetime.<a class="ref" href="#s22">[22]</a></span></p></div>
+      </div>
+      <div class="trow lit d-strong" role="row" id="r-clinical">
+        <div role="cell"><div class="tname">Clinical screening with a genetic counsellor<small>Eugene</small></div></div>
+        <div class="tben" role="cell"><span class="lbl">Cost</span>Carrier tests from <span class="mono">$549</span>, saliva at home, about four weeks</div>
+        <div class="tcheck" role="cell"><span class="chip c-constructive">Strong when you have a reason</span><p>Reports only conditions with clear next steps, not traits. A genetic counsellor goes through your results with you by <span class="nb">telehealth.<a class="ref" href="#s19">[19]</a><a class="ref" href="#s20">[20]</a></span> Its preventive panel covers 184+ cancer and heart <span class="nb">genes.<a class="ref" href="#s20">[20]</a></span></p></div>
+      </div>
+      <div class="trow lit d-depends" role="row" id="r-wellness">
+        <div role="cell"><div class="tname">Wellness DNA<small>i-screen Comprehensive DNA, Gold Genetic</small></div></div>
+        <div class="tben" role="cell"><span class="lbl">Cost</span><span class="mono">$389–$445</span>, cheek swab, Australian NATA-accredited lab, about two weeks</div>
+        <div class="tcheck" role="cell"><span class="chip c-curious">For interest</span><p>i-screen calls its report a map of tendencies, not a <span class="nb">diagnosis.<a class="ref" href="#s5">[5]</a></span> It includes <b>APOE</b>, an Alzheimer's risk gene that Australia's clinical geneticists advise against testing, because the result has very little clinical <span class="nb">use.<a class="ref" href="#s5">[5]</a><a class="ref" href="#s17">[17]</a></span> GPs see more of these "genomic wellness" tests through naturopaths and <span class="nb">nutritionists.<a class="ref" href="#s18">[18]</a></span></p></div>
+      </div>
+      <div class="trow lit d-skip" role="row" id="r-mthfr">
+        <div role="cell"><div class="tname">MTHFR and methylation genes<small>i-screen MTHFR swab or blood, Genetic Methylation</small></div></div>
+        <div class="tben" role="cell"><span class="lbl">Cost</span><span class="mono">$69–$389</span></div>
+        <div class="tcheck" role="cell"><span class="chip c-caring">Skip</span><p>The RACGP advises against it. Common MTHFR variants have no causal link to particular diseases, and no treatment based on them improves <span class="nb">outcomes.<a class="ref" href="#s16">[16]</a></span> They also don't change the advice to take folate before and during <span class="nb">pregnancy.<a class="ref" href="#s16">[16]</a></span></p></div>
+      </div>
+      <div class="trow" role="row">
+        <div role="cell"><div class="tname">Ancestry kits<small>23andMe, AncestryDNA</small></div></div>
+        <div class="tben" role="cell"><span class="lbl">Cost</span>Posted to a lab overseas</div>
+        <div class="tcheck" role="cell"><span class="chip c-neutral">For interest</span><p>Australian privacy law doesn't cover overseas <span class="nb">services.<a class="ref" href="#s13">[13]</a></span> In 2025, 23andMe's assets, including its customer data, were sold out of bankruptcy to a nonprofit set up by its <span class="nb">co-founder.<a class="ref" href="#s24">[24]</a></span></p></div>
+      </div>
+      <div class="trow" role="row">
+        <div role="cell"><div class="tname">DNA Screen research study<small>Monash University</small></div></div>
+        <div class="tben" role="cell"><span class="lbl">Cost</span>Was free; not recruiting now</div>
+        <div class="tcheck" role="cell"><span class="chip c-chill">Research</span><p>Its pilot tested 10,000 people aged 18–40. About 2% carried variants for hereditary breast and ovarian cancer, Lynch syndrome or familial high cholesterol. The team is seeking funding for the next <span class="nb">stage.<a class="ref" href="#s23">[23]</a></span></p></div>
+      </div>
+    </div>
+
+    <div class="flag d-dna"><svg><use href="#ic-shield"/></svg><span><b>Insurance and privacy.</b> The new ban covers life insurance decisions made from 8 October <span class="nb">2026.<a class="ref" href="#s14">[14]</a></span> Private health insurance in Australia is community-rated, so it was never priced on your <span class="nb">genes.<a class="ref" href="#s13">[13]</a></span> Before you send a sample, ask where the lab is and whether your sample and results will be used for <span class="nb">research.<a class="ref" href="#s13">[13]</a></span></span></div>
+  </div>
+</section>
+
+<section class="block" id="stool">
+  <div class="wrap">
+    <div class="eyebrow"><b>Stool</b> · bowel and gut</div>
+    <h2>One stool test is free and proven. Most of the rest are exploratory.</h2>
+    <p class="lede">A bowel screening test looks for hidden blood. A microbiome test maps the bacteria living in your gut. They answer different questions, and the evidence behind them is very different.</p>
+
+    <div class="sci">
+      <div class="scard d-strong lit" id="t-nbcsp">
+        <span class="chip c-area">Strong · free</span>
+        <div class="stat">90%+<small>of bowel cancers can be treated if found early</small></div>
+        <h3>The National Bowel Cancer Screening Program</h3>
+        <p>A free test you do at home every 2 years if you're 45–74, have a green Medicare card or are a DVA customer, and have an Australian mailing <span class="nb">address.<a class="ref" href="#s7">[7]</a></span> At <b>45–49</b>, request your first kit online or on 1800 627 701. From <b>50</b>, a kit is mailed automatically, and the next one arrives 2 years after your last <span class="nb">test.<a class="ref" href="#s8">[8]</a></span> You can also buy kits at pharmacies or <span class="nb">online.<a class="ref" href="#s9">[9]</a></span></p>
+        <div class="row"><a class="btn go" href="https://www.health.gov.au/how-bowel-screening-works" target="_blank" rel="noopener">Request a kit <svg><use href="#ic-out"/></svg></a><a class="btn" href="tel:1800627701">1800 627 701</a></div>
+      </div>
+      <div class="scard d-depends lit" id="t-micro">
+        <span class="chip c-area">Exploratory</span>
+        <div class="stat">$239–$599<small>per microbiome test</small></div>
+        <h3>Microbiome mapping</h3>
+        <p>i-screen sells a Microbiome Check (<b>$239</b>), a GI-MAP (<b>$599</b>) and GutIQ (<b>$599</b>). Microba's Microbiome Explorer costs <b>$449–$549</b> and needs a practitioner <span class="nb">referral.<a class="ref" href="#s4">[4]</a><a class="ref" href="#s26">[26]</a></span> An international consensus found little evidence that these tests are clinically <span class="nb">useful.<a class="ref" href="#s27">[27]</a></span> A Sydney gastroenterologist says they can help when a specialist or accredited dietitian orders one for a clear clinical <span class="nb">reason.<a class="ref" href="#s28">[28]</a></span></p>
+      </div>
+    </div>
+
+    <div class="menus two">
+      <div class="menu-card d-strong">
+        <div class="k"><i></i>One question each</div>
+        <h3>Targeted stool and breath markers at i-screen</h3>
+        <ul class="menu">
+          <li><span class="nm">Bowel Screen Test<small>2 hidden-blood tests + calprotectin</small></span><span class="lead"></span><span class="pr">$129</span></li>
+          <li><span class="nm">Gut Inflammation Test<small>calprotectin</small></span><span class="lead"></span><span class="pr">$115</span></li>
+          <li><span class="nm">Pancreatic Insufficiency Test<small>elastase</small></span><span class="lead"></span><span class="pr">$115</span></li>
+          <li><span class="nm">Parasite PCR Test<small>12 targets</small></span><span class="lead"></span><span class="pr">$120</span></li>
+          <li><span class="nm">Helicobacter pylori Breath Test</span><span class="lead"></span><span class="pr">$129</span></li>
+          <li><span class="nm">SIBO Breath Test<small>glucose + lactulose</small></span><span class="lead"></span><span class="pr">$269</span></li>
+        </ul>
+      </div>
+      <div class="menu-card d-depends">
+        <div class="k"><i></i>Broad maps</div>
+        <h3>Microbiome and gut panels</h3>
+        <ul class="menu">
+          <li><span class="nm">i-screen Microbiome Check<small>78 markers, home stool kit</small></span><span class="lead"></span><span class="pr">$239</span></li>
+          <li><span class="nm">i-screen Gut Health Test<small>99 markers</small></span><span class="lead"></span><span class="pr">$479</span></li>
+          <li><span class="nm">i-screen GI-MAP (PCR)<small>134 markers</small></span><span class="lead"></span><span class="pr">$599</span></li>
+          <li><span class="nm">i-screen Advanced Microbiome GutIQ<small>192 markers</small></span><span class="lead"></span><span class="pr">$599</span></li>
+          <li><span class="nm">Microba Microbiome Explorer<small>Essentials · Extended · Comprehensive, by referral</small></span><span class="lead"></span><span class="pr">$449–$549</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="oversimple">
+      <span class="q" aria-hidden="true">“</span>
+      <h3>Paid bowel test or the free kit?</h3>
+      <p>i-screen's $129 Bowel Screen adds calprotectin, a marker of gut inflammation. You collect two containers from a collection centre and return your sample within 4 hours. i-screen says your GP is best placed to review the <span class="nb">results.<a class="ref" href="#s6">[6]</a></span> If you're eligible for the national program, its kit does the screening job for free and arrives again every 2 <span class="nb">years.<a class="ref" href="#s8">[8]</a></span></p>
+    </div>
+    <p class="note"><b>Microba Insight is gone.</b> Microba stopped selling its consumer Insight test in November 2024. Its current tests are designed for use with a health <span class="nb">professional.<a class="ref" href="#s25">[25]</a></span></p>
+  </div>
+</section>
+
+<section class="block" id="blood">
+  <div class="wrap">
+    <div class="eyebrow"><b>Blood</b> · collection centre</div>
+    <h2>Start with the basics, then add one question at a time.</h2>
+    <p class="lede">Usually your GP writes the pathology request. Direct-access services issue that request for you, so you can walk into a collection centre without a GP <span class="nb">visit.<a class="ref" href="#s1">[1]</a><a class="ref" href="#s33">[33]</a></span></p>
+
+    <div class="howto">
+      <div class="steps">
+        <ol>
+          <li><div><h3>Order online</h3><p>Choose a test. i-screen needs no GP referral and no Medicare card, because it's a private <span class="nb">service.<a class="ref" href="#s1">[1]</a><a class="ref" href="#s3">[3]</a></span></p></div></li>
+          <li><div><h3>Get your request form by email</h3><p>Check the test page for preparation. Some blood tests need fasting. Keep taking your medicines unless the instructions say <span class="nb">otherwise.<a class="ref" href="#s3">[3]</a></span></p></div></li>
+          <li><div><h3>Go to a collection centre</h3><p>i-screen lists more than 1,800 affiliated, NATA-accredited centres across <span class="nb">Australia.<a class="ref" href="#s1">[1]</a></span></p></div></li>
+          <li><div><h3>Read your results</h3><p>Most come within about 48 hours, by email and in an online <span class="nb">dashboard.<a class="ref" href="#s1">[1]</a></span> Look up any marker on Pathology Tests Explained, an independent Australian <span class="nb">site.<a class="ref" href="#s31">[31]</a></span></p></div></li>
+        </ol>
+        <p class="why6"><b>Anything outside the range?</b> Take it to your GP. i-screen describes its service as wellness and education only, and says it doesn't diagnose or treat <span class="nb">conditions.<a class="ref" href="#s2">[2]</a></span></p>
+      </div>
+
+      <div class="menu-card d-strong lit" id="t-core">
+        <div class="k"><i></i>Core panel</div>
+        <h3>Common first blood tests at i-screen</h3>
+        <ul class="menu">
+          <li><span class="nm">Full Blood Count<small>14 markers</small></span><span class="lead"></span><span class="pr">$39</span></li>
+          <li><span class="nm">Diabetes HbA1c</span><span class="lead"></span><span class="pr">$39</span></li>
+          <li><span class="nm">Cholesterol<small>6 markers</small></span><span class="lead"></span><span class="pr">$45</span></li>
+          <li><span class="nm">Liver Function<small>14 markers</small></span><span class="lead"></span><span class="pr">$52</span></li>
+          <li><span class="nm">Vitamin D</span><span class="lead"></span><span class="pr">$55</span></li>
+          <li><span class="nm">Iron Studies<small>4 markers</small></span><span class="lead"></span><span class="pr">$59</span></li>
+          <li><span class="nm">Thyroid Function<small>3 markers</small></span><span class="lead"></span><span class="pr">$69</span></li>
+          <li><span class="nm">Kidney Health<small>17 markers</small></span><span class="lead"></span><span class="pr">$85</span></li>
+          <li><span class="nm">Essential Health Test<small>38 markers in one draw</small></span><span class="lead"></span><span class="pr">$140</span></li>
+          <li><span class="nm">Well Man · Well Woman<small>51 · 52 markers</small></span><span class="lead"></span><span class="pr">$249 · $259</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flag d-skip" id="r-igg"><svg><use href="#ic-alert"/></svg><span><b>Skip IgG food intolerance tests</b> ($365 for 96 foods at i-screen). ASCIA, the body for Australia's clinical immunology and allergy specialists, lists IgG testing to foods among unproven tests. It warns they can lead to misdiagnosis and costly, often dangerous diets. It also advises against online allergy <span class="nb">testing.<a class="ref" href="#s4">[4]</a><a class="ref" href="#s29">[29]</a></span></span></div>
+    <p class="note"><b>Prefer to go through your GP?</b> Tests your GP orders for a clinical reason can attract a Medicare rebate, and you can choose your own pathology provider unless your doctor asks for a specific <span class="nb">one.<a class="ref" href="#s32">[32]</a></span></p>
+  </div>
+</section>
+
+<section class="block" id="iscreen">
+  <div class="wrap">
+    <div class="eyebrow"><b>i-screen</b> · at a glance</div>
+    <h2>One online menu for blood, stool, breath and DNA.</h2>
+    <p class="lede">i-screen covers blood, stool, breath, saliva, urine and DNA in one place. That breadth is useful, and it's also why you need to choose carefully.</p>
+
+    <div class="prov">
+      <div class="pcard">
+        <div class="pcard-top"><h3>i-screen</h3><span class="chip c-curious">Direct-access pathology</span></div>
+        <dl>
+          <div><dt>Who</dt><dd>Intelligent Screening Pty Ltd, <span class="nb">Australia.<a class="ref" href="#s1">[1]</a></span></dd></div>
+          <div><dt>Range</dt><dd><b>150+ tests</b> across general health, hormones, thyroid, gut health, fertility, sports, genetic, sexual health, longevity, cardiovascular, nutrition, and women's and men's <span class="nb">health.<a class="ref" href="#s1">[1]</a></span></dd></div>
+          <div><dt>Referral</dt><dd>None needed. It's private, so no Medicare card and no Medicare <span class="nb">rebate.<a class="ref" href="#s1">[1]</a><a class="ref" href="#s3">[3]</a></span></dd></div>
+          <div><dt>Collection</dt><dd>1,800+ affiliated collection centres, plus home kits for swabs, stool, breath, saliva and dried <span class="nb">urine.<a class="ref" href="#s1">[1]</a><a class="ref" href="#s4">[4]</a></span></dd></div>
+          <div><dt>Labs</dt><dd>A network of NATA-accredited Australian labs, including Healius, Laverty, QML, Dorevitch, TML and Western Diagnostic <span class="nb">Pathology.<a class="ref" href="#s2">[2]</a></span></dd></div>
+          <div><dt>Results</dt><dd>Most within about <b>48 hours</b> and DNA in about <b>2 weeks</b>, in an online dashboard with notes reviewed by health <span class="nb">professionals.<a class="ref" href="#s1">[1]</a><a class="ref" href="#s5">[5]</a></span></dd></div>
+          <div><dt>Scope</dt><dd>Wellness and education only. It doesn't diagnose or treat <span class="nb">conditions.<a class="ref" href="#s2">[2]</a></span></dd></div>
+        </dl>
+        <div class="row"><a class="btn go" href="https://www.i-screen.com.au/" target="_blank" rel="noopener">i-screen.com.au <svg><use href="#ic-out"/></svg></a><a class="btn" href="https://www.i-screen.com.au/faq" target="_blank" rel="noopener">FAQ <svg><use href="#ic-out"/></svg></a></div>
+      </div>
+      <div class="pside">
+        <div class="way solid d-strong"><div class="k"><i></i>Good for</div>
+          <ul>
+            <li><svg><use href="#ic-check"/></svg><span><b>Core blood tests</b> when a GP visit is hard to fit in</span></li>
+            <li><svg><use href="#ic-check"/></svg><span><b>Tracking a known marker</b>, like iron or vitamin D, over time</span></li>
+            <li><svg><use href="#ic-check"/></svg><span><b>A single stool or breath marker</b> when you have a specific question</span></li>
+          </ul>
+        </div>
+        <div class="way solid d-skip"><div class="k"><i></i>Skip or ask first</div>
+          <ul>
+            <li><svg><use href="#ic-x"/></svg><span><b>MTHFR</b> and <b>IgG food</b> tests</span></li>
+            <li><svg><use href="#ic-x"/></svg><span><b>DNA panels with APOE</b>, unless you have a genetic counsellor to talk them through</span></li>
+            <li><svg><use href="#ic-x"/></svg><span><b>Paid bowel screening</b> if you're eligible for the free kit</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p class="note"><b>Ask before you order.</b> i-screen's FAQ and how-it-works pages don't state a minimum age, how urgent or abnormal results are handled, or whether results are sent to your <span class="nb">GP.<a class="ref" href="#s2">[2]</a><a class="ref" href="#s3">[3]</a></span> If any of that matters to you, ask them first.</p>
+
+    <div class="others">
+      <div><span class="chip c-constructive">Free</span><h3>National Bowel Cancer Screening Program</h3><p>A free stool kit every 2 years from age 45 to <span class="nb">74.<a class="ref" href="#s8">[8]</a></span></p><div class="row"><a class="btn" href="https://www.health.gov.au/how-bowel-screening-works" target="_blank" rel="noopener">health.gov.au <svg><use href="#ic-out"/></svg></a></div></div>
+      <div><span class="chip c-chill">DNA</span><h3>Eugene</h3><p>Carrier and preventive genetic testing from home, with a genetic counsellor <span class="nb">included.<a class="ref" href="#s19">[19]</a></span></p><div class="row"><a class="btn" href="https://eugenelabs.com/" target="_blank" rel="noopener">eugenelabs.com <svg><use href="#ic-out"/></svg></a></div></div>
+      <div><span class="chip c-curious">Gut</span><h3>Microba</h3><p>Metagenomic microbiome tests through a <span class="nb">practitioner.<a class="ref" href="#s25">[25]</a><a class="ref" href="#s26">[26]</a></span></p><div class="row"><a class="btn" href="https://microba.com/products/" target="_blank" rel="noopener">microba.com <svg><use href="#ic-out"/></svg></a></div></div>
+      <div><span class="chip c-neutral">Blood</span><h3>iMedical</h3><p>Another direct-access pathology service using NATA-accredited <span class="nb">labs.<a class="ref" href="#s33">[33]</a></span></p><div class="row"><a class="btn" href="https://imedical.com.au" target="_blank" rel="noopener">imedical.com.au <svg><use href="#ic-out"/></svg></a></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="check">
+  <div class="wrap">
+    <div class="eyebrow"><b>Before you order</b> · six questions</div>
+    <h2>Six questions to ask before you pay for any test.</h2>
+    <p class="lede">These work for any provider, including ones not on this page.</p>
+
+    <div class="steps check6">
+      <ol>
+        <li><div><h3>What will I do with the answer?</h3><p>If no result would change what you do, the test probably isn't worth it. NHMRC suggests asking this before any genetic <span class="nb">test.<a class="ref" href="#s13">[13]</a></span></p></div></li>
+        <li><div><h3>Is there a free or Medicare-funded route?</h3><p>Bowel screening at 45–74 and carrier screening when planning a pregnancy are both publicly <span class="nb">funded.<a class="ref" href="#s8">[8]</a><a class="ref" href="#s21">[21]</a></span></p></div></li>
+        <li><div><h3>Is the lab accredited?</h3><p>Look for NATA or RCPA accreditation. NATA's website lists every accredited medical testing lab in <span class="nb">Australia.<a class="ref" href="#s30">[30]</a></span></p></div></li>
+        <li><div><h3>Who explains the result?</h3><p>Find out who you can ask about your results, and what happens if one comes back abnormal.</p></div></li>
+        <li><div><h3>Where do my sample and data go?</h3><p>Overseas labs sit outside Australian privacy law, and some companies ask to use your sample for <span class="nb">research.<a class="ref" href="#s13">[13]</a></span></p></div></li>
+        <li><div><h3>Do I have symptoms?</h3><p>Then see your GP instead. Not sure how urgent it is? Call healthdirect on <a class="num" href="tel:1800022222" style="color:var(--text)">1800 022 222</a>, any time. In an emergency, call <a href="tel:000" style="color:var(--caring)">000</a><span class="nb">.<a class="ref" href="#s34">[34]</a></span></p></div></li>
+      </ol>
+    </div>
+
+    <details class="sources">
+      <summary><svg><use href="#ic-chev"/></svg>Sources <span>34</span></summary>
+      <ol>
+        <li id="s1">i-screen. <a href="https://www.i-screen.com.au/" target="_blank" rel="noopener">Private blood tests and health screening</a>. 150+ tests, no GP referral, request form by email, 1,800+ collection centres, results typically within 48 hours; Intelligent Screening Pty Ltd.</li>
+        <li id="s2">i-screen. <a href="https://www.i-screen.com.au/health-screening" target="_blank" rel="noopener">What we do</a>. Steps, laboratory network, wellness and educational services only.</li>
+        <li id="s3">i-screen. <a href="https://www.i-screen.com.au/faq" target="_blank" rel="noopener">FAQ</a>. Private service, no Medicare card; fasting and medication guidance.</li>
+        <li id="s4">i-screen. <a href="https://www.i-screen.com.au/tests" target="_blank" rel="noopener">All tests</a>. Prices and marker counts as listed in November 2026.</li>
+        <li id="s5">i-screen. <a href="https://www.i-screen.com.au/tests/dna-comprehensive-test" target="_blank" rel="noopener">Comprehensive DNA Test</a>. Cheek swab, NATA-accredited Australian lab, about 2 weeks, APOE.</li>
+        <li id="s6">i-screen. <a href="https://www.i-screen.com.au/tests/bowel-screen-test" target="_blank" rel="noopener">Bowel Screen Test</a>. Two faecal occult blood tests and faecal calprotectin, $129.</li>
+        <li id="s7">Australian Government Department of Health. <a href="https://www.health.gov.au/our-work/national-bowel-cancer-screening-program/getting-a-bowel-screening-test/who-should-do-the-bowel-screening-test" target="_blank" rel="noopener">Who should do the bowel screening test, and who should not</a>.</li>
+        <li id="s8">Australian Government Department of Health. <a href="https://www.health.gov.au/how-bowel-screening-works" target="_blank" rel="noopener">How bowel screening with the program works</a>.</li>
+        <li id="s9">Australian Government Department of Health. <a href="https://www.health.gov.au/our-work/national-bowel-cancer-screening-program/about-the-national-bowel-cancer-screening-program/lowered-eligible-age" target="_blank" rel="noopener">Lowered eligible age for bowel screening</a>. From 50 to 45 on 1 July 2024; kits also sold at pharmacies and online.</li>
+        <li id="s10">Therapeutic Goods Administration. <a href="https://www.tga.gov.au/node/288073" target="_blank" rel="noopener">Review of the regulation of certain self-testing IVDs in Australia</a>. Excluded Purposes Specification 2020.</li>
+        <li id="s11">BioWorld. <a href="https://www.bioworld.com/articles/497623-australia-to-allow-more-self-test-ivds-to-be-sold-to-consumers" target="_blank" rel="noopener">Australia to allow more self-test IVDs to be sold to consumers</a>, September 2020. Cancer and health-related genetic self-tests stay prohibited.</li>
+        <li id="s12">23andMe. <a href="https://www.tga.gov.au/sites/default/files/submissions-received-and-tga-response-review-regulation-certain-self-testing-ivds-australia-23andme.pdf" target="_blank" rel="noopener">Submission to the TGA review of self-testing IVDs</a>, 2019.</li>
+        <li id="s13">National Health and Medical Research Council. <a href="https://www.nhmrc.gov.au/about-us/publications/understanding-direct-consumer-genetic-dna-testing" target="_blank" rel="noopener">Understanding direct-to-consumer genetic DNA testing</a>.</li>
+        <li id="s14">Actuaries Institute. <a href="https://www.actuaries.asn.au/research-analysis/genetic-testing-life-insurance" target="_blank" rel="noopener">Genetic testing and life insurance</a>. Act passed 1 April 2026, Royal Assent 8 April 2026, applies to decisions from 8 October 2026.</li>
+        <li id="s15">Australian Human Rights Commission. <a href="https://humanrights.gov.au/about-us/media-centre/media-releases/disability-rights/new-protections-end-genetic-discrimination-in-life-insurance" target="_blank" rel="noopener">New protections end genetic discrimination in life insurance</a>, 1 April 2026.</li>
+        <li id="s16">RACGP. <a href="https://www.racgp.org.au/clinical-resources/clinical-guidelines/first-do-no-harm/gp-resources/mthfr-gene-testing" target="_blank" rel="noopener">First do no harm: MTHFR gene testing</a>, and the <a href="https://www.racgp.org.au/getattachment/068ea475-6414-4230-a894-3b6df5f2b1d8/MTHFR-gene-testing.aspx" target="_blank" rel="noopener">patient version</a>.</li>
+        <li id="s17">Human Genetics Society of Australasia. <a href="https://www.hqsc.govt.nz/resources/choosing-wisely/recommendations-and-resources/for-clinicians/human-genetics-society-of-australasia" target="_blank" rel="noopener">Choosing Wisely recommendations</a>. Don't test MTHFR or APOE where clinical utility is extremely low.</li>
+        <li id="s18">RACGP. <a href="https://www.racgp.org.au/clinical-resources/clinical-guidelines/key-racgp-guidelines/view-all-racgp-guidelines/genomics-in-general-practice/genetic-tests-and-technologies/personal-genomic-testing" target="_blank" rel="noopener">Genomics in general practice: personal genomic testing</a>.</li>
+        <li id="s19">Eugene. <a href="https://eugenelabs.com/" target="_blank" rel="noopener">Eugene Labs</a> and <a href="https://eugenelabs.com/pages/proactive-care" target="_blank" rel="noopener">Proactive care</a>. Saliva at home, genetic counsellor telehealth, about four weeks, CLIA, CAP and NATA labs, no trait reporting.</li>
+        <li id="s20">Eugene. <a href="https://eugenelabs.com/providers/" target="_blank" rel="noopener">For providers</a> (carrier testing from $549) and <a href="https://eugenelabs.com/pages/preventative-for-clinics" target="_blank" rel="noopener">Preventative for clinics</a> (184+ genes).</li>
+        <li id="s21">MBS Online. <a href="https://www.mbsonline.gov.au/internet/mbsonline/publishing.nsf/Content/0FAE1338D92EA3A3CA258A6F0001701A/$File/FS%20-%20Reproductive%20carrier%20testing%20for%20cystic%20fibrosis,%20spinal%20muscular%20atrophy%20and%20fragile%20X%20syndrome.pdf" target="_blank" rel="noopener">Reproductive carrier testing for cystic fibrosis, spinal muscular atrophy and fragile X syndrome</a>, from 1 November 2023; and <a href="https://www1.racgp.org.au/newsgp/clinical/genetic-carrier-test-added-to-mbs" target="_blank" rel="noopener">newsGP</a>.</li>
+        <li id="s22">Australian Clinical Labs. <a href="https://clinicallabs.com.au/doctor/testing-guide/mbs-updates/genetic-carrier-screening-items-73451-and-73452/" target="_blank" rel="noopener">Genetic carrier screening, MBS items 73451 and 73452</a>.</li>
+        <li id="s23">Monash University. <a href="https://dnascreen.monash.edu/about-us.html" target="_blank" rel="noopener">About DNA Screen</a>. Pilot of 10,000 people aged 18–40, about 2% at high genetic risk.</li>
+        <li id="s24">23andMe. <a href="https://mediacenter.23andme.com/press-releases/ttam-research-institute-nonprofit-public-benefit-corporation/" target="_blank" rel="noopener">TTAM Research Institute completes the acquisition of 23andMe assets</a>, 14 July 2025.</li>
+        <li id="s25">Microba. <a href="https://insight.microba.com/sunset-faqs/" target="_blank" rel="noopener">Insight sunset FAQs</a>. Insight not sold after 3 November 2024.</li>
+        <li id="s26">Microba. <a href="https://help.microba.com/en/articles/16183718-microbiome-explorer-pricing-update-september-2026-australia" target="_blank" rel="noopener">Microbiome Explorer pricing update, September 2026</a>. AU$449, $479 and $549 including GST and shipping.</li>
+        <li id="s27">International consensus statement on microbiome testing in clinical practice. <a href="https://spiral.imperial.ac.uk/entities/publication/7d3c9f97-278a-4839-814f-a32600623367" target="_blank" rel="noopener">Imperial College London repository</a>.</li>
+        <li id="s28">Gut check: are at-home microbiome tests a way to hack your health or simply a waste? <a href="https://www.inkl.com/news/gut-check-are-at-home-microbiome-tests-a-way-to-hack-your-health-or-simply-a-waste" target="_blank" rel="noopener">Prof Rupert Leong, Macquarie University Hospital</a>.</li>
+        <li id="s29">ASCIA. <a href="https://allergy.org.au/patients/allergy-testing/evidence-based-versus-non-evidence-based-tests-and-treatments" target="_blank" rel="noopener">Evidence-based versus non evidence-based tests and treatments for allergic disorders</a>.</li>
+        <li id="s30">Australian Government Department of Health. <a href="https://www1.health.gov.au/internet/publications/publishing.nsf/Content/qupp-benefits-and-risks-for-consumers-of-pathology-testing~qupp-where" target="_blank" rel="noopener">Benefits and risks for consumers of pathology testing</a>. NATA and RCPA accreditation.</li>
+        <li id="s31">healthdirect. <a href="https://healthdirect.gov.au/partners/pathology-tests-explained" target="_blank" rel="noopener">Pathology Tests Explained</a>, at <a href="https://ptex.au" target="_blank" rel="noopener">ptex.au</a>.</li>
+        <li id="s32">Australian Government Department of Health. <a href="https://www.health.gov.au/topics/pathology/about-pathology" target="_blank" rel="noopener">What pathology is</a>. Choosing your own pathology provider.</li>
+        <li id="s33">iMedical. <a href="https://imedical.com.au" target="_blank" rel="noopener">Direct access pathology</a>. Blood tests without a doctor's referral through NATA-accredited labs.</li>
+        <li id="s34">healthdirect. <a href="https://www.healthdirect.gov.au/healthdirect-helpline" target="_blank" rel="noopener">healthdirect helpline</a>, 1800 022 222.</li>
+      </ol>
+    </details>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <div class="eyebrow">Start here</div>
+    <h2>Free kit first. One blood panel next.</h2>
+    <p class="lede">Use what's already funded, then add one paid test with one clear question. Take anything unexpected to your GP.</p>
+    <div class="jump-row">
+      <a class="mode-pill mp-c" href="#finder"><svg><use href="#ic-compass"/></svg>Find your start</a>
+      <a class="mode-pill mp-l" href="#dna"><svg><use href="#ic-dna"/></svg>DNA</a>
+      <a class="mode-pill mp-b" href="#stool"><svg><use href="#ic-flask"/></svg>Stool</a>
+      <a class="mode-pill mp-k" href="#blood"><svg><use href="#ic-drop"/></svg>Blood</a>
+      <a class="mode-pill mp-c" href="#check"><svg><use href="#ic-list"/></svg>Six questions</a>
+    </div>
+    <div class="companion-row">
+      <a class="companion" href="https://www.selfdriven.health/probiotics">Working on your gut? Read the Probiotics <span class="nw">guide<svg><use href="#ic-arrow"/></svg></span></a>
+      <a class="companion" href="https://www.selfdriven.health/good-gut-smoothies">Feed it well: Good gut <span class="nw">smoothies<svg><use href="#ic-arrow"/></svg></span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="sd-foot">
+  <a class="sd-logo" href="https://www.selfdriven.health/" aria-label="selfdriven.health home"><span class="markdots" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>selfdriven<em>.health</em></span></a>
+  <div class="sd-tag">Feel · Grow · Move</div>
+  <nav class="sd-more" aria-label="More guides"><a href="https://www.selfdriven.health/probiotics"><i style="background:var(--constructive)"></i>Probiotics</a><a href="https://www.selfdriven.health/good-gut-smoothies"><i style="background:var(--constructive)"></i>Good gut smoothies</a><a href="https://www.selfdriven.health/anti-inflammatory"><i style="background:var(--constructive)"></i>Anti-inflammatory</a><a href="https://www.selfdriven.health/walking"><i style="background:var(--constructive)"></i>Walking</a><a href="https://www.selfdriven.health/protocols"><i style="background:var(--curious)"></i>Protocols</a><a href="https://www.selfdriven.health/vagus-nerve-reset"><i style="background:var(--chill-bright)"></i>Vagus Nerve Reset</a><a href="https://www.selfdriven.health/depression"><i style="background:var(--chill-bright)"></i>Depression</a><a href="https://www.selfdriven.health/#guides"><i style="background:var(--caring)"></i>All guides</a></nav>
+  <div class="sd-divider"></div>
+  <div class="sd-init">Companion to <a href="https://selfdriven.you" target="_blank" rel="noopener">selfdriven.you</a></div>
+  <div class="sd-init">An initiative of the <a href="https://selfdriven.foundation" target="_blank" rel="noopener">selfdriven Foundation</a></div>
+  <p class="sd-note"><b>Plain language, evidence-checked, and not medical advice.</b> The links on this page carry no affiliate codes, and selfdriven.health earns nothing from any test you order. Prices are as listed on each provider's site in November 2026 and change often. If you have symptoms, see your GP.</p>
+</footer>
+
+<script>
+/* hero stations: jump to the matching card or row and light it */
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-lit]'), function(a){
+    a.addEventListener('click', function(e){
+      var el = document.getElementById(a.getAttribute('data-lit'));
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+      el.classList.remove('on'); void el.offsetWidth; el.classList.add('on');
+      setTimeout(function(){ el.classList.remove('on'); }, 1800);
+    });
+  });
+})();
+</script>
+
+<script>
+/* finder: three answers in, a short ordered list of starting points out */
+(function(){
+  var recs = document.getElementById('recs');
+  if (!recs) return;
+  var state = {sym:'no', age:'45', goal:'general'};
+  var LINK = function(href, label){ return ' <a href="' + href + '">' + label + '</a>'; };
+  var R = {
+    symptoms: ['d-skip','See your GP first.','Symptoms need a diagnosis, not a screening test, and your GP can order tests with a Medicare rebate. Not sure how urgent it is? Call healthdirect on <a class="num" href="tel:1800022222">1800 022 222</a>. In an emergency, call <a class="num" href="tel:000">000</a>.'],
+    symBowel: ['d-skip','Don’t use a bowel screening kit to rule symptoms out.','Bleeding from the bowel, unexplained weight loss or an ongoing change in bowel habits means seeing your doctor straight away.' + LINK('#start','Why')],
+    bowel: ['d-strong','Free bowel screening kit.','Aged 45–49? Request one online or on <a class="num" href="tel:1800627701">1800 627 701</a>. Aged 50–74? One is mailed to you every 2 years.' + LINK('#stool','Stool tests')],
+    young: ['d-depends','Bowel screening starts at 45.','The free program is for people aged 45 to 74. If you’re worried about your risk, ask your GP.' + LINK('#stool','Stool tests')],
+    older: ['d-depends','You’re outside the bowel program’s age range.','Your GP is best placed to say whether screening still makes sense for you.' + LINK('#stool','Stool tests')],
+    general: ['d-strong','A core blood panel.','Full blood count, HbA1c, cholesterol, iron, vitamin D and thyroid are common first tests. At i-screen they run $39–$69 each, or $140 for the 38-marker Essential Health Test.' + LINK('#blood','Blood tests')],
+    gut: ['d-depends','Start with a question, not a map.','A single marker such as calprotectin ($115) answers one specific question. Microbiome mapping ($239–$599) is still exploratory.' + LINK('#stool','Stool tests')],
+    genes: ['d-dna','Health answers need clinical-grade testing.','For inherited risk, use a service with a genetic counsellor, such as Eugene. Treat wellness DNA as interest only, and skip MTHFR.' + LINK('#dna','DNA tests')],
+    preg: ['d-strong','Medicare-funded carrier screening.','Testing for cystic fibrosis, SMA and fragile X, for you and your partner. Ask your GP, or use a service such as Eugene.' + LINK('#dna','DNA tests')],
+    check: ['d-depends','Then run the six-question check.','Six questions to ask before you pay for any test.' + LINK('#check','Before you order')]
+  };
+  function li(r){ return '<li class="' + r[0] + '"><div><b>' + r[1] + '</b>' + r[2] + '</div></li>'; }
+  function render(){
+    var out = [];
+    if (state.sym === 'yes') {
+      out.push(R.symptoms);
+      if (state.goal === 'gut' || state.age === '45') out.push(R.symBowel);
+    } else {
+      out.push(state.age === '45' ? R.bowel : (state.age === 'u45' ? R.young : R.older));
+      out.push(R[state.goal]);
+      out.push(R.check);
+    }
+    recs.innerHTML = out.map(li).join('');
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.seg[data-q]'), function(seg){
+    var q = seg.getAttribute('data-q');
+    Array.prototype.forEach.call(seg.querySelectorAll('button'), function(b){
+      b.addEventListener('click', function(){
+        Array.prototype.forEach.call(seg.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        state[q] = b.getAttribute('data-v');
+        render();
+      });
+    });
+  });
+})();
+</script>
+
+<script>
+/* selfdriven.health chrome: cursor + logo dot wave */
+(function(){
+  var cur = document.getElementById('cur');
+  if (cur && window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    var HOT = 'a,button,label,summary,select,[role="button"],[role="tab"]';
+    document.addEventListener('mousemove', function(e){ cur.classList.add('on'); cur.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)'; }, {passive:true});
+    document.addEventListener('mouseover', function(e){ var t = e.target; if (!t || !t.closest) return; cur.classList.toggle('big', !!t.closest(HOT)); });
+    document.documentElement.addEventListener('mouseleave', function(){ cur.classList.remove('on'); });
+  }
+  var dotsList = document.querySelectorAll('.sd-nav .markdots, .sd-foot .markdots');
+  Array.prototype.forEach.call(dotsList, function(dots){
+    function wave(){ dots.classList.remove('wave'); void dots.offsetWidth; dots.classList.add('wave'); }
+    if (dots.closest('.sd-nav')) { if (document.readyState === 'complete') wave(); else window.addEventListener('load', wave); }
+    (dots.parentNode || dots).addEventListener('mouseenter', wave);
+  });
+})();
+</script>
+</body>
+</html>
