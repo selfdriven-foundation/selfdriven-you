@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Middle Way — selfdriven.you</title>
+<meta name="description" content="The 4Cs — Curious, Caring, Constructive, Chill — traced back to the Buddhist, Zen and Taoist practices they echo, with a few practices to try.">
+<meta name="theme-color" content="#09090f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090f;--surface:#111118;--surface2:#18181f;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#f0eeff;--muted:#7e7a9a;--muted2:#3d3a55;
+  --curious:#f5c842;--caring:#ff5f7e;--constructive:#00e5a0;--chill:#7b6cff;--chill-bright:#9b8fff;
+  --curious-dim:rgba(245,200,66,0.13);--caring-dim:rgba(255,95,126,0.13);
+  --constructive-dim:rgba(0,229,160,0.13);--chill-dim:rgba(123,108,255,0.13);
+  --pill:999px;
+  --display:'Bricolage Grotesque',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --cjk:'Hiragino Mincho ProN','Yu Mincho','Noto Serif CJK JP','Noto Serif JP','Songti SC',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;cursor:none;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;cursor:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:none}
+textarea{cursor:text}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.eyebrow{display:block;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{font-family:var(--display);color:var(--text)}
+h1{font-weight:800;letter-spacing:-.04em;line-height:.98;font-size:clamp(46px,7.2vw,92px)}
+h2{font-weight:800;letter-spacing:-.04em;line-height:1.02;font-size:clamp(32px,4.6vw,54px)}
+h3{font-weight:700;letter-spacing:-.03em;line-height:1.12;font-size:clamp(21px,2.3vw,27px)}
+p{color:rgba(240,238,255,.72)}
+.lead{font-size:clamp(17px,1.6vw,19px);color:rgba(240,238,255,.8);max-width:680px}
+section{position:relative;padding:80px 0}
+.sec-head{margin-bottom:30px}
+.sec-head .eyebrow{margin-bottom:12px}
+.sec-head h2{margin-bottom:16px}
+.cjk{font-family:var(--cjk)}
+
+/* cursor */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--curious);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .12s ease,background .2s}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(240,238,255,.3);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .2s,height .2s,border-color .2s}
+@media (hover:none){body,a,button{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(9,9,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.03em}
+.brand em{font-style:normal;color:rgba(240,238,255,.5)}
+.markdots{display:inline-flex;gap:4px}
+.markdots i{display:block;width:8px;height:8px;border-radius:50%;animation:md 2.6s ease-in-out infinite}
+.markdots i:nth-child(1){background:var(--curious)}
+.markdots i:nth-child(2){background:var(--caring);animation-delay:.15s}
+.markdots i:nth-child(3){background:var(--constructive);animation-delay:.3s}
+.markdots i:nth-child(4){background:var(--chill-bright);animation-delay:.45s}
+@keyframes md{0%,55%,100%{transform:translateY(0)}25%{transform:translateY(-4px)}}
+.nav-right{display:flex;align-items:center;gap:16px}
+.crumb{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em}
+.cta{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:var(--pill);background:var(--text);color:var(--bg);text-decoration:none;font-family:var(--display);font-weight:700;font-size:13.5px;transition:transform .2s,box-shadow .2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.45)}
+
+/* hero */
+.hero{padding:124px 0 64px;overflow:hidden;min-height:min(100vh,900px);display:flex;align-items:center}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 62% 58% at 30% 52%,rgba(9,9,15,.66),transparent 76%);z-index:1;pointer-events:none}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.12fr .88fr;gap:36px;align-items:center;width:100%}
+.gblob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.5;z-index:0}
+.gb1{width:520px;height:520px;background:var(--curious);top:-150px;left:-160px;animation:gb 15s ease-in-out infinite}
+.gb2{width:440px;height:440px;background:var(--caring);top:40px;right:-130px;animation:gb 19s ease-in-out infinite reverse}
+.gb3{width:360px;height:360px;background:var(--constructive);bottom:-60px;left:18%;animation:gb 23s ease-in-out infinite 3s}
+.gb4{width:320px;height:320px;background:var(--chill);bottom:20px;right:12%;animation:gb 17s ease-in-out infinite 8s}
+@keyframes gb{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(34px,-26px) scale(1.08)}70%{transform:translate(-22px,30px) scale(.93)}}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,9,15,.55);border:1px solid rgba(255,255,255,.22);border-radius:var(--pill);padding:8px 18px;font-size:12px;font-weight:500;color:rgba(240,238,255,.7);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--constructive);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,160,.5)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(0,229,160,0)}}
+.hero h1{margin:22px 0 20px}
+.grad{background:linear-gradient(90deg,var(--curious),var(--caring) 36%,var(--constructive) 68%,var(--chill-bright));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{color:rgba(240,238,255,.84)}
+.jump-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;position:relative}
+.jump-row::before{content:'';position:absolute;inset:-30px -10%;background:radial-gradient(ellipse at center,rgba(9,9,15,.55),transparent 72%);z-index:-1;pointer-events:none}
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:var(--pill);font-family:var(--display);font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s}
+.mode-pill svg{width:16px;height:16px}
+.mode-pill:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.mp-c{background:var(--curious-dim);color:var(--curious);border-color:rgba(245,200,66,.28)}
+.mp-k{background:var(--caring-dim);color:var(--caring);border-color:rgba(255,95,126,.28)}
+.mp-b{background:var(--constructive-dim);color:var(--constructive);border-color:rgba(0,229,160,.28)}
+.mp-l{background:var(--chill-dim);color:var(--chill-bright);border-color:rgba(123,108,255,.28)}
+.enso{width:100%;max-width:470px;justify-self:center;overflow:visible}
+.enso .arc{fill:none;stroke-linecap:round}
+.enso .main{stroke-width:15}
+.enso .dry{stroke-width:2.5;opacity:.45}
+.enso .lbl{font-family:var(--mono);font-size:12.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.enso .hub-k{font-family:var(--cjk);font-size:62px;fill:rgba(240,238,255,.13)}
+.enso .hub-s{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;fill:rgba(240,238,255,.5);text-transform:uppercase}
+
+/* mode theming */
+.mode-c{--m:var(--curious);--m-text:var(--curious);--m-dim:var(--curious-dim);--m-line:rgba(245,200,66,.28)}
+.mode-k{--m:var(--caring);--m-text:var(--caring);--m-dim:var(--caring-dim);--m-line:rgba(255,95,126,.28)}
+.mode-b{--m:var(--constructive);--m-text:var(--constructive);--m-dim:var(--constructive-dim);--m-line:rgba(0,229,160,.28)}
+.mode-l{--m:var(--chill);--m-text:var(--chill-bright);--m-dim:var(--chill-dim);--m-line:rgba(123,108,255,.28)}
+
+/* frame */
+.frame{border-top:1px solid var(--border)}
+.tune{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.tune div{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px}
+.tune b{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.tune strong{display:block;font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.tune p{font-size:14.5px}
+.tune .ok{border-color:rgba(0,229,160,.3);background:linear-gradient(160deg,rgba(0,229,160,.07),var(--surface) 60%)}
+.tune .ok b{color:var(--constructive)}
+.enemies{margin-top:60px}
+.enemies h3{margin-bottom:12px}
+.enemies>p{max-width:720px}
+.etable{margin-top:24px}
+.erow{display:grid;grid-template-columns:150px 1fr 1fr 1.25fr;gap:20px;padding:16px 0;border-top:1px solid var(--border);align-items:start}
+.erow.eh{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:0}
+.erow .em{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:16px;color:var(--m-text)}
+.erow .em svg{width:16px;height:16px}
+.erow strong{display:block;font-weight:600;color:var(--text);font-size:15px}
+.erow span{font-size:14px;color:rgba(240,238,255,.62)}
+.erow .tell{font-size:14.5px;color:rgba(240,238,255,.8)}
+.erow .lbl{display:none}
+.fine{font-size:13px;color:var(--muted);margin-top:18px;max-width:760px}
+
+/* mode sections */
+.mode{border-top:1px solid var(--border);overflow:hidden}
+.mode::before{content:'';position:absolute;width:640px;height:640px;border-radius:50%;background:var(--m);filter:blur(140px);opacity:.07;top:-280px;left:-240px;pointer-events:none}
+.mode .wrap{position:relative}
+.mode-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:18px}
+.mode-ic{width:52px;height:52px;border-radius:16px;background:var(--m-dim);border:1px solid var(--m-line);display:grid;place-items:center;color:var(--m-text);flex:none;margin-top:4px}
+.mode-ic svg{width:26px;height:26px}
+.mode .eyebrow{color:var(--m-text)}
+.mode h2{margin-top:6px}
+.trad{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+.concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 30px}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 22px 20px;position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
+.concept:hover{border-color:var(--m-line);transform:translateY(-3px)}
+.concept::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--m);opacity:.85}
+.c-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.c-term{font-family:var(--display);font-weight:700;font-size:23px;letter-spacing:-.03em;line-height:1.15}
+.c-script{font-family:var(--cjk);font-size:21px;color:rgba(240,238,255,.34);white-space:nowrap}
+.c-meta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--m-text);margin:6px 0 12px}
+.concept p{font-size:15px}
+.c-link{margin-top:14px;padding-top:12px;border-top:1px dashed var(--border2);font-size:13.5px;color:rgba(240,238,255,.86)}
+.c-link span{color:var(--m-text);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-right:6px}
+.verse{border-left:2px solid var(--m);padding:4px 0 4px 22px;margin:0 0 34px;max-width:800px}
+.verse p{font-family:var(--display);font-weight:500;font-size:clamp(20px,2.2vw,25px);letter-spacing:-.02em;line-height:1.32;color:var(--text)}
+.verse cite{display:block;font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+.tasks-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.tasks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.task{display:flex;flex-direction:column;gap:10px;text-align:left;background:var(--surface2);border:1px solid var(--border);border-radius:18px;padding:18px;transition:border-color .2s,transform .2s,background .2s;width:100%}
+.task:hover{border-color:var(--m-line);transform:translateY(-2px)}
+.task:focus-visible{outline:2px solid var(--m);outline-offset:3px}
+.task-when{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--m-text)}
+.tick{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);display:grid;place-items:center;transition:background .2s,border-color .2s}
+.tick svg{width:12px;height:12px;opacity:0;color:var(--bg);transition:opacity .2s}
+.task.done{background:linear-gradient(160deg,var(--m-dim),var(--surface2) 70%);border-color:var(--m-line)}
+.task.done .tick{background:var(--m);border-color:var(--m)}
+.task.done .tick svg{opacity:1}
+.task-text{display:block;font-size:15px;color:rgba(240,238,255,.86);line-height:1.5}
+.task-stamp{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);min-height:16px}
+
+/* fire */
+.fire{border-top:1px solid var(--border)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.fcard{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:24px}
+.fcard .eyebrow{margin-bottom:10px}
+.fcard h3{margin-bottom:8px}
+.fcard p{font-size:15px}
+.flean{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.flean .mode-pill{padding:8px 14px;font-size:13px}
+.fcard.low{background:linear-gradient(160deg,rgba(245,200,66,.07),var(--surface) 55%)}
+.fcard.hot{background:linear-gradient(160deg,rgba(123,108,255,.1),var(--surface) 55%)}
+.always{margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:20px 24px;border-radius:22px;border:1px solid var(--border2);background:linear-gradient(90deg,rgba(245,200,66,.06),rgba(255,95,126,.06),rgba(0,229,160,.06),rgba(123,108,255,.08))}
+.always strong{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.02em}
+.always p{font-size:14.5px;margin-top:2px}
+.factors{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:40px}
+.factor{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:3px}
+.factor b{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.02em}
+.factor span{font-size:13px;color:rgba(240,238,255,.62)}
+.factor .fd{display:flex;gap:4px;margin-top:8px}
+.factor .fd i{width:7px;height:7px;border-radius:50%;display:block}
+.fd .c{background:var(--curious)}.fd .k{background:var(--caring)}.fd .b{background:var(--constructive)}.fd .l{background:var(--chill-bright)}
+.factor.rouse{border-top:2px solid rgba(245,200,66,.45)}
+.factor.settle{border-top:2px solid rgba(123,108,255,.55)}
+.factor.thread{border-top:2px solid rgba(240,238,255,.4)}
+
+/* hub */
+.hub{border-top:1px solid var(--border)}
+.hgrid{display:grid;grid-template-columns:.95fr 1.05fr;gap:40px;align-items:start}
+.hub .verse{--m:var(--chill-bright);margin-top:26px}
+.borrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bcard{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;position:relative;overflow:hidden}
+.bcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--m)}
+.bcard .c-top{margin-bottom:2px}
+.bcard .c-term{font-size:19px}
+.bcard .c-script{font-size:18px}
+.bcard .c-meta{margin:4px 0 8px;font-size:10.5px}
+.bcard p{font-size:14px}
+
+/* selves */
+.selves{border-top:1px solid var(--border);text-align:center}
+.selves .wrap{max-width:780px}
+.selves .lead{margin:0 auto}
+.selves .eyebrow{margin-bottom:12px}
+.selves h2{margin-bottom:18px}
+.marks{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:26px 0 0}
+.mark{display:inline-flex;align-items:baseline;gap:10px;padding:10px 18px;border-radius:var(--pill);border:1px solid var(--border2);background:var(--surface)}
+.mark b{font-family:var(--display);font-weight:700}
+.mark span{font-size:13.5px;color:rgba(240,238,255,.62)}
+
+/* practice */
+.practice{border-top:1px solid var(--border)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:26px}
+.panel .eyebrow{margin-bottom:8px}
+.panel h3{margin-bottom:6px}
+.panel>p{font-size:15px}
+.breath-stage{position:relative;width:264px;height:264px;margin:22px auto 16px}
+.breath-btn{position:absolute;inset:42px;border-radius:50%;background:radial-gradient(circle at 50% 38%,rgba(155,143,255,.3),rgba(123,108,255,.07) 72%);border:1.5px solid rgba(123,108,255,.42);display:flex;flex-direction:column;align-items:center;justify-content:center;animation:breathe 10s ease-in-out infinite;transition:border-color .3s}
+.breath-btn:focus-visible{outline:2px solid var(--chill-bright);outline-offset:6px}
+.breath-btn:active{border-color:var(--chill-bright)}
+@keyframes breathe{0%,100%{transform:scale(.93)}40%{transform:scale(1.04)}}
+.breath-num{font-family:var(--display);font-weight:800;font-size:66px;letter-spacing:-.04em;line-height:1}
+.breath-hint{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,238,255,.55);margin-top:8px}
+.bdot{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--muted2);transform:rotate(calc(var(--i) * 36deg)) translateY(-124px);transition:background .3s,box-shadow .3s}
+.bdot.on{background:var(--chill-bright);box-shadow:0 0 12px rgba(155,143,255,.75)}
+.breath-stage.complete .bdot:nth-child(4n+1){background:var(--curious);box-shadow:0 0 12px rgba(245,200,66,.7)}
+.breath-stage.complete .bdot:nth-child(4n+2){background:var(--caring);box-shadow:0 0 12px rgba(255,95,126,.7)}
+.breath-stage.complete .bdot:nth-child(4n+3){background:var(--constructive);box-shadow:0 0 12px rgba(0,229,160,.7)}
+.breath-msg{text-align:center;min-height:26px;font-size:15px;color:rgba(240,238,255,.82)}
+.row-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ghost{text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:var(--pill);border:1px solid var(--border2);font-family:var(--display);font-weight:600;font-size:13.5px;color:rgba(240,238,255,.85);transition:border-color .2s,transform .2s,color .2s}
+.ghost:hover{border-color:rgba(240,238,255,.4);transform:translateY(-2px)}
+.ghost svg{width:15px;height:15px}
+.solid{background:var(--text);color:var(--bg);border-color:var(--text)}
+.solid:hover{color:var(--bg)}
+.ghost.warn{border-color:rgba(255,95,126,.5);color:var(--caring)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.stat{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:14px}
+.stat b{display:block;font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-.03em;line-height:1.1}
+.stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.notice-label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+textarea{width:100%;min-height:118px;resize:vertical;background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:14px;color:var(--text);font-family:var(--body);font-size:15px;line-height:1.55}
+textarea:focus{outline:none;border-color:rgba(155,143,255,.55)}
+textarea::placeholder{color:var(--muted)}
+.save-state{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;min-height:16px}
+.panel .row-btns{justify-content:flex-start}
+
+/* note */
+.note{border-top:1px solid var(--border);padding:64px 0}
+.note-card{border:1px dashed var(--border2);border-radius:22px;padding:26px 28px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;background:rgba(17,17,24,.6)}
+.note-card .cjk{font-size:46px;line-height:1;color:rgba(240,238,255,.22)}
+.note-card h3{font-size:21px;margin-bottom:8px}
+.note-card p{font-size:15px;max-width:760px}
+.note-card p+p{margin-top:8px}
+
+/* footer */
+.foot{border-top:1px solid var(--border);padding:36px 0 52px}
+.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.foot nav{display:flex;flex-wrap:wrap;gap:8px}
+.foot small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;letter-spacing:.04em}
+
+@media (max-width:960px){
+  .factors{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:900px){
+  .hero{min-height:0;padding:104px 0 48px}
+  .hero .wrap{grid-template-columns:1fr;gap:10px}
+  .enso{max-width:360px}
+  .concepts,.tasks,.tune,.fgrid,.hgrid,.pgrid{grid-template-columns:1fr}
+  .hgrid{gap:28px}
+  .erow{grid-template-columns:1fr;gap:6px;padding:16px 18px;border:1px solid var(--border);border-radius:16px;background:var(--surface);margin-bottom:10px}
+  .erow.eh{display:none}
+  .erow .lbl{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .erow .em{margin-bottom:2px}
+}
+@media (max-width:600px){
+  :root{--muted:#9a96b5}
+  section{padding:58px 0}
+  .wrap{padding:0 18px}
+  .gblob{opacity:.3}
+  .hero::after{background:radial-gradient(ellipse 95% 70% at 40% 40%,rgba(9,9,15,.74),transparent 80%)}
+  .crumb{display:none}
+  .cta{padding:8px 13px;font-size:12.5px}
+  .factors{grid-template-columns:repeat(2,1fr)}
+  .borrow{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat b{font-size:24px}
+  .panel{padding:20px}
+  .note-card{grid-template-columns:1fr;gap:10px;padding:22px}
+  .mode-head{gap:14px}
+  .mode-ic{width:44px;height:44px;border-radius:14px}
+  .mode-ic svg{width:22px;height:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  .gblob,.markdots i,.hero-pill .dot,.breath-btn{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-telescope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="17" cy="13" r="3"/><path d="M3 7l5.5 2.5"/><path d="M3 7l2-4 14.5 6.5-2 4"/>
+    <path d="M8.5 9.5L6 20h5l1.5-4"/><path d="M17 16v4"/>
+  </symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </symbol>
+  <symbol id="ic-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/>
+    <path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>
+  </symbol>
+  <symbol id="ic-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+  </symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="ic-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="ic-undo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+</svg>
+
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="selfdriven.you home">
+      <span class="markdots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>selfdriven<em>.you</em></span>
+    </a>
+    <div class="nav-right">
+      <span class="crumb">/ the middle way</span>
+      <a class="cta" href="/where-you-at">Where you at? <svg width="14" height="14"><use href="#ic-arrow"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="gblob gb1"></div><div class="gblob gb2"></div><div class="gblob gb3"></div><div class="gblob gb4"></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="hero-pill"><span class="dot"></span>4Cs × Buddhism · Zen · Tao</span>
+      <h1>New names.<br><span class="grad">Old practice.</span></h1>
+      <p class="lead">Curious, Caring, Constructive and Chill weren't invented for an app. Investigation, kindness, effort and stillness have been practised, argued over and written down for two and a half thousand years. This page traces the 4Cs back to the Buddhist, Zen and Taoist ideas they echo, and borrows a few practices to try.</p>
+      <div class="jump-row">
+        <a class="mode-pill mp-c" href="#curious"><svg><use href="#ic-telescope"/></svg>Curious</a>
+        <a class="mode-pill mp-k" href="#caring"><svg><use href="#ic-heart"/></svg>Caring</a>
+        <a class="mode-pill mp-b" href="#constructive"><svg><use href="#ic-hammer"/></svg>Constructive</a>
+        <a class="mode-pill mp-l" href="#chill"><svg><use href="#ic-waves"/></svg>Chill</a>
+      </div>
+    </div>
+    <svg class="enso" id="enso" viewBox="0 0 480 440" role="img" aria-label="An ensō circle drawn in four arcs: Curious, Caring, Constructive and Chill, left open at the top">
+      <defs>
+        <filter id="brush" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <g filter="url(#brush)">
+        <path class="arc main" stroke="#f5c842" d="M268.1 72.7 A150 150 0 0 1 389.7 210.6"/>
+        <path class="arc main" stroke="#ff5f7e" d="M389.7 229.4 A150 150 0 0 1 268.1 367.3"/>
+        <path class="arc main" stroke="#00e5a0" d="M249.4 369.7 A150 150 0 0 1 97.3 266.4"/>
+        <path class="arc main" stroke="#9b8fff" d="M92.7 248.1 A150 150 0 0 1 176.1 84.3"/>
+        <path class="arc dry" stroke="#f5c842" d="M270.2 61.9 A161 161 0 0 1 395.9 180.0"/>
+        <path class="arc dry" stroke="#ff5f7e" d="M400.7 230.1 A161 161 0 0 1 299.3 369.7"/>
+        <path class="arc dry" stroke="#00e5a0" d="M250.1 380.7 A161 161 0 0 1 98.9 297.6"/>
+        <path class="arc dry" stroke="#9b8fff" d="M81.9 250.2 A161 161 0 0 1 145.4 89.7"/>
+      </g>
+      <text class="lbl" x="388" y="96" fill="#f5c842">Curious</text>
+      <text class="lbl" x="388" y="352" fill="#ff5f7e">Caring</text>
+      <text class="lbl" x="128" y="384" fill="#00e5a0" text-anchor="end">Constructive</text>
+      <text class="lbl" x="66" y="134" fill="#9b8fff" text-anchor="end">Chill</text>
+      <text class="hub-k" x="240" y="232" text-anchor="middle">円相</text>
+      <text class="hub-s" x="240" y="262" text-anchor="middle">ensō · open circle</text>
+    </svg>
+  </div>
+</section>
+
+<!-- FRAME -->
+<section class="frame" id="middle-way">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">00 · The frame</span>
+      <h2>Not too tight.<br>Not too loose.</h2>
+      <p class="lead">A monk named Soṇa practised so hard his feet bled, and got nowhere. The Buddha, knowing he'd been a lute player, asked him: when the strings were too tight, did the lute sound good? No. Too slack? No. Tuned evenly, neither tight nor loose? Yes. Effort works the same way. That's the Middle Way, and the 4Cs work the same way too.</p>
+    </div>
+    <div class="tune reveal">
+      <div><b>Too tight</b><strong>Strain</strong><p>Any mode gripped too hard turns restless. Curiosity becomes scatter, care becomes burnout, building becomes grind.</p></div>
+      <div><b>Too loose</b><strong>Slack</strong><p>Held too lightly, a mode drifts. Rest becomes avoidance, kindness becomes vague, ideas never land.</p></div>
+      <div class="ok"><b>Tuned</b><strong>Rhythm</strong><p>Each mode does its work, then hands over to the next. Nothing held so tight it can't let go.</p></div>
+    </div>
+    <p class="fine reveal">Soṇa Sutta, Aṅguttara Nikāya 6.55.</p>
+
+    <div class="enemies reveal">
+      <span class="eyebrow" style="margin-bottom:12px">Near enemies</span>
+      <h3>Every mode has a counterfeit.</h3>
+      <p>Buddhaghosa's <em>Visuddhimagga</em> (5th century) gives each quality of the heart two enemies. The far enemy is its obvious opposite. The near enemy is harder to spot, because it looks like the real thing. Compassion's near enemy is pity, and equanimity's is indifference. The 4Cs have near enemies too.</p>
+      <div class="etable">
+        <div class="erow eh"><div>Mode</div><div>Near enemy · looks like it</div><div>Far enemy · the opposite</div><div>The tell</div></div>
+        <div class="erow mode-c">
+          <div class="em"><svg><use href="#ic-telescope"/></svg>Curious</div>
+          <div><span class="lbl">Near enemy</span><strong>Novelty-chasing</strong><span>Tabs, feeds, the next shiny thing.</span></div>
+          <div><span class="lbl">Far enemy</span><strong>Certainty</strong><span>Already knowing.</span></div>
+          <div><span class="lbl">The tell</span><p class="tell">Real curiosity stays with one thing long enough to be changed by it.</p></div>
+        </div>
+        <div class="erow mode-k">
+          <div class="em"><svg><use href="#ic-heart"/></svg>Caring</div>
+          <div><span class="lbl">Near enemy</span><strong>Fixing</strong><span>Advice, rescue, pity.</span></div>
+          <div><span class="lbl">Far enemy</span><strong>Coldness</strong><span>Turning away.</span></div>
+          <div><span class="lbl">The tell</span><p class="tell">Care makes room for the other person. Fixing makes room for you as the helper.</p></div>
+        </div>
+        <div class="erow mode-b">
+          <div class="em"><svg><use href="#ic-hammer"/></svg>Constructive</div>
+          <div><span class="lbl">Near enemy</span><strong>Busyness</strong><span>Motion that feels like progress.</span></div>
+          <div><span class="lbl">Far enemy</span><strong>Paralysis</strong><span>Stuck at the start.</span></div>
+          <div><span class="lbl">The tell</span><p class="tell">Ask what got finished, not how full the day was.</p></div>
+        </div>
+        <div class="erow mode-l">
+          <div class="em"><svg><use href="#ic-waves"/></svg>Chill</div>
+          <div><span class="lbl">Near enemy</span><strong>Numbing</strong><span>Scrolling, zoning out, checking out.</span></div>
+          <div><span class="lbl">Far enemy</span><strong>Agitation</strong><span>Wired and can't stop.</span></div>
+          <div><span class="lbl">The tell</span><p class="tell">Real rest leaves you more here. Numbing leaves you more tired.</p></div>
+        </div>
+      </div>
+      <p class="fine">In the original, loving-kindness's near enemy is clinging affection, compassion's is pity, sympathetic joy's is giddy excitement, and equanimity's is indifference. The 4Cs mapping is ours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CURIOUS -->
+<section class="mode mode-c" id="curious">
+  <div class="wrap">
+    <div class="mode-head reveal">
+      <div class="mode-ic"><svg><use href="#ic-telescope"/></svg></div>
+      <div>
+        <span class="eyebrow">Mode 01 · Curious</span>
+        <h2>Beginner's mind.</h2>
+        <div class="trad">Zen · Korean Seon · early Buddhism</div>
+      </div>
+    </div>
+    <p class="lead reveal">In Zen, not already knowing isn't a gap to close. It's the practice. The tradition keeps returning to the mind that hasn't decided yet, because that's the only mind that can see what's actually there.</p>
+    <div class="concepts">
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Shoshin</span><span class="c-script">初心</span></div>
+        <div class="c-meta">Japanese Zen · beginner's mind</div>
+        <p>Meeting even familiar things as if for the first time. Shunryu Suzuki observed that a beginner sees many possibilities, and an expert sees few.</p>
+        <div class="c-link"><span>4Cs</span>"I don't know" is a starting line, not a verdict.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Dhamma-vicaya</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · investigation</div>
+        <p>One of the seven factors of awakening: actively examining experience instead of assuming it. In this tradition, investigation is one of the things awakening is made of.</p>
+        <div class="c-link"><span>4Cs</span>Curiosity is a muscle, not a mood.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Hwadu</span><span class="c-script">話頭</span></div>
+        <div class="c-meta">Korean Seon · "What is this?"</div>
+        <p>A single question held without being answered, sometimes for years. Seung Sahn's teaching boiled it down to "only don't know."</p>
+        <div class="c-link"><span>4Cs</span>Sit in the not-knowing long enough to get interested.</div>
+      </div>
+    </div>
+    <div class="verse reveal">
+      <p><em>Ehipassiko</em>: come and see for yourself.</p>
+      <cite>One of the six qualities of the Dhamma in the traditional recollection. The teaching asks to be checked, not believed.</cite>
+    </div>
+    <div class="tasks-label reveal">Try it</div>
+    <div class="tasks reveal">
+      <button class="task" type="button" data-id="curious-2m" data-mode="Curious" data-when="2 min"><span class="task-when">2 minutes<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Pick up an ordinary object and look at it for two minutes as if you'd never seen one before.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="curious-today" data-mode="Curious" data-when="Today"><span class="task-when">Today<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">When you catch yourself certain, ask "What is this, really?" and don't answer straight away.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="curious-week" data-mode="Curious" data-when="This week"><span class="task-when">This week<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Hold one question all week without looking it up. Notice what it does to you.</span><span class="task-stamp"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- CARING -->
+<section class="mode mode-k" id="caring">
+  <div class="wrap">
+    <div class="mode-head reveal">
+      <div class="mode-ic"><svg><use href="#ic-heart"/></svg></div>
+      <div>
+        <span class="eyebrow">Mode 02 · Caring</span>
+        <h2>The boundless heart.</h2>
+        <div class="trad">Early Buddhism · the four brahmavihāras</div>
+      </div>
+    </div>
+    <p class="lead reveal">Buddhism names four <em>brahmavihāras</em>, often translated as "divine abodes" or "the immeasurables". They're qualities of heart you can train like a skill. Three of them belong to Caring. The fourth, equanimity, belongs to Chill.</p>
+    <div class="concepts">
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Mettā</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · loving-kindness</div>
+        <p>Goodwill without conditions. You wish someone well whether or not they've earned it, and the practice works outward from people you love to people you find difficult.</p>
+        <div class="c-link"><span>4Cs</span>Caring is attention before it's anything else.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Karuṇā</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · compassion</div>
+        <p>The heart's response to suffering: staying present with someone's pain without turning away or taking it over. Its near enemy is pity, which keeps a distance.</p>
+        <div class="c-link"><span>4Cs</span>Hold space without taking on the problem as your own.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Muditā</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · sympathetic joy</div>
+        <p>Delight in someone else's good fortune. It's the most neglected of the four, and it's the antidote to comparison.</p>
+        <div class="c-link"><span>4Cs</span>Caring means celebrating people, not just consoling them.</div>
+      </div>
+    </div>
+    <div class="verse reveal">
+      <p>Ānanda suggested that good friendship was half of the spiritual life. The Buddha corrected him: it's the whole of it.</p>
+      <cite>Upaḍḍha Sutta, Saṃyutta Nikāya 45.2 (paraphrased)</cite>
+    </div>
+    <div class="tasks-label reveal">Try it</div>
+    <div class="tasks reveal">
+      <button class="task" type="button" data-id="caring-2m" data-mode="Caring" data-when="2 min"><span class="task-when">2 minutes<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Silently wish three people well: someone you love, someone neutral, someone difficult. "May you be well. May you be at ease."</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="caring-today" data-mode="Caring" data-when="Today"><span class="task-when">Today<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">In one conversation, don't plan your reply while they're talking. Just listen.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="caring-week" data-mode="Caring" data-when="This week"><span class="task-when">This week<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Practise muditā: tell someone, specifically, that you're glad about something good that happened to them.</span><span class="task-stamp"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRUCTIVE -->
+<section class="mode mode-b" id="constructive">
+  <div class="wrap">
+    <div class="mode-head reveal">
+      <div class="mode-ic"><svg><use href="#ic-hammer"/></svg></div>
+      <div>
+        <span class="eyebrow">Mode 03 · Constructive</span>
+        <h2>Chop wood, carry water.</h2>
+        <div class="trad">The Eightfold Path · Chan &amp; Zen monastic life</div>
+      </div>
+    </div>
+    <p class="lead reveal">Zen doesn't keep spiritual work in a separate box. Sweeping, cooking and building, done wholeheartedly, are the practice. Effort isn't the opposite of peace. Effort pointed in the right direction is one of the ways you get there.</p>
+    <div class="concepts">
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Sammā vāyāma</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · right effort</div>
+        <p>The sixth step of the Eightfold Path, and effort with a direction. It has four parts: prevent what's unhelpful, let go of it when it arises, develop what's helpful, and keep it going.</p>
+        <div class="c-link"><span>4Cs</span>Momentum beats motivation.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Samu</span><span class="c-script">作務</span></div>
+        <div class="c-meta">Japanese Zen · work practice</div>
+        <p>In Zen monasteries, physical work is meditation in motion. Baizhang's monastic rule put it plainly: a day without work is a day without food.</p>
+        <div class="c-link"><span>4Cs</span>Done and rough beats perfect and imagined.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Vīriya</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · energy, persistence</div>
+        <p>A factor of awakening and one of the perfections. This isn't strain. It's steady application you can keep up, like the lute string tuned just right.</p>
+        <div class="c-link"><span>4Cs</span>Shrink the task until starting feels easy, then start.</div>
+      </div>
+    </div>
+    <div class="verse reveal">
+      <p>Wondrous powers, marvellous activity: drawing water, carrying firewood.</p>
+      <cite>Layman Pang, 8th-century China (神通並妙用 · 運水及搬柴). Our rendering.</cite>
+    </div>
+    <div class="tasks-label reveal">Try it</div>
+    <div class="tasks reveal">
+      <button class="task" type="button" data-id="constructive-2m" data-mode="Constructive" data-when="2 min"><span class="task-when">2 minutes<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Wash one cup, and only wash the cup. Give it your whole attention.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="constructive-today" data-mode="Constructive" data-when="Today"><span class="task-when">Today<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Pick one task. Do it completely, then stop. No half-switching.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="constructive-week" data-mode="Constructive" data-when="This week"><span class="task-when">This week<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Finish the thing that's been 90% done for too long, then clean up after it. The clean-up is part of the work.</span><span class="task-stamp"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- CHILL -->
+<section class="mode mode-l" id="chill">
+  <div class="wrap">
+    <div class="mode-head reveal">
+      <div class="mode-ic"><svg><use href="#ic-waves"/></svg></div>
+      <div>
+        <span class="eyebrow">Mode 04 · Chill</span>
+        <h2>Just sitting.</h2>
+        <div class="trad">Sōtō Zen · early Buddhism · Taoism</div>
+      </div>
+    </div>
+    <p class="lead reveal">Chill isn't time off from practice. In Zen it's the centre of practice. Sitting still, with nothing to fix and nothing to get, is what everything else rests on.</p>
+    <div class="concepts">
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Shikantaza</span><span class="c-script">只管打坐</span></div>
+        <div class="c-meta">Sōtō Zen · "just sitting"</div>
+        <p>Dōgen's teaching from 13th-century Japan: you sit with no goal, no technique to master and nothing to achieve. The sitting itself is the point.</p>
+        <div class="c-link"><span>4Cs</span>Doing nothing on purpose is different from doing nothing by accident.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Upekkhā</span><span class="c-script"></span></div>
+        <div class="c-meta">Pāli · equanimity</div>
+        <p>The fourth brahmavihāra. It's a balanced mind that can meet pleasant and unpleasant without lurching either way. It isn't indifference, which is its near enemy.</p>
+        <div class="c-link"><span>4Cs</span>Rest is part of the work, not a reward for it.</div>
+      </div>
+      <div class="concept reveal">
+        <div class="c-top"><span class="c-term">Wu wei</span><span class="c-script">無為</span></div>
+        <div class="c-meta">Chinese, Taoist · non-forcing</div>
+        <p>Acting without strain, the way water finds its way around a stone. You stop pushing on what doesn't need pushing.</p>
+        <div class="c-link"><span>4Cs</span>Your attention is a battery, not a tap.</div>
+      </div>
+    </div>
+    <div class="verse reveal">
+      <p>Who can make the muddy water clear? Let it be still, and it will gradually become clear.</p>
+      <cite>Tao Te Ching, ch. 15, after James Legge (1891)</cite>
+    </div>
+    <div class="tasks-label reveal">Try it</div>
+    <div class="tasks reveal">
+      <button class="task" type="button" data-id="chill-2m" data-mode="Chill" data-when="2 min"><span class="task-when">2 minutes<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Count ten breaths. If you lose count, go back to one. Use the counter below.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="chill-today" data-mode="Chill" data-when="Today"><span class="task-when">Today<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Kinhin: walk slowly between two tasks, one step per breath.</span><span class="task-stamp"></span></button>
+      <button class="task" type="button" data-id="chill-week" data-mode="Chill" data-when="This week"><span class="task-when">This week<span class="tick"><svg><use href="#ic-check"/></svg></span></span><span class="task-text">Block one hour that belongs to nothing: no screen, no goal. Think of it as shikantaza with your shoes on.</span><span class="task-stamp"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- FIRE -->
+<section class="fire" id="which-mode">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">05 · Which mode now?</span>
+      <h2>Wet grass, dry grass.</h2>
+      <p class="lead">In the Fire Sutta, the Buddha gives a simple rule for picking which quality to develop. Trying to calm a sluggish mind is like throwing wet grass on a small fire you want to blaze. Trying to rouse an agitated mind is like throwing dry grass on a fire you want to put out. Mindfulness, he says, is useful in every case.</p>
+    </div>
+    <div class="fgrid reveal">
+      <div class="fcard low">
+        <span class="eyebrow">Running low · sluggish, flat, foggy</span>
+        <h3>Add dry grass.</h3>
+        <p>Develop investigation, energy and joy. Ask a question, start something small, or reach out to someone.</p>
+        <div class="flean">
+          <a class="mode-pill mp-c" href="#curious"><svg><use href="#ic-telescope"/></svg>Curious</a>
+          <a class="mode-pill mp-b" href="#constructive"><svg><use href="#ic-hammer"/></svg>Constructive</a>
+          <a class="mode-pill mp-k" href="#caring"><svg><use href="#ic-heart"/></svg>Caring</a>
+        </div>
+      </div>
+      <div class="fcard hot">
+        <span class="eyebrow">Running hot · wired, scattered, frayed</span>
+        <h3>Add wet grass.</h3>
+        <p>Develop tranquillity, concentration and equanimity. Breathe, narrow your focus to one thing, and let it settle.</p>
+        <div class="flean">
+          <a class="mode-pill mp-l" href="#chill"><svg><use href="#ic-waves"/></svg>Chill</a>
+        </div>
+      </div>
+    </div>
+    <div class="always reveal">
+      <div><strong>Always: sati, mindfulness.</strong><p>Before you choose a mode, notice which one you're in. That's what the vibe check is for.</p></div>
+      <a class="ghost" href="/where-you-at">Where you at? <svg><use href="#ic-arrow"/></svg></a>
+    </div>
+    <div class="factors reveal" aria-label="The seven factors of awakening mapped to the 4Cs">
+      <div class="factor thread"><b>Sati</b><span>mindfulness</span><div class="fd"><i class="c"></i><i class="k"></i><i class="b"></i><i class="l"></i></div></div>
+      <div class="factor rouse"><b>Dhamma-vicaya</b><span>investigation</span><div class="fd"><i class="c"></i></div></div>
+      <div class="factor rouse"><b>Vīriya</b><span>energy</span><div class="fd"><i class="b"></i></div></div>
+      <div class="factor rouse"><b>Pīti</b><span>joy</span><div class="fd"><i class="k"></i></div></div>
+      <div class="factor settle"><b>Passaddhi</b><span>tranquillity</span><div class="fd"><i class="l"></i></div></div>
+      <div class="factor settle"><b>Samādhi</b><span>concentration</span><div class="fd"><i class="l"></i></div></div>
+      <div class="factor settle"><b>Upekkhā</b><span>equanimity</span><div class="fd"><i class="l"></i></div></div>
+    </div>
+    <p class="fine reveal">The seven factors of awakening (<em>bojjhaṅga</em>): three that rouse, three that settle, and one that runs through all of them. Aggi Sutta, Saṃyutta Nikāya 46.53. The mapping of the factors to the 4Cs is ours, not the tradition's.</p>
+  </div>
+</section>
+
+<!-- HUB -->
+<section class="hub" id="hub">
+  <div class="wrap hgrid">
+    <div class="reveal">
+      <span class="eyebrow" style="margin-bottom:12px">06 · The empty hub</span>
+      <h2>The wheel turns on what's empty.</h2>
+      <div class="verse">
+        <p>The thirty spokes unite in the one nave; but it is on the empty space that the use of the wheel depends.</p>
+        <cite>Tao Te Ching, ch. 11, after James Legge (1891)</cite>
+      </div>
+      <p class="lead">The 4Cs is a cycle, not a ladder. Curious, Caring and Constructive are the spokes that do the visible work. Chill is the hub, the space the whole thing turns on. Take it out and the wheel doesn't go faster. It stops.</p>
+    </div>
+    <div class="borrow">
+      <div class="bcard mode-c reveal">
+        <div class="c-top"><span class="c-term">Ichi-go ichi-e</span><span class="c-script">一期一会</span></div>
+        <div class="c-meta">Tea ceremony · one time, one meeting</div>
+        <p>This exact moment won't come again, so notice what's actually here.</p>
+      </div>
+      <div class="bcard mode-k reveal">
+        <div class="c-top"><span class="c-term">Kintsugi</span><span class="c-script">金継ぎ</span></div>
+        <div class="c-meta">Japanese craft · golden joinery</div>
+        <p>Broken pottery is mended with gold-dusted lacquer. The repair is honoured, not hidden.</p>
+      </div>
+      <div class="bcard mode-b reveal">
+        <div class="c-top"><span class="c-term">Wabi-sabi</span><span class="c-script">侘寂</span></div>
+        <div class="c-meta">Japanese aesthetic · the imperfect</div>
+        <p>Beauty in the rough, the unfinished and the impermanent. "Done and rough" isn't a compromise here. It's the aesthetic.</p>
+      </div>
+      <div class="bcard mode-l reveal">
+        <div class="c-top"><span class="c-term">Ma</span><span class="c-script">間</span></div>
+        <div class="c-meta">Japanese · the interval</div>
+        <p>The meaningful gap between things: the rest in music, the pause in speech, the space in a room.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELVES -->
+<section class="selves" id="not-a-type">
+  <div class="wrap reveal">
+    <span class="eyebrow">07 · Modes, not selves</span>
+    <h2>You're not a type.</h2>
+    <p class="lead">Two of Buddhism's three marks of existence are <em>anicca</em>, that everything changes, and <em>anattā</em>, that there's no fixed self underneath doing the changing. The 4Cs take that seriously. You aren't "a Curious person" or "a Chill person". Modes arise, do their work and pass, like weather. The point isn't to become one of them. It's to keep the rhythm moving, and to notice which one is here now.</p>
+    <div class="marks">
+      <span class="mark"><b>Anicca</b><span>impermanence</span></span>
+      <span class="mark"><b>Anattā</b><span>non-self</span></span>
+      <span class="mark"><b>Ensō</b><span>the circle left open</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section class="practice" id="practice">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">08 · Practice</span>
+      <h2>Ten breaths.</h2>
+      <p class="lead">Counting the breath, called <em>susokukan</em> (数息観) in Japanese, is one of the oldest instructions in Zen. Count each out-breath from one to ten. If you lose count, go back to one. That isn't failing. Going back to one is the practice.</p>
+    </div>
+    <div class="pgrid">
+      <div class="panel reveal">
+        <span class="eyebrow">Counter</span>
+        <h3>Tap on each out-breath.</h3>
+        <p>Let the circle set the pace if it helps: it swells for about four seconds and settles for six.</p>
+        <div class="breath-stage" id="stage">
+          <i class="bdot" style="--i:0"></i><i class="bdot" style="--i:1"></i><i class="bdot" style="--i:2"></i><i class="bdot" style="--i:3"></i><i class="bdot" style="--i:4"></i>
+          <i class="bdot" style="--i:5"></i><i class="bdot" style="--i:6"></i><i class="bdot" style="--i:7"></i><i class="bdot" style="--i:8"></i><i class="bdot" style="--i:9"></i>
+          <button class="breath-btn" id="breathBtn" type="button" aria-live="polite" aria-label="Count breath"><span class="breath-num" id="breathNum">0</span><span class="breath-hint" id="breathHint">tap · space</span></button>
+        </div>
+        <div class="breath-msg" id="breathMsg">Settle in. Breathe out, then tap.</div>
+        <div class="row-btns">
+          <button class="ghost" type="button" id="lostBtn"><svg><use href="#ic-undo"/></svg>Lost count, back to one</button>
+        </div>
+      </div>
+      <div class="panel reveal">
+        <span class="eyebrow">Your practice</span>
+        <h3>Kept on this device.</h3>
+        <p>Rounds, ticked practices and notes are saved in this browser only, never sent anywhere. Export them as markdown whenever you like.</p>
+        <div class="stats">
+          <div class="stat"><b id="sRounds">0</b><span>rounds</span></div>
+          <div class="stat"><b id="sWeek">0</b><span>this week</span></div>
+          <div class="stat"><b id="sTasks">0/12</b><span>practices</span></div>
+        </div>
+        <label class="notice-label" for="notice">What did you notice?</label>
+        <textarea id="notice" placeholder="Which mode showed up? Which near enemy did you catch?"></textarea>
+        <div class="save-state" id="saveState"></div>
+        <div class="row-btns">
+          <button class="ghost solid" type="button" id="exportBtn"><svg><use href="#ic-download"/></svg>Export markdown</button>
+          <button class="ghost" type="button" id="clearBtn">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTE -->
+<section class="note">
+  <div class="wrap">
+    <div class="note-card reveal">
+      <span class="cjk" aria-hidden="true">合掌</span>
+      <div>
+        <h3>A note on borrowing</h3>
+        <p>These are living traditions with their own teachers, lineages and communities. This page borrows a handful of their ideas with respect. It isn't a teaching, and it doesn't replace one.</p>
+        <p>If something here lands, go to the source. Find a teacher, a sangha or a local sitting group. Terms are Pāli unless marked otherwise, and the 4Cs mappings are ours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/"><span class="markdots" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>selfdriven<em>.you</em></span></a>
+      <small>A sustainable rhythm for living a fully human life in the age of intelligence.</small>
+    </div>
+    <nav>
+      <a class="ghost" href="/">Home</a>
+      <a class="ghost" href="/where-you-at">Where you at?</a>
+      <a class="ghost" href="https://selfdriven.tel">All links <svg><use href="#ic-arrow"/></svg></a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- persistence: IndexedDB with localStorage fallback ---------- */
+  var DB_NAME = 'selfdriven-the-middle-way', STORE = 'state', KEY = 'main', LS_KEY = 'selfdriven-the-middle-way';
+  var db = null;
+  var state = blank();
+
+  function blank(){ return { v: 1, checks: {}, rounds: [], note: '', updated: 0 }; }
+  function normalise(s){
+    var b = blank();
+    if (!s || typeof s !== 'object') return b;
+    b.checks = (s.checks && typeof s.checks === 'object') ? s.checks : {};
+    b.rounds = Array.isArray(s.rounds) ? s.rounds.filter(function(r){ return r && typeof r.ts === 'number'; }) : [];
+    b.note = typeof s.note === 'string' ? s.note : '';
+    b.updated = typeof s.updated === 'number' ? s.updated : 0;
+    return b;
+  }
+  function openDB(){
+    return new Promise(function(resolve){
+      if (!('indexedDB' in window)) { resolve(null); return; }
+      try {
+        var req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = function(){ if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE); };
+        req.onsuccess = function(){ resolve(req.result); };
+        req.onerror = function(){ resolve(null); };
+        req.onblocked = function(){ resolve(null); };
+      } catch (e) { resolve(null); }
+    });
+  }
+  function idbGet(){
+    return new Promise(function(resolve){
+      try {
+        var r = db.transaction(STORE, 'readonly').objectStore(STORE).get(KEY);
+        r.onsuccess = function(){ resolve(r.result || null); };
+        r.onerror = function(){ resolve(null); };
+      } catch (e) { resolve(null); }
+    });
+  }
+  function idbPut(val){
+    return new Promise(function(resolve){
+      try {
+        var tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).put(val, KEY);
+        tx.oncomplete = function(){ resolve(true); };
+        tx.onerror = function(){ resolve(false); };
+        tx.onabort = function(){ resolve(false); };
+      } catch (e) { resolve(false); }
+    });
+  }
+  function lsGet(){ try { var s = localStorage.getItem(LS_KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+  function lsPut(val){ try { localStorage.setItem(LS_KEY, JSON.stringify(val)); return true; } catch (e) { return false; } }
+  function lsDel(){ try { localStorage.removeItem(LS_KEY); } catch (e) {} }
+
+  async function load(){
+    db = await openDB();
+    var data = null;
+    if (db) {
+      data = await idbGet();
+      var fallback = lsGet();
+      // migrate anything written to the localStorage fallback into IndexedDB
+      if (fallback && (!data || (fallback.updated || 0) > (data.updated || 0))) {
+        data = fallback;
+        if (await idbPut(normalise(fallback))) lsDel();
+      }
+    } else {
+      data = lsGet();
+    }
+    state = normalise(data);
+  }
+  var saveTimer = null;
+  function save(){
+    state.updated = Date.now();
+    var snapshot = JSON.parse(JSON.stringify(state));
+    if (db) {
+      idbPut(snapshot).then(function(ok){ if (!ok) lsPut(snapshot); flagSaved(); });
+    } else {
+      lsPut(snapshot); flagSaved();
+    }
+  }
+  var saveEl = document.getElementById('saveState');
+  function flagSaved(){
+    if (!saveEl) return;
+    saveEl.textContent = 'Saved · ' + fmtTime(new Date());
+  }
+
+  /* ---------- formatting ---------- */
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function fmtDate(d){ return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+  function fmtTime(d){ return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+  function isoLocal(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + fmtTime(d); }
+
+  /* ---------- practices ---------- */
+  var tasks = Array.prototype.slice.call(document.querySelectorAll('.task'));
+  function renderTasks(){
+    tasks.forEach(function(t){
+      var ts = state.checks[t.dataset.id];
+      t.classList.toggle('done', !!ts);
+      t.setAttribute('aria-pressed', ts ? 'true' : 'false');
+      t.querySelector('.task-stamp').textContent = ts ? 'Done · ' + fmtDate(new Date(ts)) : '';
+    });
+  }
+  tasks.forEach(function(t){
+    t.addEventListener('click', function(){
+      var id = t.dataset.id;
+      if (state.checks[id]) delete state.checks[id]; else state.checks[id] = Date.now();
+      renderTasks(); renderStats(); save();
+    });
+  });
+
+  /* ---------- breath counter ---------- */
+  var stage = document.getElementById('stage');
+  var dots = Array.prototype.slice.call(stage.querySelectorAll('.bdot'));
+  var btn = document.getElementById('breathBtn');
+  var numEl = document.getElementById('breathNum');
+  var hintEl = document.getElementById('breathHint');
+  var msgEl = document.getElementById('breathMsg');
+  var lostBtn = document.getElementById('lostBtn');
+  var count = 0, restarts = 0, complete = false;
+  var LINES = ['', 'One.', 'Two.', 'Three.', 'Four.', 'Five. Halfway, no hurry.', 'Six.', 'Seven.', 'Eight.', 'Nine.', 'Ten. That is the entire task.'];
+
+  function renderBreath(){
+    numEl.textContent = count;
+    dots.forEach(function(d, i){ d.classList.toggle('on', i < count); });
+    stage.classList.toggle('complete', complete);
+    hintEl.textContent = complete ? 'tap to begin again' : 'tap · space';
+    btn.setAttribute('aria-label', complete ? 'Ten breaths complete. Tap to begin again.' : 'Breath ' + count + ' of 10. Tap to count the next out-breath.');
+  }
+  btn.addEventListener('click', function(){
+    if (complete) { complete = false; count = 0; restarts = 0; msgEl.textContent = 'Again. Breathe out, then tap.'; renderBreath(); return; }
+    count += 1;
+    msgEl.textContent = LINES[count] || '';
+    if (count >= 10) {
+      complete = true;
+      state.rounds.push({ ts: Date.now(), restarts: restarts });
+      if (!state.checks['chill-2m']) state.checks['chill-2m'] = Date.now();
+      renderTasks(); renderStats(); save();
+    }
+    renderBreath();
+  });
+  lostBtn.addEventListener('click', function(){
+    if (complete || count === 0) { msgEl.textContent = 'Already at one. Just breathe.'; return; }
+    restarts += 1; count = 0;
+    msgEl.textContent = 'Back to one. That’s the practice.';
+    renderBreath();
+  });
+
+  /* ---------- notes ---------- */
+  var notice = document.getElementById('notice');
+  var noteTimer = null;
+  notice.addEventListener('input', function(){
+    state.note = notice.value;
+    if (saveEl) saveEl.textContent = 'Saving…';
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(save, 450);
+  });
+
+  /* ---------- stats ---------- */
+  function renderStats(){
+    var weekAgo = Date.now() - 7 * 864e5;
+    document.getElementById('sRounds').textContent = state.rounds.length;
+    document.getElementById('sWeek').textContent = state.rounds.filter(function(r){ return r.ts >= weekAgo; }).length;
+    var done = tasks.filter(function(t){ return !!state.checks[t.dataset.id]; }).length;
+    document.getElementById('sTasks').textContent = done + '/' + tasks.length;
+  }
+
+  /* ---------- export: markdown, timestamped filename ---------- */
+  function buildMarkdown(now){
+    var out = [];
+    out.push('# The Middle Way — practice log', '');
+    out.push('selfdriven.you · 4Cs × Buddhism, Zen & Tao', '');
+    out.push('Exported: ' + isoLocal(now), '');
+    out.push('## Ten breaths', '');
+    if (!state.rounds.length) out.push('_No rounds yet._');
+    else {
+      out.push('- Rounds of ten: ' + state.rounds.length);
+      state.rounds.slice().reverse().forEach(function(r){
+        out.push('- ' + isoLocal(new Date(r.ts)) + ' — ten breaths' + (r.restarts ? ' (back to one ×' + r.restarts + ')' : ''));
+      });
+    }
+    out.push('', '## Practices', '');
+    ['Curious', 'Caring', 'Constructive', 'Chill'].forEach(function(m){
+      out.push('### ' + m, '');
+      tasks.filter(function(t){ return t.dataset.mode === m; }).forEach(function(t){
+        var ts = state.checks[t.dataset.id];
+        var text = t.querySelector('.task-text').textContent.trim();
+        out.push('- [' + (ts ? 'x' : ' ') + '] **' + t.dataset.when + '** — ' + text + (ts ? ' _(done ' + fmtDate(new Date(ts)) + ')_' : ''));
+      });
+      out.push('');
+    });
+    out.push('## What I noticed', '');
+    out.push(state.note.trim() ? state.note.trim() : '_Nothing written yet._');
+    out.push('');
+    return out.join('\n');
+  }
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    var now = new Date();
+    var md = buildMarkdown(now);
+    var name = 'selfdriven-the-middle-way-' + now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes()) + '.md';
+    var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  });
+
+  /* ---------- clear (tap twice, no dialog) ---------- */
+  var clearBtn = document.getElementById('clearBtn');
+  var clearArmed = null;
+  clearBtn.addEventListener('click', function(){
+    if (!clearArmed) {
+      clearBtn.textContent = 'Tap again to clear everything';
+      clearBtn.classList.add('warn');
+      clearArmed = setTimeout(function(){ clearArmed = null; clearBtn.textContent = 'Clear'; clearBtn.classList.remove('warn'); }, 3500);
+      return;
+    }
+    clearTimeout(clearArmed); clearArmed = null;
+    clearBtn.textContent = 'Clear'; clearBtn.classList.remove('warn');
+    state = blank(); notice.value = '';
+    count = 0; restarts = 0; complete = false;
+    msgEl.textContent = 'Cleared. Settle in. Breathe out, then tap.';
+    renderAll(); save();
+  });
+
+  function renderAll(){ renderTasks(); renderStats(); renderBreath(); notice.value = state.note; }
+
+  /* ---------- ensō draw-on ---------- */
+  (function(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    var arcs = document.querySelectorAll('#enso .arc');
+    Array.prototype.forEach.call(arcs, function(p, i){
+      var len = p.getTotalLength();
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      var delay = 0.25 + (i % 4) * 0.42 + (i >= 4 ? 0.18 : 0);
+      p.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(.6,.05,.25,1) ' + delay + 's';
+      requestAnimationFrame(function(){ p.style.strokeDashoffset = '0'; });
+    });
+  })();
+
+  /* ---------- scroll reveal ---------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(x){ if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); } });
+    }, { threshold: 0.14 });
+    Array.prototype.forEach.call(reveals, function(el){ io.observe(el); });
+  } else {
+    Array.prototype.forEach.call(reveals, function(el){ el.classList.add('vis'); });
+  }
+
+  /* ---------- keyboard: space counts a breath when the counter is on screen ---------- */
+  document.addEventListener('keydown', function(e){
+    if (e.code !== 'Space' && e.key !== ' ') return;
+    var tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'BUTTON' || tag === 'A') return;
+    var r = stage.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) { e.preventDefault(); btn.click(); }
+  });
+
+  /* ---------- cursor ---------- */
+  (function(){
+    var dot = document.getElementById('cdot'), ring = document.getElementById('cring');
+    if (!dot || !ring || (window.matchMedia && window.matchMedia('(hover: none)').matches)) return;
+    var rx = 0, ry = 0, dx = 0, dy = 0;
+    document.addEventListener('mousemove', function(e){ dx = e.clientX; dy = e.clientY; dot.style.left = dx + 'px'; dot.style.top = dy + 'px'; });
+    function loop(){ rx += (dx - rx) * 0.18; ry += (dy - ry) * 0.18; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); }
+    loop();
+    document.querySelectorAll('a,.task,button,textarea').forEach(function(el){
+      el.addEventListener('mouseenter', function(){ ring.style.width = '52px'; ring.style.height = '52px'; ring.style.borderColor = 'rgba(245,200,66,.6)'; });
+      el.addEventListener('mouseleave', function(){ ring.style.width = '34px'; ring.style.height = '34px'; ring.style.borderColor = 'rgba(240,238,255,.3)'; });
+    });
+  })();
+
+  /* ---------- boot ---------- */
+  renderBreath();
+  load().then(function(){ renderAll(); });
+})();
+</script>
+</body>
+</html>
